@@ -1,0 +1,7 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+test:
+  pathFile: exercise-5/src/main/resources/data/questions.csv
+  win: 2

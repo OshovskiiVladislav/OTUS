@@ -1,0 +1,9 @@
+spring:
+  shell:
+    interactive:
+      enabled: false
+  main:
+    allow-circular-references: true
+test:
+  pathFile: exercise-5/src/main/resources/data/questions.csv
+  win: 2
