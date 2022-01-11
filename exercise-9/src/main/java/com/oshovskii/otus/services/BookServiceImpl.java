@@ -30,16 +30,18 @@ public class BookServiceImpl implements BookService {
     @Transactional
     @Override
     public Book saveBook(String title, Long authorId, Long genreId, Long commentId) {
-        Book book = new Book(title);
         Author author = authorService.findByAuthorId(authorId)
                 .orElseThrow(() -> new ResourceNotFoundException("Author with " +  authorId + " not found"));
         Genre genre = genreService.findByGenreId(genreId)
                 .orElseThrow(() -> new ResourceNotFoundException("Genre with " +  genreId + " not found"));
         Comment comment = commentService.findByCommentId(commentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Comment with "+  commentId + " not found"));
+
+        Book book = new Book(title);
         book.setAuthorsList(Set.of(author));
         book.setGenresList(Set.of(genre));
         book.setCommentsList(Set.of(comment));
+
         return bookRepository.save(book);
     }
 

@@ -18,7 +18,7 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @ToString.Include
     @Column(name = "title", nullable = false, unique = true)
@@ -31,7 +31,7 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "author_id"))
     private Set<Author> authorsList;
 
-    @Fetch(FetchMode. SUBSELECT)
+    @Fetch(FetchMode.SUBSELECT)
     @ToString.Include
     @ManyToMany(targetEntity = Genre.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "book_genres", joinColumns = @JoinColumn(name = "book_id"),

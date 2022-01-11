@@ -12,12 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("BookRepositoryJpa Test ")
+@DisplayName("BookRepositoryJpa Test")
 @DataJpaTest
 @Import(BookRepositoryJpa.class)
 public class BookRepositoryJpaTest {
@@ -68,39 +69,39 @@ public class BookRepositoryJpaTest {
                 .usingRecursiveComparison().isEqualTo(expectedBook);
     }
 
-//    @DisplayName("Should upload all books with all information")
-//    @Test
-//    void findAll_voidInput_shouldReturnCorrectStudentsListWithAllInfo() {
-//        // Config
-//        SessionFactory sessionFactory = em.getEntityManager().getEntityManagerFactory().unwrap(SessionFactory.class);
-//        sessionFactory.getStatistics().setStatisticsEnabled(true);
-//
-//        // Call and Verify
-//        System.out.println("\n\n\n\n----------------------------------------------------------------------------------------------------------");
-//        val books = bookRepositoryJpa.findAll();
-//        assertThat(books).isNotNull().hasSize(EXPECTED_NUMBER_OF_BOOKS)
-//                .allMatch(s -> !s.getTitle().equals(""))
-//                .allMatch(s -> s.getAuthorsList() != null && s.getAuthorsList().size() > 0)
-//                .allMatch(s -> s.getGenresList() != null && s.getGenresList().size() > 0)
-//                .allMatch(s -> s.getCommentsList() != null && s.getCommentsList().size() > 0);
-//        System.out.println("----------------------------------------------------------------------------------------------------------\n\n\n\n");
-//        assertThat(sessionFactory.getStatistics().getPrepareStatementCount()).isEqualTo(EXPECTED_QUERIES_COUNT);
-//    }
+    @DisplayName("Should upload all books with all information")
+    @Test
+    void findAll_voidInput_shouldReturnCorrectStudentsListWithAllInfo() {
+        // Config
+        SessionFactory sessionFactory = em.getEntityManager().getEntityManagerFactory().unwrap(SessionFactory.class);
+        sessionFactory.getStatistics().setStatisticsEnabled(true);
+
+        // Call and Verify
+        System.out.println("\n\n\n\n----------------------------------------------------------------------------------------------------------");
+        val books = bookRepositoryJpa.findAll();
+        assertThat(books).isNotNull().hasSize(EXPECTED_NUMBER_OF_BOOKS)
+                .allMatch(s -> !s.getTitle().equals(""))
+                .allMatch(s -> s.getAuthorsList() != null && s.getAuthorsList().size() > 0)
+                .allMatch(s -> s.getGenresList() != null && s.getGenresList().size() > 0)
+                .allMatch(s -> s.getCommentsList() != null && s.getCommentsList().size() > 0);
+        System.out.println("----------------------------------------------------------------------------------------------------------\n\n\n\n");
+        assertThat(sessionFactory.getStatistics().getPrepareStatementCount()).isEqualTo(EXPECTED_QUERIES_COUNT);
+    }
 
     @DisplayName("Should correct save book")
     @Test
     void save_validBook_shouldSaveAllStudentInfo() {
         // Config
-        val author = new Author(0, EXISTING_AUTHOR_NAME);
+        val author = new Author(null, EXISTING_AUTHOR_NAME);
         val expectedAuthors = Set.of(author);
 
-        val expectedGenre = new Genre(0, EXISTING_GENRE_TYPE);
+        val expectedGenre = new Genre(null, EXISTING_GENRE_TYPE);
         val expectedGenres = Set.of(expectedGenre);
 
-        val expectedComment = new Comment(0, EXISTING_COMMENT_TEXT);
+        val expectedComment = new Comment(null, EXISTING_COMMENT_TEXT);
         val expectedComments = Set.of(expectedComment);
 
-        val expectedBook = new Book(0, SAVE_BOOK_TITLE, expectedAuthors, expectedGenres, expectedComments);
+        val expectedBook = new Book(null, SAVE_BOOK_TITLE, expectedAuthors, expectedGenres, expectedComments);
 
         // Call and Verify
         bookRepositoryJpa.save(expectedBook);

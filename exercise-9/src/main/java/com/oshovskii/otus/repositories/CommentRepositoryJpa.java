@@ -21,7 +21,7 @@ public class CommentRepositoryJpa implements CommentRepository {
 
     @Override
     public Comment save(Comment comment) {
-        if (comment.getId() <= 0) {
+        if (comment.getId() == null) {
             entityManager.persist(comment);
             return comment;
         } else {

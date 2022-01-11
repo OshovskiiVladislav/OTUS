@@ -6,10 +6,13 @@ import com.oshovskii.otus.models.Comment;
 import com.oshovskii.otus.models.Genre;
 import com.oshovskii.otus.services.interfaces.BookService;
 import lombok.val;
+import org.apache.logging.log4j.util.Strings;
+import org.assertj.core.internal.bytebuddy.pool.TypePool;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.shell.CommandNotCurrentlyAvailable;
 import org.springframework.shell.Shell;
@@ -25,12 +28,8 @@ import static org.mockito.Mockito.*;
 @DisplayName("Test ShellBookImpl command")
 @SpringBootTest
 public class ShellBookImplTest {
-
     @MockBean
     private BookService bookService;
-
-    @Autowired
-    private ShellLoginImpl shellLogin;
 
     @Autowired
     private Shell shell;
@@ -80,6 +79,9 @@ public class ShellBookImplTest {
     @Test
     public void publishAllBook_validCommand_shouldReturnExpectedBookList() {
         // Config
+//        when(shellLogin.getCurrentUserName()).thenReturn(CUSTOM_LOGIN);
+//        when(shellLogin.login(CUSTOM_LOGIN)).thenReturn(String.format(GREETING_PATTERN, CUSTOM_LOGIN));
+
         shell.evaluate(() -> COMMAND_LOGIN);
 
         val expectedBook = new Book(EXISTING_BOOK_TITLE);
