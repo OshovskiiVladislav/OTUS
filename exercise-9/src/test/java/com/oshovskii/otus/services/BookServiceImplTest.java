@@ -42,7 +42,6 @@ public class BookServiceImplTest {
 
     private static final Long EXPECTED_BOOKS_COUNT = 2L;
     private static final String EXPECTED_BOOK_TITLE = "Test title";
-    private static final Long EXPECTED_BOOK_ID = 0L;
 
     private static final Long EXISTING_BOOK_ID = 1L;
     private static final Long EXISTING_BOOK_ID_2 = 2L;
@@ -66,7 +65,7 @@ public class BookServiceImplTest {
 
     @DisplayName("Return expected count books in db")
     @Test
-    public void countBooks_voidInput_shouldReturnExpectedBookCount(){
+    public void countBooks_voidInput_shouldReturnExpectedBookCount() {
         // Config
         when(bookRepositoryJpa.count()).thenReturn(EXPECTED_BOOKS_COUNT);
 
@@ -77,31 +76,32 @@ public class BookServiceImplTest {
         assertEquals(actualBookCount, EXPECTED_BOOKS_COUNT);
     }
 
-//    @DisplayName("Save book in db")
-//    @Test
-//    public void save_validTitleAndAuthorIdAndGenreIdAndCommentId_shouldSaveBook(){
-//        // Config
-//        val author = new Author(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_NAME);
-//        val genre = new Genre(EXISTING_GENRE_ID, EXISTING_GENRE_TYPE);
-//        val comment = new Comment(EXISTING_COMMENT_ID, EXISTING_COMMENT_TEXT);
-//
-//        val saveBook = new Book(EXPECTED_BOOK_TITLE);
-//        saveBook.setId(EXPECTED_BOOK_ID);
-//        saveBook.setAuthorsList(Set.of(author));
-//        saveBook.setGenresList(Set.of(genre));
-//        saveBook.setCommentsList(Set.of(comment));
-//
-//        when(bookRepositoryJpa.save(saveBook)).thenReturn(saveBook);
-//        when(authorService.findByAuthorId(EXISTING_AUTHOR_ID)).thenReturn(Optional.of(author));
-//        when(genreService.findByGenreId(EXISTING_GENRE_ID)).thenReturn(Optional.of(genre));
-//        when(commentService.findByCommentId(EXISTING_COMMENT_ID)).thenReturn(Optional.of(comment));
-//
-//        // Call
-//        bookService.saveBook(EXPECTED_BOOK_TITLE, EXISTING_AUTHOR_ID, EXISTING_GENRE_ID, EXISTING_COMMENT_ID);
-//
-//        // Verify
-//        verify(bookRepositoryJpa, times(1)).save(saveBook);
-//    }
+    @DisplayName("Save book in db")
+    @Test
+    public void save_validTitleAndAuthorIdAndGenreIdAndCommentId_shouldSaveBook() {
+        // Config
+        val author = new Author(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_NAME);
+        val genre = new Genre(EXISTING_GENRE_ID, EXISTING_GENRE_TYPE);
+        val comment = new Comment(EXISTING_COMMENT_ID, EXISTING_COMMENT_TEXT);
+
+        val saveBook = new Book(EXPECTED_BOOK_TITLE);
+        saveBook.setId(null);
+        saveBook.setAuthorsList(Set.of(author));
+        saveBook.setGenresList(Set.of(genre));
+        saveBook.setCommentsList(Set.of(comment));
+
+        when(bookRepositoryJpa.save(any(Book.class))).thenReturn(saveBook);
+        when(authorService.findByAuthorId(EXISTING_AUTHOR_ID)).thenReturn(Optional.of(author));
+        when(genreService.findByGenreId(EXISTING_GENRE_ID)).thenReturn(Optional.of(genre));
+        when(commentService.findByCommentId(EXISTING_COMMENT_ID)).thenReturn(Optional.of(comment));
+
+        // Call
+        val actualBook = bookService.saveBook(EXPECTED_BOOK_TITLE, EXISTING_AUTHOR_ID, EXISTING_GENRE_ID, EXISTING_COMMENT_ID);
+
+        // Verify
+        assertEquals(saveBook, actualBook);
+        verify(bookRepositoryJpa, times(1)).save(any(Book.class));
+    }
 
     @DisplayName("Return expected book by id")
     @Test
@@ -129,7 +129,7 @@ public class BookServiceImplTest {
 
     @DisplayName("Return expected list books")
     @Test
-    public void getAllBook_voidInput_shouldReturnExpectedBooksList(){
+    public void getAllBook_voidInput_shouldReturnExpectedBooksList() {
         // Config
         // create 1 book
         val author = new Author(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_NAME);
@@ -166,7 +166,7 @@ public class BookServiceImplTest {
 
     @DisplayName("Delete book by id")
     @Test
-    public void deleteBookById_validId_shouldCorrectDeleteBookById(){
+    public void deleteBookById_validId_shouldCorrectDeleteBookById() {
         // Config
         doNothing().when(bookRepositoryJpa).deleteById(EXISTING_BOOK_ID);
 

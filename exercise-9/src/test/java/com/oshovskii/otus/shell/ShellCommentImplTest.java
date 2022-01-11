@@ -2,6 +2,7 @@ package com.oshovskii.otus.shell;
 
 import com.oshovskii.otus.models.Comment;
 import com.oshovskii.otus.services.CommentServiceImpl;
+import com.oshovskii.otus.services.interfaces.CommentService;
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,10 +23,7 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 public class ShellCommentImplTest {
     @MockBean
-    private CommentServiceImpl commentService;
-
-    @Autowired
-    private ShellLoginImpl shellLogin;
+    private CommentService commentService;
 
     @Autowired
     private Shell shell;
@@ -53,8 +51,6 @@ public class ShellCommentImplTest {
     @Test
     public void isPublishEventCommandAvailable_inputVoid_shouldReturnCommandNotCurrentlyAvailableObject() {
         // Config and Call
-       // when(shellLogin.getCurrentUserName()).thenReturn(DEFAULT_LOGIN);
-
         Object res =  shell.evaluate(() -> COMMAND_PUBLISH_ALL_COMMENTS);
 
         //  Verify
@@ -67,8 +63,6 @@ public class ShellCommentImplTest {
     @Test
     public void publishAllComment_validCommand_shouldReturnExpectedCommentList() {
         // Config
-     //   when(shellLogin.getCurrentUserName()).thenReturn(DEFAULT_LOGIN);
-
         shell.evaluate(() -> COMMAND_LOGIN);
 
         val expectedComment = new Comment(EXISTING_COMMENT_ID, EXISTING_COMMENT_TEXT);
@@ -89,8 +83,6 @@ public class ShellCommentImplTest {
     @Test
     public void publishCountComments_validCommand_shouldReturnCommentsCount(){
         // Config
-        //when(shellLogin.getCurrentUserName()).thenReturn(DEFAULT_LOGIN);
-
         shell.evaluate(() -> COMMAND_LOGIN);
         when(commentService.countComments()).thenReturn(EXPECTED_COMMENTS_COUNT);
 
