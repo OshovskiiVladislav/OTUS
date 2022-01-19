@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ContextConfiguration;
 
 import java.util.Set;
 
@@ -29,35 +28,23 @@ public class BookRepositoryJpaTest {
     @Autowired
     private TestEntityManager em;
 
-    private static final int EXPECTED_NUMBER_OF_BOOKS = 18;
+    private static final int EXPECTED_NUMBER_OF_BOOKS = 2;
 
-    private static final int EXPECTED_QUERIES_COUNT = 10;
-
+    private static final int EXPECTED_QUERIES_COUNT = 1;
     private static final int EXPECTED_BOOKS_COUNT = 2;
+
     private static final Long EXISTING_BOOK_ID = 1L;
     private static final Long EXISTING_BOOK_ID_2 = 2L;
     private static final String EXISTING_BOOK_TITLE = "The Da Vinci Code";
-    private static final String EXISTING_BOOK_TITLE_2 = "Angels and Demons";
 
-    private static final Long SAVE_BOOK_ID = 3L;
+    private static final String NEW_BOOK_TITLE = "New Book";
     private static final String SAVE_BOOK_TITLE = "The Da Vinci Code";
 
     private static final String EXISTING_GENRE_TYPE = "Detective";
-    private static final String EXISTING_GENRE_TYPE_2 = "Roman";
-    private static final Long EXISTING_GENRE_ID = 1L;
-    private static final Long EXISTING_GENRE_ID_2 = 2L;
-
     private static final String EXISTING_AUTHOR_NAME = "Dan Brown";
-    private static final String EXISTING_AUTHOR_NAME_2 = "Dan Brow";
-    private static final Long EXISTING_AUTHOR_ID = 1L;
-    private static final Long EXISTING_AUTHOR_ID_2 = 2L;
-
-    private static final Long EXISTING_COMMENT_ID = 1L;
     private static final String EXISTING_COMMENT_TEXT = "Good book";
 
-
-
-    @DisplayName("Should return book by id")
+    @DisplayName("Should return book by id test")
     @Test
     void findById_validBookId_shouldFindExpectedBookById() {
         // Call
@@ -69,28 +56,28 @@ public class BookRepositoryJpaTest {
                 .usingRecursiveComparison().isEqualTo(expectedBook);
     }
 
-    @DisplayName("Should upload all books with all information")
+    @DisplayName("Should upload all books with all information test")
     @Test
-    void findAll_voidInput_shouldReturnCorrectStudentsListWithAllInfo() {
+    void findAll_voidInput_shouldReturnCorrectBooksListWithAllInfo() {
         // Config
         SessionFactory sessionFactory = em.getEntityManager().getEntityManagerFactory().unwrap(SessionFactory.class);
         sessionFactory.getStatistics().setStatisticsEnabled(true);
 
         // Call and Verify
-        System.out.println("\n\n\n\n----------------------------------------------------------------------------------------------------------");
+        System.out.println("\n\n\n\n---------------------------------------------------------------------------------");
         val books = bookRepositoryJpa.findAll();
         assertThat(books).isNotNull().hasSize(EXPECTED_NUMBER_OF_BOOKS)
                 .allMatch(s -> !s.getTitle().equals(""))
                 .allMatch(s -> s.getAuthorsList() != null && s.getAuthorsList().size() > 0)
                 .allMatch(s -> s.getGenresList() != null && s.getGenresList().size() > 0)
                 .allMatch(s -> s.getCommentsList() != null && s.getCommentsList().size() > 0);
-        System.out.println("----------------------------------------------------------------------------------------------------------\n\n\n\n");
+        System.out.println("---------------------------------------------------------------------------------\n\n\n\n");
         assertThat(sessionFactory.getStatistics().getPrepareStatementCount()).isEqualTo(EXPECTED_QUERIES_COUNT);
     }
 
-    @DisplayName("Should correct save book")
+    @DisplayName("Should correct save book test")
     @Test
-    void save_validBook_shouldSaveAllStudentInfo() {
+    void save_validBook_shouldSaveAllBookInfo() {
         // Config
         val author = new Author(null, EXISTING_AUTHOR_NAME);
         val expectedAuthors = Set.of(author);
@@ -114,22 +101,43 @@ public class BookRepositoryJpaTest {
                 .matches(s -> s.getCommentsList() != null && s.getCommentsList().size() > 0);
     }
 
-    @DisplayName("Should upload to correct book by input name")
+    @DisplayName("Should return expected number of books test")
+    @Test
+    void count_voidInput_shouldReturnExpectedBooksCount() {
+        // Call
+        val actualCountBooks = bookRepositoryJpa.count();
+
+        // Verify
+        assertThat(actualCountBooks).isEqualTo(EXPECTED_BOOKS_COUNT);
+    }
+
+    @DisplayName("Should upload to correct book by input name test")
     @Test
     void findByTitle_validBookTitle_shouldFindExpectedBookByTitle() {
         // Config
         val expectedBook = em.find(Book.class, EXISTING_BOOK_ID);
-        System.out.println(expectedBook.toString());
+
         // Call
-        Book actualBook = bookRepositoryJpa.findByTitle(EXISTING_BOOK_TITLE);
+        val actualBook = bookRepositoryJpa.findByTitle(EXISTING_BOOK_TITLE);
 
         // Verify
         assertThat(actualBook).isEqualTo(expectedBook);
     }
 
-    @DisplayName("Should delete book by id")
+    @DisplayName("Should update book title by id test")
     @Test
-    void shouldDeleteStudentNameById() {
+    void updateNameById_validBookIdAndTitle_shouldUpdateBookById() {
+        // Call
+        bookRepositoryJpa.updateTitleById(EXISTING_BOOK_ID_2, NEW_BOOK_TITLE);
+
+        // Config and Verify
+        val expectedBook = em.find(Book.class, EXISTING_BOOK_ID_2);
+        assertThat(NEW_BOOK_TITLE).isEqualTo(expectedBook.getTitle());
+    }
+
+    @DisplayName("Should delete book by id test")
+    @Test
+    void deleteById_validBookId_shouldDeleteBookById() {
         // Config
         val expectedBook = em.find(Book.class, EXISTING_BOOK_ID);
         assertThat(expectedBook).isNotNull();
@@ -137,9 +145,9 @@ public class BookRepositoryJpaTest {
 
         // Call
         bookRepositoryJpa.deleteById(EXISTING_BOOK_ID);
-        val deletedStudent = em.find(Book.class, EXISTING_BOOK_ID);
+        val deletedBook = em.find(Book.class, EXISTING_BOOK_ID);
 
         // Verify
-        assertThat(deletedStudent).isNull();
+        assertThat(deletedBook).isNull();
     }
 }

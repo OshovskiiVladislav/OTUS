@@ -5,10 +5,7 @@ import com.oshovskii.otus.repositories.interfaces.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,12 +39,14 @@ public class BookRepositoryJpa implements BookRepository {
 
     @Override
     public List<Book> findAll() {
-        return entityManager.createQuery(
+        EntityGraph<?> entityGraph = entityManager.getEntityGraph("genres-author-books-entity-graph");
+        TypedQuery<Book> query = entityManager.createQuery(
                 "SELECT b FROM Book b "
-                + " LEFT JOIN FETCH b.authorsList "
-                + " LEFT JOIN FETCH b.genresList "
-                + " LEFT JOIN FETCH b.commentsList", Book.class)
-                .getResultList();
+                        + " LEFT JOIN FETCH b.authorsList "
+                        + " LEFT JOIN FETCH b.genresList "
+                        + " LEFT JOIN FETCH b.commentsList", Book.class);
+        query.setHint("javax.persistence.fetchgraph", entityGraph);
+        return query.getResultList();
     }
 
     @Override
@@ -64,7 +63,7 @@ public class BookRepositoryJpa implements BookRepository {
     }
 
     @Override
-    public void updateNameById(Long id, String title) {
+    public void updateTitleById(Long id, String title) {
         Query query = entityManager.createQuery(
                 "UPDATE Book b " +
                 "SET b.title = :title " +

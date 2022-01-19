@@ -23,7 +23,6 @@ public class GenreRepositoryJpaTest {
 
     private static final Long EXISTING_GENRE_ID = 1L;
 
-
     @DisplayName("Should return genre by id")
     @Test
     void findById_validGenreId_shouldFindExpectedGenreById() {

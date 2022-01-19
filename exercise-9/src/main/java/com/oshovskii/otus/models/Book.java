@@ -14,6 +14,9 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "books")
+@NamedEntityGraph(name = "genres-author-books-entity-graph",
+        attributeNodes = {@NamedAttributeNode("authorsList"),
+                          @NamedAttributeNode("genresList")})
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +41,7 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private Set<Genre> genresList;
 
-    @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
     @ToString.Include
     private Set<Comment> commentsList;

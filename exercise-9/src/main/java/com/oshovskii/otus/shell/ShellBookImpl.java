@@ -60,6 +60,15 @@ public class ShellBookImpl implements ShellBook {
         return completedDeleteByIdInfo;
     }
 
+    @Override
+    @ShellMethod(value = "Update book title by book id", key = {"updateBook", "updateB", "upB"})
+    @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
+    public String updateTitleByBookId(Long id, String title) {
+        bookService.updateTitleByBookId(id, title);
+        String completedUpdateBookById = "book with id " + id + " updated";
+        return completedUpdateBookById;
+    }
+
     private Availability isPublishEventCommandAvailable() {
         return shellLogin.getCurrentUserName() == null ? Availability.unavailable("Сначала залогиньтесь") : Availability.available();
     }

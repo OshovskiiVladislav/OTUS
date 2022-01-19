@@ -13,6 +13,6 @@ public interface BookRepository {
     List<Book> findAll();
     Book findByTitle(String title);
 
-    void updateNameById(Long id, String name);
+    void updateTitleById(Long id, String name);
     void deleteById(Long id);
 }
