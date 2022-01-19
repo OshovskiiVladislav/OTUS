@@ -36,7 +36,7 @@ public class ShellCommentImpl implements ShellComment {
     }
 
     @Override
-    @ShellMethod(value = "Publish comment by title", key = {"findCommentByText", "fct"})
+    @ShellMethod(value = "Publish comment by text", key = {"findCommentByText", "fct"})
     @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
     public String publishCommentByText(String text) {
         return commentService.findByCommentText(text).toString();
@@ -58,6 +58,15 @@ public class ShellCommentImpl implements ShellComment {
         commentService.deleteByCommentId(commentId);
         String completedDeleteByIdInfo = "Comment with id " + commentId + " deleted";
         return completedDeleteByIdInfo;
+    }
+
+    @Override
+    @ShellMethod(value = "Update comment by id", key = {"updateComment", "updateC", "upC"})
+    @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
+    public String updateTextByCommentId(Long id, String text) {
+        commentService.updateTextByCommentId(id, text);
+        String completedUpdateCommentById = "Comment with id " + id + " updated";
+        return completedUpdateCommentById;
     }
 
     private Availability isPublishEventCommandAvailable() {

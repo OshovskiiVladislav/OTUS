@@ -1,5 +1,6 @@
 package com.oshovskii.otus.shell;
 
+import com.oshovskii.otus.dto.CommentDto;
 import com.oshovskii.otus.models.Comment;
 import com.oshovskii.otus.services.CommentServiceImpl;
 import com.oshovskii.otus.services.interfaces.CommentService;
@@ -31,6 +32,8 @@ public class ShellCommentImplTest {
     private static final String COMMAND_LOGIN = "login";
 
     private static final String COMMAND_PUBLISH_GET_COMMENT_BY_ID = "getCommentById 1";
+    private static final String COMMAND_PUBLISH_GET_COMMENT_BY_TEXT = "fct \"The best book\"";
+    private static final String COMMAND_PUBLISH_UPDATE_COMMENT = "updateComment 1 TestCommentText";
     private static final String COMMAND_PUBLISH_ALL_COMMENTS = "allComments";
     private static final String COMMAND_PUBLISH_COUNT_COMMENTS = "countComment";
     private static final String COMMAND_PUBLISH_SAVE_COMMENT = "saveComment TestCommentText";
@@ -38,13 +41,12 @@ public class ShellCommentImplTest {
     private static final String COMMAND_PUBLISH_DELETE_COMMENT_BY_ID_EXPECTED_MESSAGE = "Comment with id 1 deleted";
     private static final String COMMAND_PUBLISH_SAVE_COMMENT_EXPECTED_MESSAGE = "Save comment <TestCommentText> completed";
 
+    private static final String EXPECTED_COMMET_UPDATE_MESSAGE = "Comment with id 1 updated";
     private static final Long EXPECTED_COMMENTS_COUNT = 2L;
     private static final String NEW_COMMENT_TEXT = "TestCommentText";
 
     private static final Long EXISTING_COMMENT_ID = 1L;
-    private static final Long EXISTING_COMMENT_ID_2 = 2L;
     private static final String EXISTING_COMMENT_TEXT = "Good book";
-    private static final String EXISTING_COMMENT_TEXT_2 = "The best book";
 
     @DisplayName("Should return CommandNotCurrentlyAvailable if the user logged when trying to execute the test command")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
@@ -65,23 +67,26 @@ public class ShellCommentImplTest {
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
 
-        val expectedComment = new Comment(EXISTING_COMMENT_ID, EXISTING_COMMENT_TEXT);
-        val expectedComment2 = new Comment(EXISTING_COMMENT_ID_2, EXISTING_COMMENT_TEXT_2);
-        val expectedCommentList = List.of(expectedComment, expectedComment2);
+        val expectedCommentDto = new CommentDto();
+        expectedCommentDto.setText(EXISTING_COMMENT_TEXT);
+        val expectedCommentDto2 = new CommentDto();
+        expectedCommentDto2.setText(EXISTING_COMMENT_TEXT);
 
-        when(commentService.findAllComments()).thenReturn(expectedCommentList);
+        val expectedCommentDtoList = List.of(expectedCommentDto, expectedCommentDto2);
+
+        when(commentService.findAllComments()).thenReturn(expectedCommentDtoList);
 
         // Call
         val res = (String) shell.evaluate(() -> COMMAND_PUBLISH_ALL_COMMENTS);
 
         // Verify
-        assertThat(res).isEqualTo(expectedCommentList.toString());
+        assertThat(res).isEqualTo(expectedCommentDtoList.toString());
         verify(commentService, times(1)).findAllComments();
     }
 
     @DisplayName("Should return count of comments and call service method if the command is executed after logging in")
     @Test
-    public void publishCountComments_validCommand_shouldReturnCommentsCount(){
+    public void publishCountComments_validCommand_shouldReturnCommentsCount() {
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
         when(commentService.countComments()).thenReturn(EXPECTED_COMMENTS_COUNT);
@@ -96,29 +101,33 @@ public class ShellCommentImplTest {
 
     @DisplayName("Should return comment by id and call service method if the command is executed after logging in")
     @Test
-    public void publishCommentByID_validCommandAndCommentId_shouldReturnExpectedMessage(){
+    public void publishCommentByID_validCommandAndCommentId_shouldReturnExpectedMessage() {
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
 
-        val expectedComment = new Comment(EXISTING_COMMENT_TEXT);
-        when(commentService.findByCommentId(EXISTING_COMMENT_ID)).thenReturn(Optional.of(expectedComment));
+        val expectedCommentDto = new CommentDto();
+        expectedCommentDto.setText(EXISTING_COMMENT_TEXT);
+
+        when(commentService.findByCommentId(EXISTING_COMMENT_ID)).thenReturn(expectedCommentDto);
 
         // Call
         val actualComment = (String) shell.evaluate(()-> COMMAND_PUBLISH_GET_COMMENT_BY_ID);
 
         // Verify
-        assertThat(actualComment).isEqualTo(Optional.of(expectedComment).toString());
+        assertThat(actualComment).isEqualTo(expectedCommentDto.toString());
         verify(commentService, times(1)).findByCommentId(EXISTING_COMMENT_ID);
     }
 
     @DisplayName("Save comment in db and call service method if the command is executed after logging in")
     @Test
-    public void saveComment_validCommandAndComment_shouldReturnExpectedMessage(){
+    public void saveComment_validCommandAndComment_shouldReturnExpectedMessage() {
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
-        val expectedComment = new Comment(NEW_COMMENT_TEXT);
 
-        when(commentService.saveComment(NEW_COMMENT_TEXT)).thenReturn(expectedComment);
+        val expectedCommentDto = new CommentDto();
+        expectedCommentDto.setText(EXISTING_COMMENT_TEXT);
+
+        when(commentService.saveComment(NEW_COMMENT_TEXT)).thenReturn(expectedCommentDto);
 
         // Call
         val actualMessage = (String) shell.evaluate(()-> COMMAND_PUBLISH_SAVE_COMMENT);
@@ -129,9 +138,49 @@ public class ShellCommentImplTest {
         verify(commentService, times(1)).saveComment(NEW_COMMENT_TEXT);
     }
 
+    @DisplayName("Should return comment by text and call service method if the command is executed after logging in")
+    @Test
+    public void publishCommentByText_validCommandAndCommentText_shouldReturnExpectedCommentMessage() {
+        // Config
+        shell.evaluate(() -> COMMAND_LOGIN);
+
+        val expectedCommentDto = new CommentDto();
+        expectedCommentDto.setText(EXISTING_COMMENT_TEXT);
+
+        when(commentService.findByCommentText(EXISTING_COMMENT_TEXT)).thenReturn(expectedCommentDto);
+
+        // Call
+        val actualCommentDtoMessage = (String) shell.evaluate(()-> COMMAND_PUBLISH_GET_COMMENT_BY_TEXT);
+
+        // Verify
+        assertThat(actualCommentDtoMessage).isEqualTo(expectedCommentDto.toString());
+        verify(commentService, times(1)).findByCommentText(EXISTING_COMMENT_TEXT);
+    }
+
+    @DisplayName("Update comment text by id and call service method if the command is executed after logging in")
+    @Test
+    public void updateTextByCommentId_validCommandAndCommentText_shouldReturnExpectedMessage() {
+        // Config
+        shell.evaluate(() -> COMMAND_LOGIN);
+
+        val expectedCommentDto = new CommentDto();
+        expectedCommentDto.setText(EXISTING_COMMENT_TEXT);
+
+        doNothing().when(commentService).updateTextByCommentId(EXISTING_COMMENT_ID ,NEW_COMMENT_TEXT);
+
+        // Call
+        val actualMessage = (String) shell.evaluate(()-> COMMAND_PUBLISH_UPDATE_COMMENT);
+
+        // Verify
+        assertThat(actualMessage).isEqualTo(EXPECTED_COMMET_UPDATE_MESSAGE);
+
+        verify(commentService, times(1))
+                .updateTextByCommentId(EXISTING_COMMENT_ID ,NEW_COMMENT_TEXT);
+    }
+
     @DisplayName("Delete comment by id and call service method if the command is executed after logging in")
     @Test
-    public void deleteByCommentId_validCommandAndCommentId_shouldReturnExpectedMessage(){
+    public void deleteByCommentId_validCommandAndCommentId_shouldReturnExpectedMessage() {
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
         doNothing().when(commentService).deleteByCommentId(EXISTING_COMMENT_ID);

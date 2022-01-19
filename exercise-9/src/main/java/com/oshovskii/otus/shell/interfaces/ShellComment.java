@@ -9,4 +9,5 @@ public interface ShellComment {
 
     String saveComment(String text);
     String deleteCommentByID(Long commentId);
+    String updateTextByCommentId(Long id, String text);
 }

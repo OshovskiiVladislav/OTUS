@@ -10,8 +10,8 @@ VALUES
 
 INSERT INTO books (title)
 VALUES
-('The_Da_Vinci_Code'),
-('Angels_and_Demons');
+('The Da Vinci Code'),
+('Angels and Demons');
 
 INSERT INTO comments (text, book_id)
 VALUES

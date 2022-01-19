@@ -24,7 +24,6 @@ public class AuthorRepositoryJpaTest {
 
     private static final Long EXISTING_AUTHOR_ID = 1L;
 
-
     @DisplayName("Should return author by id")
     @Test
     void findById_validAuthorId_shouldFindExpectedAuthorById() {
@@ -36,5 +35,4 @@ public class AuthorRepositoryJpaTest {
         assertThat(optionalActualAuthor).isPresent().get()
                 .usingRecursiveComparison().isEqualTo(expectedAuthor);
     }
-
 }

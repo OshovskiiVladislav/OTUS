@@ -9,4 +9,5 @@ public interface ShellBook {
 
     String saveBook(Long authorId, Long genreId, Long commentId, String title);
     String deleteBookByID(Long bookId);
+    String updateTitleByBookId(Long id, String title);
 }

@@ -1,5 +1,6 @@
 package com.oshovskii.otus.services;
 
+import com.oshovskii.otus.dto.BookDto;
 import com.oshovskii.otus.exceptions.ResourceNotFoundException;
 import com.oshovskii.otus.models.Author;
 import com.oshovskii.otus.models.Book;
@@ -11,12 +12,13 @@ import com.oshovskii.otus.services.interfaces.BookService;
 import com.oshovskii.otus.services.interfaces.CommentService;
 import com.oshovskii.otus.services.interfaces.GenreService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,29 +28,32 @@ public class BookServiceImpl implements BookService {
     private final AuthorService authorService;
     private final GenreService genreService;
     private final CommentService commentService;
+    private final ModelMapper modelMapper;
 
     @Transactional
     @Override
-    public Book saveBook(String title, Long authorId, Long genreId, Long commentId) {
+    public BookDto saveBook(String title, Long authorId, Long genreId, Long commentId) {
         Author author = authorService.findByAuthorId(authorId)
-                .orElseThrow(() -> new ResourceNotFoundException("Author with " +  authorId + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Author with id: " +  authorId + " not found"));
         Genre genre = genreService.findByGenreId(genreId)
-                .orElseThrow(() -> new ResourceNotFoundException("Genre with " +  genreId + " not found"));
-        Comment comment = commentService.findByCommentId(commentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Comment with "+  commentId + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Genre with id: " +  genreId + " not found"));
+        Comment comment = commentService.findById(commentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Comment with id: "+  commentId + " not found"));
 
         Book book = new Book(title);
         book.setAuthorsList(Set.of(author));
         book.setGenresList(Set.of(genre));
         book.setCommentsList(Set.of(comment));
 
-        return bookRepository.save(book);
+        return modelMapper.map(bookRepository.save(book), BookDto.class);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
-    public Optional<Book> findByBookId(Long id) {
-        return bookRepository.findById(id);
+    public BookDto findByBookId(Long id) {
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Book with "+  id + " not found"));
+        return modelMapper.map(book, BookDto.class);
     }
 
     @Transactional(readOnly = true)
@@ -59,20 +64,24 @@ public class BookServiceImpl implements BookService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Book> findAllBooks() {
-        return bookRepository.findAll();
+    public List<BookDto> findAllBooks() {
+        List<Book> bookList = bookRepository.findAll();
+        return bookList
+                .stream()
+                .map(book -> modelMapper.map(book, BookDto.class))
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Book findByBookTitle(String title) {
-        return bookRepository.findByTitle(title);
+    public BookDto findByBookTitle(String title) {
+        return modelMapper.map(bookRepository.findByTitle(title), BookDto.class);
     }
 
     @Transactional
     @Override
-    public void updateNameByBookId(Long id, String name) {
-        bookRepository.updateNameById(id, name);
+    public void updateTitleByBookId(Long id, String title) {
+        bookRepository.updateTitleById(id, title);
     }
 
     @Transactional
