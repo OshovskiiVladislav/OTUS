@@ -1,15 +1,14 @@
 package com.oshovskii.otus.services.interfaces;
 
-import com.oshovskii.otus.models.Book;
+import com.oshovskii.otus.dto.BookDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface BookService {
-    Optional<Book> findBookById(Long id);
-    List<Book> findAllBooks();
-    List<Book> findBookByTitle(String title);
-    Book saveBook(String title, Long authorId, Long genreId, Long commentId);
+    BookDto findBookById(Long id);
+    List<BookDto> findAllBooks();
+    BookDto findBookByTitle(String title);
+    BookDto saveBook(String title, Long authorId, Long genreId, Long commentId);
     long countBooks();
     void deleteBookById(Long id);
 }

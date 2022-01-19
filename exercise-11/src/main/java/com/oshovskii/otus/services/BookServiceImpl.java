@@ -1,5 +1,6 @@
 package com.oshovskii.otus.services;
 
+import com.oshovskii.otus.dto.BookDto;
 import com.oshovskii.otus.exceptions.ResourceNotFoundException;
 import com.oshovskii.otus.models.Author;
 import com.oshovskii.otus.models.Book;
@@ -11,12 +12,13 @@ import com.oshovskii.otus.services.interfaces.BookService;
 import com.oshovskii.otus.services.interfaces.CommentService;
 import com.oshovskii.otus.services.interfaces.GenreService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,39 +27,45 @@ public class BookServiceImpl implements BookService {
     private final CommentService commentService;
     private final GenreService genreService;
     private final AuthorService authorService;
+    private final ModelMapper modelMapper;
 
     @Transactional(readOnly = true)
-    public Optional<Book> findBookById(Long id) {
-        return bookRepository.findById(id);
+    public BookDto findBookById(Long id) {
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Book with id: "+ id + " not found"));
+        return modelMapper.map(book, BookDto.class);
     }
 
     @Transactional(readOnly = true)
-    public List<Book> findAllBooks() {
-        List<Book> books = bookRepository.findAll();
-        System.out.println(books);      // БОРЕЦ С LazyInitializationException
-        return books;
+    public List<BookDto> findAllBooks() {
+        List<Book> bookList = bookRepository.findAll();
+        return bookList
+                .stream()
+                .map(book -> modelMapper.map(book, BookDto.class))
+                .collect(Collectors.toList());
     }
 
     @Transactional
-    public List<Book> findBookByTitle(String title) {
-        return bookRepository.findByTitle(title);
+    public BookDto findBookByTitle(String title) {
+        Book book = bookRepository.findBookByTitle(title);
+        return modelMapper.map(book, BookDto.class);
     }
 
     @Transactional
-    public Book saveBook(String title, Long authorId, Long genreId, Long commentId) {
-        Comment comment = commentService.findCommentById(commentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Comment with "+  commentId + " not found"));
+    public BookDto saveBook(String title, Long authorId, Long genreId, Long commentId) {
+        Comment comment = commentService.findById(commentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Comment with id: "+  commentId + " not found"));
         Author author = authorService.findAuthorById(authorId)
-                .orElseThrow(() -> new ResourceNotFoundException("Author with " +  authorId + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Author with id: " +  authorId + " not found"));
         Genre genre = genreService.findGenreById(genreId)
-                .orElseThrow(() -> new ResourceNotFoundException("Genre with " +  genreId + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Genre with id: " +  genreId + " not found"));
 
         Book book = new Book(title);
         book.setAuthorsList(Set.of(author));
         book.setGenresList(Set.of(genre));
         book.setCommentsList(Set.of(comment));
 
-        return bookRepository.save(book);
+        return modelMapper.map(bookRepository.save(book), BookDto.class);
     }
 
     @Override

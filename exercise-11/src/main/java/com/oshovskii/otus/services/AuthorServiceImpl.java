@@ -14,8 +14,8 @@ import java.util.Optional;
 public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository authorRepository;
 
-    @Transactional(readOnly = true)
     @Override
+    @Transactional(readOnly = true)
     public Optional<Author> findAuthorById(Long id) {
         return authorRepository.findById(id);
     }

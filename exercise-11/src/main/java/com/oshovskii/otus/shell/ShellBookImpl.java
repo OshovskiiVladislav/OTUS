@@ -1,6 +1,5 @@
 package com.oshovskii.otus.shell;
 
-import com.oshovskii.otus.models.Book;
 import com.oshovskii.otus.services.interfaces.BookService;
 import com.oshovskii.otus.shell.interfaces.ShellBook;
 import lombok.RequiredArgsConstructor;
@@ -8,8 +7,6 @@ import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellMethodAvailability;
-
-import java.util.List;
 
 @ShellComponent
 @RequiredArgsConstructor

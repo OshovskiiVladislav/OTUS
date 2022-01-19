@@ -1,5 +1,6 @@
 package com.oshovskii.otus.services;
 
+import com.oshovskii.otus.dto.BookDto;
 import com.oshovskii.otus.models.Author;
 import com.oshovskii.otus.models.Book;
 import com.oshovskii.otus.models.Comment;
@@ -8,6 +9,7 @@ import com.oshovskii.otus.repositories.BookRepository;
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -39,9 +41,12 @@ public class BookServiceImplTest {
     @MockBean
     private CommentServiceImpl commentService;
 
-    private static final Long EXPECTED_BOOKS_COUNT = 2L;
+    @MockBean
+    private ModelMapper modelMapperMock;
+
     private static final String EXPECTED_BOOK_TITLE = "Test title";
     private static final Long EXPECTED_BOOK_ID = 0L;
+    private static final long EXPECTED_BOOKS_COUNT = 2;
 
     private static final Long EXISTING_BOOK_ID = 1L;
     private static final Long EXISTING_BOOK_ID_2 = 2L;
@@ -50,7 +55,7 @@ public class BookServiceImplTest {
 
     private static final Long EXISTING_AUTHOR_ID = 1L;
     private static final Long EXISTING_AUTHOR_ID_2 = 2L;
-    private static final String EXISTING_AUTHOR_NAME = "Dan Brown";
+    private static final String EXISTING_AUTHOR_NAME = "Dan Brow";
     private static final String EXISTING_AUTHOR_NAME_2 = "Dan Brown";
 
     private static final Long EXISTING_GENRE_ID = 1L;
@@ -77,14 +82,20 @@ public class BookServiceImplTest {
         expectedBook.setGenresList(Set.of(expectedGenre));
         expectedBook.setCommentsList(Set.of(expectedComment));
 
+        val expectedBookDto = new BookDto();
+        expectedBookDto.setTitle(expectedBook.getTitle());
+        expectedBookDto.setAuthorsList(expectedBook.getAuthorsList());
+        expectedBookDto.setGenresList(expectedBook.getGenresList());
+        expectedBookDto.setCommentsList(expectedBook.getCommentsList());
+
         when(bookRepository.findById(EXISTING_BOOK_ID)).thenReturn(Optional.of(expectedBook));
+        when(modelMapperMock.map(expectedBook, BookDto.class)).thenReturn(expectedBookDto);
 
         // Call
-        val actualBook = bookService.findBookById(expectedBook.getId());
+        val actualBookDto = bookService.findBookById(expectedBook.getId());
 
         // Verify
-        assertThat(actualBook).isPresent().get()
-                .usingRecursiveComparison().isEqualTo(expectedBook);
+        assertThat(actualBookDto).isEqualTo(expectedBookDto);
     }
 
     @DisplayName("Return expected list books test")
@@ -102,6 +113,12 @@ public class BookServiceImplTest {
         expectedBook.setGenresList(Set.of(genre));
         expectedBook.setCommentsList(Set.of(comment));
 
+        val expectedBookDto = new BookDto();
+        expectedBookDto.setTitle(expectedBook.getTitle());
+        expectedBookDto.setAuthorsList(expectedBook.getAuthorsList());
+        expectedBookDto.setGenresList(expectedBook.getGenresList());
+        expectedBookDto.setCommentsList(expectedBook.getCommentsList());
+
         // create 2 book
         val author2 = new Author(EXISTING_AUTHOR_ID_2, EXISTING_AUTHOR_NAME_2);
         val genre2 = new Genre(EXISTING_GENRE_ID_2, EXISTING_GENRE_TYPE_2);
@@ -113,15 +130,23 @@ public class BookServiceImplTest {
         expectedBook2.setGenresList(Set.of(genre2));
         expectedBook2.setCommentsList(Set.of(comment2));
 
+        val expectedBookDto2 = new BookDto();
+        expectedBookDto2.setTitle(expectedBook2.getTitle());
+        expectedBookDto2.setAuthorsList(expectedBook2.getAuthorsList());
+        expectedBookDto2.setGenresList(expectedBook2.getGenresList());
+        expectedBookDto2.setCommentsList(expectedBook2.getCommentsList());
 
-        List<Book> expectedBookList = List.of(expectedBook, expectedBook2);
+        val expectedBookList = List.of(expectedBook, expectedBook2);
+        val expectedBookDtoList = List.of(expectedBookDto, expectedBookDto2);
         when(bookRepository.findAll()).thenReturn(expectedBookList);
+        when(modelMapperMock.map(expectedBook, BookDto.class)).thenReturn(expectedBookDto);
+        when(modelMapperMock.map(expectedBook2, BookDto.class)).thenReturn(expectedBookDto2);
 
         // Call
-        val actualBookList = bookService.findAllBooks();
+        val actualBookDtoList = bookService.findAllBooks();
 
         // Verify
-        assertEquals(actualBookList, expectedBookList);
+        assertEquals(actualBookDtoList, expectedBookDtoList);
     }
 
     @DisplayName("Return expected book by title test")
@@ -138,13 +163,20 @@ public class BookServiceImplTest {
         expectedBook.setGenresList(Set.of(genre));
         expectedBook.setCommentsList(Set.of(comment));
 
-        when(bookRepository.findByTitle(EXISTING_BOOK_TITLE)).thenReturn(List.of(expectedBook));
+        val expectedBookDto = new BookDto();
+        expectedBookDto.setTitle(expectedBook.getTitle());
+        expectedBookDto.setAuthorsList(expectedBook.getAuthorsList());
+        expectedBookDto.setGenresList(expectedBook.getGenresList());
+        expectedBookDto.setCommentsList(expectedBook.getCommentsList());
+
+        when(bookRepository.findBookByTitle(EXISTING_BOOK_TITLE)).thenReturn(expectedBook);
+        when(modelMapperMock.map(expectedBook, BookDto.class)).thenReturn(expectedBookDto);
 
         // Call
         val actualBook = bookService.findBookByTitle(expectedBook.getTitle());
 
         // Verify
-        assertThat(actualBook).isEqualTo(List.of(expectedBook));
+        assertThat(actualBook).isEqualTo(expectedBookDto);
     }
 
     @DisplayName("Save book test")
@@ -155,23 +187,43 @@ public class BookServiceImplTest {
         val genre = new Genre(EXISTING_GENRE_ID, EXISTING_GENRE_TYPE);
         val comment = new Comment(EXISTING_COMMENT_ID, EXISTING_COMMENT_TEXT);
 
-        val saveBook = new Book(EXPECTED_BOOK_TITLE);
-        saveBook.setId(EXPECTED_BOOK_ID);
-        saveBook.setAuthorsList(Set.of(author));
-        saveBook.setGenresList(Set.of(genre));
-        saveBook.setCommentsList(Set.of(comment));
+        val savedBook = new Book(EXPECTED_BOOK_TITLE);
+        savedBook.setId(EXPECTED_BOOK_ID);
+        savedBook.setAuthorsList(Set.of(author));
+        savedBook.setGenresList(Set.of(genre));
+        savedBook.setCommentsList(Set.of(comment));
 
-        when(bookRepository.save(any(Book.class))).thenReturn(saveBook);
+        val expectedBookDto = new BookDto();
+        expectedBookDto.setTitle(savedBook.getTitle());
+        expectedBookDto.setAuthorsList(savedBook.getAuthorsList());
+        expectedBookDto.setGenresList(savedBook.getGenresList());
+        expectedBookDto.setCommentsList(savedBook.getCommentsList());
+
+        when(bookRepository.save(any(Book.class))).thenReturn(savedBook);
         when(authorService.findAuthorById(EXISTING_AUTHOR_ID)).thenReturn(Optional.of(author));
         when(genreService.findGenreById(EXISTING_GENRE_ID)).thenReturn(Optional.of(genre));
-        when(commentService.findCommentById(EXISTING_COMMENT_ID)).thenReturn(Optional.of(comment));
+        when(commentService.findById(EXISTING_COMMENT_ID)).thenReturn(Optional.of(comment));
+        when(modelMapperMock.map(savedBook, BookDto.class)).thenReturn(expectedBookDto);
 
         // Call
         val actualBook = bookService.saveBook(EXPECTED_BOOK_TITLE, EXISTING_AUTHOR_ID, EXISTING_GENRE_ID, EXISTING_COMMENT_ID);
 
         // Verify
-        assertEquals(saveBook, actualBook);
+        assertEquals(expectedBookDto, actualBook);
         verify(bookRepository, times(1)).save(any(Book.class));
+    }
+
+    @DisplayName("Return expected number of books test")
+    @Test
+    public void countBooks_voidInput_shouldReturnExpectedBookCount() {
+        // Config
+        when(bookRepository.count()).thenReturn(EXPECTED_BOOKS_COUNT);
+
+        // Call
+        val actualBookCount = bookService.countBooks();
+
+        // Verify
+        assertEquals(EXPECTED_BOOKS_COUNT, actualBookCount);
     }
 
     @DisplayName("Delete book by id test")

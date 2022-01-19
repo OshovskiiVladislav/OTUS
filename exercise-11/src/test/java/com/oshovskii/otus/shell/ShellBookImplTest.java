@@ -1,5 +1,6 @@
 package com.oshovskii.otus.shell;
 
+import com.oshovskii.otus.dto.BookDto;
 import com.oshovskii.otus.models.Author;
 import com.oshovskii.otus.models.Book;
 import com.oshovskii.otus.models.Comment;
@@ -25,6 +26,7 @@ import static org.mockito.Mockito.*;
 @DisplayName("Test ShellBookImpl command")
 @SpringBootTest
 public class ShellBookImplTest {
+
     @MockBean
     private BookService bookService;
 
@@ -34,7 +36,7 @@ public class ShellBookImplTest {
     private static final String COMMAND_LOGIN = "login";
 
     private static final String COMMAND_PUBLISH_GET_BOOK_BY_ID = "getBookById 1";
-
+    private static final String COMMAND_PUBLISH_GET_BOOK_BY_TITLE = "findBookByTitle Angels_and_Demons";
     private static final String COMMAND_PUBLISH_ALL_BOOKS = "allBooks";
     private static final String COMMAND_PUBLISH_COUNT_BOOKS = "countBook";
     private static final String COMMAND_PUBLISH_INSERT_BOOK = "saveB 1 1 1 TestBookTitle";
@@ -54,7 +56,7 @@ public class ShellBookImplTest {
     private static final String EXISTING_AUTHOR_NAME = "Dan Brown";
 
     private static final Long EXISTING_GENRE_ID = 1L;
-    private static final String EXPECTED_GENRE_NAME = "TestGenre";
+    private static final String EXISTING_GENRE_TYPE = "TestGenre";
 
     private static final Long EXISTING_COMMENT_ID = 1L;
     private static final String EXISTING_COMMENT_TEXT = "Good book";
@@ -78,50 +80,75 @@ public class ShellBookImplTest {
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
 
-        val expectedBook = new Book(EXISTING_BOOK_TITLE);
-        val expectedBook2 = new Book(EXISTING_BOOK_TITLE_2);
-        val expectedBookList = List.of(expectedBook, expectedBook2);
+        val expectedBookDto = new BookDto();
+        expectedBookDto.setTitle(EXISTING_BOOK_TITLE);
 
-        when(bookService.findAllBooks()).thenReturn(expectedBookList);
+        val expectedBookDto2 = new BookDto();
+        expectedBookDto2.setTitle(EXISTING_BOOK_TITLE_2);
+
+        val expectedBookDtoList = List.of(expectedBookDto, expectedBookDto2);
+
+        when(bookService.findAllBooks()).thenReturn(expectedBookDtoList);
 
         // Call
         val res = (String) shell.evaluate(() -> COMMAND_PUBLISH_ALL_BOOKS);
 
         // Verify
-        assertThat(res).isEqualTo(expectedBookList.toString());
+        assertThat(res).isEqualTo(expectedBookDtoList.toString());
         verify(bookService, times(1)).findAllBooks();
     }
 
-//    @DisplayName("Should return count of books and call service method if the command is executed after logging in")
-//    @Test
-//    public void publishCountBooks_validCommand_shouldReturnBooksCount(){
-//        // Config
-//        shell.evaluate(() -> COMMAND_LOGIN);
-//        when(bookService.countBooks()).thenReturn(EXPECTED_BOOKS_COUNT);
-//
-//        // Call
-//        val actualCount = (Long) shell.evaluate(()-> COMMAND_PUBLISH_COUNT_BOOKS);
-//
-//        // Verify
-//        assertThat(actualCount).isEqualTo(EXPECTED_BOOKS_COUNT);
-//        verify(bookService, times(1)).countBooks();
-//    }
+    @DisplayName("Should return count of books and call service method if the command is executed after logging in")
+    @Test
+    public void publishCountBooks_validCommand_shouldReturnBooksCount(){
+        // Config
+        shell.evaluate(() -> COMMAND_LOGIN);
+        when(bookService.countBooks()).thenReturn(EXPECTED_BOOKS_COUNT);
+
+        // Call
+        val actualCount = (Long) shell.evaluate(()-> COMMAND_PUBLISH_COUNT_BOOKS);
+
+        // Verify
+        assertThat(actualCount).isEqualTo(EXPECTED_BOOKS_COUNT);
+        verify(bookService, times(1)).countBooks();
+    }
 
     @DisplayName("Should return book by id and call service method if the command is executed after logging in")
     @Test
     public void publishBookByID_validCommandAndBookId_shouldReturnExpectedMessage(){
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
-        val expectedBook = new Book(EXISTING_BOOK_TITLE);
 
-        when(bookService.findBookById(EXISTING_BOOK_ID)).thenReturn(Optional.of(expectedBook));
+        val expectedBookDto = new BookDto();
+        expectedBookDto.setTitle(EXISTING_BOOK_TITLE);
+
+        when(bookService.findBookById(EXISTING_BOOK_ID)).thenReturn(expectedBookDto);
 
         // Call
         val actualBook = (String) shell.evaluate(()-> COMMAND_PUBLISH_GET_BOOK_BY_ID);
 
         // Verify
-        assertThat(actualBook).isEqualTo(Optional.of(expectedBook).toString());
+        assertThat(actualBook).isEqualTo(expectedBookDto.toString());
         verify(bookService, times(1)).findBookById(EXISTING_BOOK_ID);
+    }
+
+    @DisplayName("Should return book by title and call service method if the command is executed after logging in")
+    @Test
+    public void publishBookByTitle_validCommandAndBookTitle_shouldReturnExpectedMessage(){
+        // Config
+        shell.evaluate(() -> COMMAND_LOGIN);
+
+        val expectedBookDto = new BookDto();
+        expectedBookDto.setTitle(EXISTING_BOOK_TITLE);
+
+        when(bookService.findBookByTitle(EXISTING_BOOK_TITLE)).thenReturn(expectedBookDto);
+
+        // Call
+        val actualBook = (String) shell.evaluate(()-> COMMAND_PUBLISH_GET_BOOK_BY_TITLE);
+
+        // Verify
+        assertThat(actualBook).isEqualTo(expectedBookDto.toString());
+        verify(bookService, times(1)).findBookByTitle(EXISTING_BOOK_TITLE);
     }
 
     @DisplayName("Save book in db and call service method if the command is executed after logging in")
@@ -131,16 +158,23 @@ public class ShellBookImplTest {
         shell.evaluate(() -> COMMAND_LOGIN);
 
         val author = new Author(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_NAME);
-        val genre = new Genre(EXISTING_GENRE_ID, EXPECTED_GENRE_NAME);
+        val genre = new Genre(EXISTING_GENRE_ID, EXISTING_GENRE_TYPE);
         val comment = new Comment(EXISTING_COMMENT_ID, EXISTING_COMMENT_TEXT);
 
-        Book expectedBook = new Book(NEW_BOOK_TITLE);
+        val expectedBook = new Book(EXISTING_BOOK_TITLE);
+        expectedBook.setId(EXISTING_BOOK_ID);
         expectedBook.setAuthorsList(Set.of(author));
         expectedBook.setGenresList(Set.of(genre));
         expectedBook.setCommentsList(Set.of(comment));
 
+        val expectedBookDto = new BookDto();
+        expectedBookDto.setTitle(expectedBook.getTitle());
+        expectedBookDto.setCommentsList(expectedBook.getCommentsList());
+        expectedBookDto.setGenresList(expectedBook.getGenresList());
+        expectedBookDto.setCommentsList(expectedBook.getCommentsList());
+
         when(bookService.saveBook(NEW_BOOK_TITLE, EXISTING_AUTHOR_ID, EXISTING_GENRE_ID, EXISTING_COMMENT_ID))
-                .thenReturn(expectedBook);
+                .thenReturn(expectedBookDto);
 
         // Call
         val actualMessage = (String) shell.evaluate(()-> COMMAND_PUBLISH_INSERT_BOOK);

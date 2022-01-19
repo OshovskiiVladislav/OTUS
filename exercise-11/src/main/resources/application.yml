@@ -5,7 +5,7 @@ spring:
     init:
       mode: always
   main:
-    allow-bean-definition-overriding: true
+#    allow-bean-definition-overriding: true
     allow-circular-references: true
   jpa:
     generate-ddl: false

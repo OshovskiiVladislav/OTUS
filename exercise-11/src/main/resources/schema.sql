@@ -1,3 +1,10 @@
+DROP TABLE IF EXISTS book_genres;
+DROP TABLE IF EXISTS book_authors;
+DROP TABLE IF EXISTS authors;
+DROP TABLE IF EXISTS comments;
+DROP TABLE IF EXISTS genres;
+DROP TABLE IF EXISTS books;
+
 CREATE TABLE authors (
     id BIGSERIAL,
     name VARCHAR(255) NOT NULL,
