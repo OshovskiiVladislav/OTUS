@@ -1,6 +1,7 @@
 package com.oshovskii.otus.models;
 
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
