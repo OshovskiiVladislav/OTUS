@@ -54,11 +54,11 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public BookDto saveBook(String title, Long authorId, Long genreId, Long commentId) {
         Comment comment = commentService.findById(commentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Comment with id: "+  commentId + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Comment with id: "+ commentId + " not found"));
         Author author = authorService.findAuthorById(authorId)
-                .orElseThrow(() -> new ResourceNotFoundException("Author with id: " +  authorId + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Author with id: " + authorId + " not found"));
         Genre genre = genreService.findGenreById(genreId)
-                .orElseThrow(() -> new ResourceNotFoundException("Genre with id: " +  genreId + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Genre with id: " + genreId + " not found"));
 
         Book book = new Book(title);
         book.setAuthorsList(Set.of(author));
