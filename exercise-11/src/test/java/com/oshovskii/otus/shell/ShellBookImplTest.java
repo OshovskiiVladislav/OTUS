@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static com.oshovskii.otus.factory.TestBookDtoFactory.createBookDtoWithAllInfoById;
+import static com.oshovskii.otus.factory.TestBookFactory.createBookWithAllInfoById;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -53,13 +55,8 @@ public class ShellBookImplTest {
     private static final String EXISTING_BOOK_TITLE_2 = "Angels and Demons";
 
     private static final Long EXISTING_AUTHOR_ID = 1L;
-    private static final String EXISTING_AUTHOR_NAME = "Dan Brown";
-
     private static final Long EXISTING_GENRE_ID = 1L;
-    private static final String EXISTING_GENRE_TYPE = "TestGenre";
-
     private static final Long EXISTING_COMMENT_ID = 1L;
-    private static final String EXISTING_COMMENT_TEXT = "Good book";
 
     @DisplayName("Should return CommandNotCurrentlyAvailable if the user logged when trying to execute the test command")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
@@ -157,21 +154,7 @@ public class ShellBookImplTest {
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
 
-        val author = new Author(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_NAME);
-        val genre = new Genre(EXISTING_GENRE_ID, EXISTING_GENRE_TYPE);
-        val comment = new Comment(EXISTING_COMMENT_ID, EXISTING_COMMENT_TEXT);
-
-        val expectedBook = new Book(EXISTING_BOOK_TITLE);
-        expectedBook.setId(EXISTING_BOOK_ID);
-        expectedBook.setAuthorsList(Set.of(author));
-        expectedBook.setGenresList(Set.of(genre));
-        expectedBook.setCommentsList(Set.of(comment));
-
-        val expectedBookDto = new BookDto();
-        expectedBookDto.setTitle(expectedBook.getTitle());
-        expectedBookDto.setCommentsList(expectedBook.getCommentsList());
-        expectedBookDto.setGenresList(expectedBook.getGenresList());
-        expectedBookDto.setCommentsList(expectedBook.getCommentsList());
+        val expectedBookDto = createBookDtoWithAllInfoById(EXISTING_BOOK_ID);;
 
         when(bookService.saveBook(NEW_BOOK_TITLE, EXISTING_AUTHOR_ID, EXISTING_GENRE_ID, EXISTING_COMMENT_ID))
                 .thenReturn(expectedBookDto);
