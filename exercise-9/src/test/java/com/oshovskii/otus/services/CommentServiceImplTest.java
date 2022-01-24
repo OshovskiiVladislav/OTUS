@@ -52,16 +52,16 @@ class CommentServiceImplTest {
         when(modelMapperMock.map(savedComment, CommentDto.class)).thenReturn(expectedCommentDto);
 
         // Call
-        val actualComment = commentService.saveComment(savedComment.getText());
+        val actualCommentDto = commentService.saveComment(savedComment.getText());
 
         // Verify
-        assertEquals(expectedCommentDto, actualComment);
+        assertEquals(expectedCommentDto, actualCommentDto);
         verify(commentRepositoryJpa, times(1)).save(any(Comment.class));
     }
 
     @DisplayName("Return expected comment by id test")
     @Test
-    public void findByCommentId_validCommentId_shouldReturnExpectedCommentById(){
+    public void findByCommentId_validCommentId_shouldReturnExpectedCommentById() {
         // Config
         val expectedComment = new Comment(EXISTING_COMMENT_TEXT);
         expectedComment.setId(EXISTING_COMMENT_ID);
