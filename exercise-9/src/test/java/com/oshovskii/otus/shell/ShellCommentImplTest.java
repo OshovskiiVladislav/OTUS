@@ -47,6 +47,7 @@ public class ShellCommentImplTest {
 
     private static final Long EXISTING_COMMENT_ID = 1L;
     private static final String EXISTING_COMMENT_TEXT = "Good book";
+    private static final String EXISTING_COMMENT_TEXT_2 = "The best book";
 
     @DisplayName("Should return CommandNotCurrentlyAvailable if the user logged when trying to execute the test command")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
@@ -70,7 +71,7 @@ public class ShellCommentImplTest {
         val expectedCommentDto = new CommentDto();
         expectedCommentDto.setText(EXISTING_COMMENT_TEXT);
         val expectedCommentDto2 = new CommentDto();
-        expectedCommentDto2.setText(EXISTING_COMMENT_TEXT);
+        expectedCommentDto2.setText(EXISTING_COMMENT_TEXT_2);
 
         val expectedCommentDtoList = List.of(expectedCommentDto, expectedCommentDto2);
 
