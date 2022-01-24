@@ -29,6 +29,13 @@ public class ShellBookImpl implements ShellBook {
     }
 
     @Override
+    @ShellMethod(value = "Publish publish book by title ignore case", key = {"getByTitleIgnoreCase", "getBTI"})
+    @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
+    public String publishBookByTitleIgnoreCase(String title) {
+        return bookService.findBookByTitleIgnoreCase(title).toString();
+    }
+
+    @Override
     @ShellMethod(value = "Publish all books", key = {"allBooks", "allB"})
     @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
     public String publishAllBook() {

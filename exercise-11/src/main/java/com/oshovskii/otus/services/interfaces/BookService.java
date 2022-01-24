@@ -9,6 +9,7 @@ public interface BookService {
     List<BookDto> findAllBooks();
     BookDto findBookByTitle(String title);
     BookDto saveBook(String title, Long authorId, Long genreId, Long commentId);
+    BookDto findBookByTitleIgnoreCase(String example);
     long countBooks();
     void deleteBookById(Long id);
 }

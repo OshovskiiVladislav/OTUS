@@ -13,6 +13,8 @@ import com.oshovskii.otus.services.interfaces.CommentService;
 import com.oshovskii.otus.services.interfaces.GenreService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +31,7 @@ public class BookServiceImpl implements BookService {
     private final AuthorService authorService;
     private final ModelMapper modelMapper;
 
+    @Override
     @Transactional(readOnly = true)
     public BookDto findBookById(Long id) {
         Book book = bookRepository.findById(id)
@@ -36,6 +39,7 @@ public class BookServiceImpl implements BookService {
         return modelMapper.map(book, BookDto.class);
     }
 
+    @Override
     @Transactional(readOnly = true)
     public List<BookDto> findAllBooks() {
         List<Book> bookList = bookRepository.findAll();
@@ -45,16 +49,18 @@ public class BookServiceImpl implements BookService {
                 .collect(Collectors.toList());
     }
 
+    @Override
     @Transactional
     public BookDto findBookByTitle(String title) {
         Book book = bookRepository.findBookByTitle(title);
         return modelMapper.map(book, BookDto.class);
     }
 
+    @Override
     @Transactional
     public BookDto saveBook(String title, Long authorId, Long genreId, Long commentId) {
         Comment comment = commentService.findById(commentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Comment with id: "+ commentId + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Comment with id: " + commentId + " not found"));
         Author author = authorService.findAuthorById(authorId)
                 .orElseThrow(() -> new ResourceNotFoundException("Author with id: " + authorId + " not found"));
         Genre genre = genreService.findGenreById(genreId)
@@ -66,6 +72,18 @@ public class BookServiceImpl implements BookService {
         book.setCommentsList(Set.of(comment));
 
         return modelMapper.map(bookRepository.save(book), BookDto.class);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public BookDto findBookByTitleIgnoreCase(String title) {
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
+        Example<Book> example = Example.of(new Book(title),
+                caseInsensitiveExampleMatcher);
+
+        Book actual = bookRepository.findOne(example)
+                .orElseThrow(() -> new ResourceNotFoundException("Book with title: "+ title + " not found"));
+        return modelMapper.map(actual, BookDto.class);
     }
 
     @Override

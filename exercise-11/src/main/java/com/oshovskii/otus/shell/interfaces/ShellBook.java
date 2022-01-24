@@ -3,6 +3,7 @@ package com.oshovskii.otus.shell.interfaces;
 public interface ShellBook {
     long publishCountBooks();
     String publishBookByID(Long bookId);
+    String publishBookByTitleIgnoreCase(String title);
 
     String publishAllBook();
     String publishBookByTitle(String title);

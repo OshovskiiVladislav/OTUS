@@ -28,6 +28,7 @@ import static org.mockito.Mockito.times;
 @DisplayName("BookServiceImpl Test")
 @SpringBootTest(classes = BookServiceImpl.class)
 public class BookServiceImplTest {
+
     @Autowired
     private BookServiceImpl bookService;
 
@@ -52,6 +53,7 @@ public class BookServiceImplTest {
     private static final Long EXISTING_BOOK_ID = 1L;
     private static final Long EXISTING_BOOK_ID_2 = 2L;
     private static final String EXISTING_BOOK_TITLE = "The Da Vinci Code";
+    private static final String EXPECTED_BOOK_TITLE_IGNORE_CASE = "thE dA ViNcI CoDE" ;
 
     private static final Long EXISTING_AUTHOR_ID = 1L;
     private static final String EXISTING_AUTHOR_NAME = "Dan Brow";
@@ -117,6 +119,23 @@ public class BookServiceImplTest {
 
         // Call
         val actualBook = bookService.findBookByTitle(expectedBook.getTitle());
+
+        // Verify
+        assertThat(actualBook).isEqualTo(expectedBookDto);
+    }
+
+    @DisplayName("Return expected book by title ignore case test")
+    @Test
+    public void findBookByTitleIgnoreCase_validBookTitle_shouldReturnExpectedBookByTitle(){
+        // Config
+        val expectedBook = createBookWithAllInfoById(EXISTING_BOOK_ID);
+        val expectedBookDto = createBookDtoWithAllInfoById(EXISTING_BOOK_ID);
+
+        when(bookRepository.findOne(any())).thenReturn(Optional.of(expectedBook));
+        when(modelMapperMock.map(expectedBook, BookDto.class)).thenReturn(expectedBookDto);
+
+        // Call
+        val actualBook = bookService.findBookByTitleIgnoreCase(EXPECTED_BOOK_TITLE_IGNORE_CASE);
 
         // Verify
         assertThat(actualBook).isEqualTo(expectedBookDto);

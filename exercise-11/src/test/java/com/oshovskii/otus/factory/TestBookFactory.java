@@ -9,10 +9,11 @@ import lombok.val;
 import java.util.Set;
 
 public class TestBookFactory {
-    private static final String EXPECTED_BOOK_TITLE = "Test title";
 
-    private static final Long EXISTING_BOOK_ID_2 = 2L;
     private static final Long EXISTING_BOOK_ID = 1L;
+    private static final Long EXISTING_BOOK_ID_2 = 2L;
+
+    private static final String EXISTING_BOOK_TITLE = "The Da Vinci Code";
     private static final String EXISTING_BOOK_TITLE_2 = "Angels and Demons";
 
     private static final Long EXISTING_AUTHOR_ID = 1L;
@@ -36,7 +37,7 @@ public class TestBookFactory {
             val genre = new Genre(EXISTING_GENRE_ID, EXISTING_GENRE_TYPE);
             val comment = new Comment(EXISTING_COMMENT_ID, EXISTING_COMMENT_TEXT);
 
-            val book = new Book(EXPECTED_BOOK_TITLE);
+            val book = new Book(EXISTING_BOOK_TITLE);
             book.setId(EXISTING_BOOK_ID);
             book.setAuthorsList(Set.of(author));
             book.setGenresList(Set.of(genre));
