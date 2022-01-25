@@ -1,0 +1,26 @@
+spring:
+  data:
+    mongodb:
+      port: 0
+      database: test
+      #uri: mongodb://localhost
+      #port: 27017
+      #database: library
+  shell:
+    interactive:
+      enabled: false
+    main:
+      allow-circular-references: true
+mongock:
+#  runner-type: "ApplicationRunner" #default (conflict with Spring Shell)
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - com.oshovskii.otus.changelogs
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local
+
+logging:
+  level:
+    root: ERROR
