@@ -27,7 +27,7 @@ import static org.mockito.Mockito.times;
 
 @DisplayName("BookServiceImpl Test")
 @SpringBootTest(classes = BookServiceImpl.class)
-public class BookServiceImplTest {
+class BookServiceImplTest {
 
     @Autowired
     private BookServiceImpl bookService;
@@ -66,7 +66,7 @@ public class BookServiceImplTest {
 
     @DisplayName("Return expected book by id test")
     @Test
-    public void findBookById_validBookId_shouldReturnExpectedBookById(){
+    void findBookById_validBookId_shouldReturnExpectedBookById(){
         // Config
         val expectedBook = createBookWithAllInfoById(EXISTING_BOOK_ID);
         val expectedBookDto = createBookDtoWithAllInfoById(EXISTING_BOOK_ID);
@@ -83,7 +83,7 @@ public class BookServiceImplTest {
 
     @DisplayName("Return expected list books test")
     @Test
-    public void findAllBooks_voidInput_shouldReturnExpectedBooksList(){
+    void findAllBooks_voidInput_shouldReturnExpectedBooksList() {
         // Config
         // create 1 book
         val expectedBook = createBookWithAllInfoById(EXISTING_BOOK_ID);
@@ -109,7 +109,7 @@ public class BookServiceImplTest {
 
     @DisplayName("Return expected book by title test")
     @Test
-    public void findBookByTitle_validBookTitle_shouldReturnExpectedBookByTitle(){
+    void findBookByTitle_validBookTitle_shouldReturnExpectedBookByTitle(){
         // Config
         val expectedBook = createBookWithAllInfoById(EXISTING_BOOK_ID);
         val expectedBookDto = createBookDtoWithAllInfoById(EXISTING_BOOK_ID);
@@ -126,7 +126,7 @@ public class BookServiceImplTest {
 
     @DisplayName("Return expected book by title ignore case test")
     @Test
-    public void findBookByTitleIgnoreCase_validBookTitle_shouldReturnExpectedBookByTitle(){
+    void findBookByTitleIgnoreCase_validBookTitle_shouldReturnExpectedBookByTitle(){
         // Config
         val expectedBook = createBookWithAllInfoById(EXISTING_BOOK_ID);
         val expectedBookDto = createBookDtoWithAllInfoById(EXISTING_BOOK_ID);
@@ -143,7 +143,7 @@ public class BookServiceImplTest {
 
     @DisplayName("Save book test")
     @Test
-    public void save_validTitleAndAuthorIdAndGenreIdAndCommentId_shouldSaveBook(){
+    void save_validTitleAndAuthorIdAndGenreIdAndCommentId_shouldSaveBook(){
         // Config
         val author = new Author(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_NAME);
         val genre = new Genre(EXISTING_GENRE_ID, EXISTING_GENRE_TYPE);
@@ -173,7 +173,7 @@ public class BookServiceImplTest {
 
     @DisplayName("Return expected number of books test")
     @Test
-    public void countBooks_voidInput_shouldReturnExpectedBookCount() {
+    void countBooks_voidInput_shouldReturnExpectedBookCount() {
         // Config
         when(bookRepository.count()).thenReturn(EXPECTED_BOOKS_COUNT);
 
@@ -186,7 +186,7 @@ public class BookServiceImplTest {
 
     @DisplayName("Delete book by id test")
     @Test
-    public void deleteBookById_validId_shouldCorrectDeleteBookById(){
+    void deleteBookById_validId_shouldCorrectDeleteBookById(){
         // Config
         doNothing().when(bookRepository).deleteById(EXISTING_BOOK_ID);
 

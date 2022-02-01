@@ -27,7 +27,7 @@ import static org.mockito.Mockito.*;
 
 @DisplayName("Test ShellBookImpl command")
 @SpringBootTest
-public class ShellBookImplTest {
+class ShellBookImplTest {
 
     @MockBean
     private BookService bookService;
@@ -61,7 +61,7 @@ public class ShellBookImplTest {
     @DisplayName("Should return CommandNotCurrentlyAvailable if the user logged when trying to execute the test command")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     @Test
-    public void isPublishEventCommandAvailable_inputVoid_shouldReturnCommandNotCurrentlyAvailableObject() {
+    void isPublishEventCommandAvailable_inputVoid_shouldReturnCommandNotCurrentlyAvailableObject() {
         // Config and Call
         Object res =  shell.evaluate(() -> COMMAND_PUBLISH_ALL_BOOKS);
 
@@ -73,7 +73,7 @@ public class ShellBookImplTest {
             "and call service method if the command is executed after logging in")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     @Test
-    public void publishAllBook_validCommand_shouldReturnExpectedBookList() {
+    void publishAllBook_validCommand_shouldReturnExpectedBookList() {
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
 
@@ -97,7 +97,7 @@ public class ShellBookImplTest {
 
     @DisplayName("Should return count of books and call service method if the command is executed after logging in")
     @Test
-    public void publishCountBooks_validCommand_shouldReturnBooksCount(){
+    void publishCountBooks_validCommand_shouldReturnBooksCount(){
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
         when(bookService.countBooks()).thenReturn(EXPECTED_BOOKS_COUNT);
@@ -112,7 +112,7 @@ public class ShellBookImplTest {
 
     @DisplayName("Should return book by id and call service method if the command is executed after logging in")
     @Test
-    public void publishBookByID_validCommandAndBookId_shouldReturnExpectedMessage(){
+    void publishBookByID_validCommandAndBookId_shouldReturnExpectedMessage(){
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
 
@@ -131,7 +131,7 @@ public class ShellBookImplTest {
 
     @DisplayName("Should return book by title and call service method if the command is executed after logging in")
     @Test
-    public void publishBookByTitle_validCommandAndBookTitle_shouldReturnExpectedMessage(){
+    void publishBookByTitle_validCommandAndBookTitle_shouldReturnExpectedMessage(){
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
 
@@ -150,7 +150,7 @@ public class ShellBookImplTest {
 
     @DisplayName("Save book in db and call service method if the command is executed after logging in")
     @Test
-    public void saveBook_validCommandAndBook_shouldReturnExpectedMessage(){
+    void saveBook_validCommandAndBook_shouldReturnExpectedMessage(){
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
 
@@ -171,7 +171,7 @@ public class ShellBookImplTest {
 
     @DisplayName("Delete book by id and call service method if the command is executed after logging in")
     @Test
-    public void deleteByBookId_validCommandAndBookId_shouldReturnExpectedMessage() {
+    void deleteByBookId_validCommandAndBookId_shouldReturnExpectedMessage() {
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
         doNothing().when(bookService).deleteBookById(EXISTING_BOOK_ID);

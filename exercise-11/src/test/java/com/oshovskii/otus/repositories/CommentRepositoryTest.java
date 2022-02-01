@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("CommentRepository Test")
 @DataJpaTest
-public class CommentRepositoryTest {
+class CommentRepositoryTest {
 
     @Autowired
     private CommentRepository commentRepository;

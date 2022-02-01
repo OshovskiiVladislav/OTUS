@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 
 @DisplayName("AuthorServiceImpl Test")
 @SpringBootTest(classes = AuthorServiceImpl.class)
-public class AuthorServiceImplTest {
+class AuthorServiceImplTest {
 
     @Autowired
     private AuthorServiceImpl authorService;
@@ -30,7 +30,7 @@ public class AuthorServiceImplTest {
 
     @DisplayName("Return expected author by id test")
     @Test
-    public void findAuthorById_validAuthorId_shouldReturnExpectedAuthorById() {
+    void findAuthorById_validAuthorId_shouldReturnExpectedAuthorById() {
         // Config
         val expectedAuthor = new Author(EXISTING_AUTHOR_NAME);
         expectedAuthor.setId(EXISTING_AUTHOR_ID);

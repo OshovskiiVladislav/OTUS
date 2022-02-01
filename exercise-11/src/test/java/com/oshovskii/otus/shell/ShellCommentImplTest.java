@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 
 @DisplayName("Test ShellCommentImpl command")
 @SpringBootTest
-public class ShellCommentImplTest {
+class ShellCommentImplTest {
     @MockBean
     private CommentService commentService;
 
@@ -50,7 +50,7 @@ public class ShellCommentImplTest {
     @DisplayName("Should return CommandNotCurrentlyAvailable if the user logged when trying to execute the test command")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     @Test
-    public void isPublishEventCommandAvailable_inputVoid_shouldReturnCommandNotCurrentlyAvailableObject() {
+    void isPublishEventCommandAvailable_inputVoid_shouldReturnCommandNotCurrentlyAvailableObject() {
         // Config and Call
         Object res =  shell.evaluate(() -> COMMAND_PUBLISH_ALL_COMMENTS);
 
@@ -62,7 +62,7 @@ public class ShellCommentImplTest {
             "and call service method if the command is executed after logging in")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     @Test
-    public void publishAllComment_validCommand_shouldReturnExpectedCommentList() {
+    void publishAllComment_validCommand_shouldReturnExpectedCommentList() {
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
 
@@ -84,7 +84,7 @@ public class ShellCommentImplTest {
 
     @DisplayName("Should return count of comments and call service method if the command is executed after logging in")
     @Test
-    public void publishCountComments_validCommand_shouldReturnCommentsCount() {
+    void publishCountComments_validCommand_shouldReturnCommentsCount() {
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
         when(commentService.countComments()).thenReturn(EXPECTED_COMMENTS_COUNT);
@@ -99,7 +99,7 @@ public class ShellCommentImplTest {
 
     @DisplayName("Should return comment by id and call service method if the command is executed after logging in")
     @Test
-    public void publishCommentByID_validCommandAndCommentId_shouldReturnExpectedMessage(){
+    void publishCommentByID_validCommandAndCommentId_shouldReturnExpectedMessage(){
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
 
@@ -138,7 +138,7 @@ public class ShellCommentImplTest {
 
     @DisplayName("Should return comment by text and call service method if the command is executed after logging in")
     @Test
-    public void publishCommentByText_validCommandAndCommentText_shouldReturnExpectedCommentMessage() {
+    void publishCommentByText_validCommandAndCommentText_shouldReturnExpectedCommentMessage() {
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
 
@@ -157,7 +157,7 @@ public class ShellCommentImplTest {
 
     @DisplayName("Delete comment by id and call service method if the command is executed after logging in")
     @Test
-    public void deleteByCommentId_validCommandAndCommentId_shouldReturnExpectedMessage(){
+    void deleteByCommentId_validCommandAndCommentId_shouldReturnExpectedMessage(){
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
         doNothing().when(commentService).deleteCommentById(EXISTING_COMMENT_ID);

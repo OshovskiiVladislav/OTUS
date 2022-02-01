@@ -1,7 +1,5 @@
 package com.oshovskii.otus.services;
 
-import com.oshovskii.otus.dto.CommentDto;
-import com.oshovskii.otus.models.Comment;
 import com.oshovskii.otus.models.Genre;
 import com.oshovskii.otus.repositories.GenreRepository;
 import lombok.val;
@@ -18,7 +16,7 @@ import static org.mockito.Mockito.when;
 
 @DisplayName("GenreServiceImpl Test")
 @SpringBootTest(classes = GenreServiceImpl.class)
-public class GenreServiceImplTest {
+class GenreServiceImplTest {
 
     @Autowired
     private GenreServiceImpl genreService;
@@ -31,7 +29,7 @@ public class GenreServiceImplTest {
 
     @DisplayName("Return expected genre by id test")
     @Test
-    public void findGenreById_validGenreId_shouldReturnExpectedGenreById() {
+    void findGenreById_validGenreId_shouldReturnExpectedGenreById() {
         // Config
         val expectedGenre = new Genre(EXISTING_GENRE_TYPE);
         expectedGenre.setId(EXISTING_GENRE_ID);

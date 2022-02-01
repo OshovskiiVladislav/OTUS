@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 
 @DisplayName("CommentServiceImpl Test")
 @SpringBootTest(classes = CommentServiceImpl.class)
-public class CommentServiceImplTest {
+class CommentServiceImplTest {
     @Autowired
     private CommentService commentService;
 
@@ -41,7 +41,7 @@ public class CommentServiceImplTest {
 
     @DisplayName("Return expected comment by id test")
     @Test
-    public void findCommentById_validCommentId_shouldReturnExpectedCommentById() {
+    void findCommentById_validCommentId_shouldReturnExpectedCommentById() {
         // Config
         val expectedComment = new Comment(EXISTING_COMMENT_TEXT);
         expectedComment.setId(EXISTING_COMMENT_ID);
@@ -61,7 +61,7 @@ public class CommentServiceImplTest {
 
     @DisplayName("Return expected list comments test")
     @Test
-    public void findAllComments_voidInput_shouldReturnExpectedCommentsList() {
+    void findAllComments_voidInput_shouldReturnExpectedCommentsList() {
         // Config
         val expectedComment = new Comment(EXISTING_COMMENT_ID, EXISTING_COMMENT_TEXT);
         val expectedComment2 = new Comment(EXISTING_COMMENT_ID_2, EXISTING_COMMENT_TEXT_2);
@@ -87,7 +87,7 @@ public class CommentServiceImplTest {
 
     @DisplayName("Find comment by text test")
     @Test
-    public void findCommentByText_validText_shouldReturnExpectedCommentByText() {
+    void findCommentByText_validText_shouldReturnExpectedCommentByText() {
         // Config
         val expectedComment = new Comment(EXISTING_COMMENT_ID, EXISTING_COMMENT_TEXT);
 
@@ -106,7 +106,7 @@ public class CommentServiceImplTest {
 
     @DisplayName("Save comment test")
     @Test
-    public void saveComment_validText_shouldSaveComment() {
+    void saveComment_validText_shouldSaveComment() {
         // Config
         val savedComment = new Comment(EXISTING_COMMENT_ID, EXISTING_COMMENT_TEXT);
 
@@ -126,7 +126,7 @@ public class CommentServiceImplTest {
 
     @DisplayName("Delete comment by id test")
     @Test
-    public void deleteCommentById_validId_shouldCorrectDeleteCommentById() {
+    void deleteCommentById_validId_shouldCorrectDeleteCommentById() {
         // Config
         doNothing().when(commentRepository).deleteById(EXISTING_COMMENT_ID);
 
@@ -139,7 +139,7 @@ public class CommentServiceImplTest {
 
     @DisplayName("Return existing comment by id test")
     @Test
-    public void findById_validCommentId_shouldReturnExpectedCommentById(){
+    void findById_validCommentId_shouldReturnExpectedCommentById(){
         // Config
         val expectedComment = new Comment(EXISTING_COMMENT_ID, EXISTING_COMMENT_TEXT);
 
@@ -155,7 +155,7 @@ public class CommentServiceImplTest {
 
     @DisplayName("Return expected number of comments test")
     @Test
-    public void countComments_voidInput_shouldReturnExpectedCommendCount() {
+    void countComments_voidInput_shouldReturnExpectedCommendCount() {
         // Config
         when(commentRepository.count()).thenReturn(EXPECTED_COMMENTS_COUNT);
 
