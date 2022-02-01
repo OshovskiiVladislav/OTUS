@@ -75,6 +75,7 @@
           <form #editForm="ngForm">
             <div class="form-group">
               <label for="title">Title</label>
+              <input type="hidden" ngModel="{{editBook?.id}}" name="id" class="form-control" id="id" placeholder="Email">
               <input type="text" ngModel="{{editBook?.title}}" name="title" class="form-control" id="title" aria-describedby="emailHelp" placeholder="Title">
             </div>
             <div class="modal-footer">
