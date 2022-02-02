@@ -7,10 +7,17 @@ import com.oshovskii.otus.services.interfaces.GenreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class GenreServiceImpl implements GenreService {
     private final GenreRepository genreRepository;
+
+    @Override
+    public List<Genre> findAllGenres() {
+        return genreRepository.findAll();
+    }
 
     @Override
     public Genre findGenreByType(String type) {

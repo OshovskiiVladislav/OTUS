@@ -42,15 +42,13 @@ public class BookRepositoryCustomImpl implements BookRepositoryCustom {
                 , lookup("Author", "author_id", "_id", "author")
                 , project().and("author._id").as("_id").and("author.name").as("name")
         );
-
-
         return mongoTemplate.aggregate(aggregation, Book.class, Author.class).getMappedResults();
     }
 
     @Override
-    public long getAuthorsArrayLengthById(String bookId) {
+    public long getAuthorsArrayLengthById(String id) {
         val aggregation = Aggregation.newAggregation(
-                match(where("id").is(bookId)),
+                match(where("id").is(id)),
                 project().andExclude("_id").and("authors").size().as("size"));
 
         val arraySizeProjection = mongoTemplate.aggregate(
@@ -59,8 +57,8 @@ public class BookRepositoryCustomImpl implements BookRepositoryCustom {
     }
 
     @Override
-    public void removeAuthorsArrayElementsById(String bookId) {
-        val query = Query.query(Criteria.where("$id").is(new ObjectId(bookId)));
+    public void removeAuthorsArrayElementsById(String authorId) {
+        val query = Query.query(Criteria.where("$id").is(new ObjectId(authorId)));
         val update = new Update().pull("authors", query);
         mongoTemplate.updateMulti(new Query(), update, Book.class);
     }

@@ -21,13 +21,13 @@ public class TestBookFactory {
     private static final String EXISTING_AUTHOR_NAME = "Dan Brown";
     private static final String EXISTING_AUTHOR_NAME_2 = "Scott Fitzgerald";
 
-    private static final String EXISTING_GENRE_ID = "61e9c448ccf1a74f9c05b2f8";
+    private static final String EXISTING_GENRE_ID = "61e9c448ccf1a74f9c05b2f3";
     private static final String EXISTING_GENRE_ID_2 = "61e9c448ccf1a74f9c05b2f8";
-    private static final String EXISTING_GENRE_TYPE = "Detective";
-    private static final String EXISTING_GENRE_TYPE_2 = "Roman";
+    private static final String EXISTING_GENRE_TYPE = "Roman";
+    private static final String EXISTING_GENRE_TYPE_2 = "Detective";
 
-    private static final String EXISTING_COMMENT_ID = "61e9c448ccf1a74f9c05b2f3";
-    private static final String EXISTING_COMMENT_ID_2 = "61e9c448ccf1a74f9c05b2f1";
+    private static final String EXISTING_COMMENT_ID = "61fad7cb0dac532e3aecb6e7";
+    private static final String EXISTING_COMMENT_ID_2 = "61fad7cc0dac532e3aecb6e8";
     private static final String EXISTING_COMMENT_TEXT = "Good book";
     private static final String EXISTING_COMMENT_TEXT_2 = "The best book";
 

@@ -44,7 +44,6 @@ class BookServiceImplTest {
     private static final String EXPECTED_BOOK_TITLE = "Test title";
 
     private static final String EXISTING_BOOK_ID = "61e962590f8ce7592de50e9a";
-    private static final String EXISTING_BOOK_ID_2 = "61e9c448ccf1a74f2c05b2f2";
     private static final String EXISTING_BOOK_TITLE = "The Da Vinci Code";
     private static final String EXISTING_BOOK_TITLE_2 = "The Great Gatsby";
 

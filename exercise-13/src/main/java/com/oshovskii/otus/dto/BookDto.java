@@ -15,4 +15,3 @@ public class BookDto {
     private List<GenreDto> genresList;
     private List<CommentDto> commentsList;
 }
-

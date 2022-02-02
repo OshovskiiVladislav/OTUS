@@ -39,7 +39,7 @@ public class InitMongoDBDataChangeLog {
 
     @ChangeSet(order = "003", id = "initGenres", author = "oshovskii", runAlways = true)
     public void initGenres(GenreRepository genreRepository){
-        genreRoman = genreRepository.save(new Genre("61e9c448ccf1a74f9c05b2f8" , "Roman", List.of()));
+        genreRoman = genreRepository.save(new Genre("61e9c448ccf1a74f9c05b2f3" , "Roman", List.of()));
         genreDetective = genreRepository.save(new Genre("61e9c448ccf1a74f9c05b2f8", "Detective", List.of()));
     }
 
@@ -65,7 +65,7 @@ public class InitMongoDBDataChangeLog {
                 List.of(commentGood)));
     }
 
-//    // TODO Правильный ли это способ вставки для связанных сущностей? Как мне организовать подобие ManyToMany
+//    // TODO Правильный ли это способ вставки для связанных сущностей? Как мне организовать подобие ManyToMany (с этим подходом в подарок я получаю stackoverflow)
 //    @ChangeSet(order = "006", id = "updateAuthors", author = "oshovskii", runAlways = true)
 //    public void updateAuthors(AuthorRepository authorRepository){
 //        authorDanBrown = authorRepository.save(new Author("61e9c448ccf1a74f9c05b2f6" , "Dan Brown", List.of(bookAngelsAndDemons)));

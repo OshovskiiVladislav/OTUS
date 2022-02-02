@@ -15,6 +15,13 @@ public class ShellCommentImpl implements ShellComment {
     private final CommentService commentService;
 
     @Override
+    @ShellMethod(value = "Publish all comments", key = {"allComments", "allC"})
+    @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
+    public String publishAllComment() {
+        return commentService.findAllComments().toString();
+    }
+
+    @Override
     @ShellMethod(value = "Save comment", key = {"saveComment", "saveC", "sC"})
     @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
     public String saveComment(String text) {

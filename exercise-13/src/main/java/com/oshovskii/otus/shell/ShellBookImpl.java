@@ -67,9 +67,9 @@ public class ShellBookImpl implements ShellBook {
     @Override
     @ShellMethod(value = "Save book", key = {"deleteAuthorsArrayElementsByBookId", "deleteAuthors", "dAL"})
     @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
-    public String deleteAuthorsArrayElementsByBookId(String bookId) {
-        bookService.deleteAuthorsArrayElementsById(bookId);
-        String completedCommandDeleteAuthorsListByBookId = "Delete authors list by book id: <"+ bookId + "> completed";
+    public String deleteAuthorsArrayElementsByBookId(String authorId) {
+        bookService.deleteAuthorsArrayElementsById(authorId);
+        String completedCommandDeleteAuthorsListByBookId = "Delete authors list by author id: <"+ authorId + "> completed";
         return completedCommandDeleteAuthorsListByBookId;
     }
 

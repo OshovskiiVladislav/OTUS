@@ -14,9 +14,11 @@ public class ShellGenreImpl implements ShellGenre  {
     private final ShellLoginImpl shellLogin;
     private final GenreService genreService;
 
-    private Availability isPublishEventCommandAvailable() {
-        return shellLogin.getCurrentUserName() == null
-                ? Availability.unavailable("Сначала залогиньтесь") : Availability.available();
+    @Override
+    @ShellMethod(value = "Publish all genres", key = {"allGenres", "allG"})
+    @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
+    public String publishAllGenres() {
+        return genreService.findAllGenres().toString();
     }
 
     @Override
@@ -26,5 +28,10 @@ public class ShellGenreImpl implements ShellGenre  {
         genreService.save(type);
         String completedCommandSaveGenre = "Save genre <"+ type + "> completed";
         return completedCommandSaveGenre;
+    }
+
+    private Availability isPublishEventCommandAvailable() {
+        return shellLogin.getCurrentUserName() == null
+                ? Availability.unavailable("Сначала залогиньтесь") : Availability.available();
     }
 }

@@ -7,10 +7,18 @@ import com.oshovskii.otus.services.interfaces.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
+
+
+    @Override
+    public List<Comment> findAllComments() {
+        return commentRepository.findAll();
+    }
 
     @Override
     public Comment findCommentByText(String text) {
