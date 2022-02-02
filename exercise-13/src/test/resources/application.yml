@@ -1,4 +1,13 @@
 spring:
+  main:
+    allow-circular-references: true
+  shell:
+    interactive:
+      enabled: false
+
+  mongodb:
+    embedded:
+      version: 3.5.5
   data:
     mongodb:
       port: 0
@@ -6,16 +15,13 @@ spring:
       #uri: mongodb://localhost
       #port: 27017
       #database: library
-  shell:
-    interactive:
-      enabled: false
-    main:
-      allow-circular-references: true
+
+
 mongock:
 #  runner-type: "ApplicationRunner" #default (conflict with Spring Shell)
   runner-type: "InitializingBean"
   change-logs-scan-package:
-    - com.oshovskii.otus.changelogs
+    - com.oshovskii.mongock.changelogs
   mongo-db:
     write-concern:
       journal: false

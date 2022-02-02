@@ -5,6 +5,7 @@ import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -12,6 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataMongoTest
+@EnableConfigurationProperties
 @DisplayName("BookRepository Test")
 class BookRepositoryTest {
 
@@ -26,8 +28,8 @@ class BookRepositoryTest {
     void findBookByTitle_validBookTitle_shouldFindExpectedBookByTitle() {
         // Config
         val expectedBook = bookRepository.findById(EXISTING_BOOK_ID);
-//        val ex = bookRepository.findAll();
-//        System.out.println(bookRepository.findAll());
+        val ex = bookRepository.findAll();
+        System.out.println(bookRepository.findAll());
         // Call
         val actualBook = bookRepository.findByTitle(EXISTING_BOOK_TITLE);
 

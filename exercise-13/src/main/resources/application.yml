@@ -1,12 +1,24 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost
-      database: library
+#      uri: localhost
+      host: localhost
       port: 27017
+      database: library
+
   #      host: localhost
 #      embedded:
 #        version: 2.6.10
   main:
-    allow-bean-definition-overriding: true
+#    allow-bean-definition-overriding: true
     allow-circular-references: true
+
+mongock:
+  #runner-type: "ApplicationRunner" # default
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - com.oshovskii.otus.changelogs
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local
