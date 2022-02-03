@@ -1,6 +1,5 @@
 package com.oshovskii.otus.services;
 
-import com.oshovskii.otus.dto.BookDto;
 import com.oshovskii.otus.models.Author;
 import com.oshovskii.otus.models.Book;
 import com.oshovskii.otus.models.Comment;
@@ -18,7 +17,7 @@ import java.util.Optional;
 
 import static com.oshovskii.otus.factory.TestBookFactory.createBookWithAllInfoByTitle;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -103,7 +102,6 @@ class BookServiceImplTest {
         // Verify
         assertThat(actualBook).isEqualTo(expectedBook);
     }
-
 
     @DisplayName("Save book test")
     @Test

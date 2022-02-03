@@ -6,7 +6,6 @@ import com.oshovskii.otus.repositories.interfaces.BookRepositoryCustom;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
@@ -17,7 +16,6 @@ import org.springframework.data.mongodb.core.query.Update;
 import java.util.List;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.project;
 import static org.springframework.data.mongodb.core.aggregation.ObjectOperators.ObjectToArray.valueOfToArray;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 

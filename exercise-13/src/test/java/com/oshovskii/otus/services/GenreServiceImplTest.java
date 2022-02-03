@@ -1,6 +1,7 @@
 package com.oshovskii.otus.services;
 
 import com.oshovskii.otus.models.Author;
+import com.oshovskii.otus.models.Comment;
 import com.oshovskii.otus.models.Genre;
 import com.oshovskii.otus.repositories.interfaces.GenreRepository;
 import lombok.val;
@@ -28,8 +29,32 @@ class GenreServiceImplTest {
     @MockBean
     private GenreRepository genreRepository;
 
-    private static final String EXISTING_GENRE_ID = "61e9c448ccf1a74f9c05b2f6";
-    private static final String EXISTING_GENRE_TYPE = "Detective";
+    private static final String EXISTING_GENRE_ID = "61e9c448ccf1a74f9c05b2f3";
+    private static final String EXISTING_GENRE_ID_2 = "61e9c448ccf1a74f9c05b2f8";
+    private static final String EXISTING_GENRE_TYPE = "Roman";
+    private static final String EXISTING_GENRE_TYPE_2 = "Detective";
+
+    @DisplayName("Return expected list genres test")
+    @Test
+    void findAllGenres_voidInput_shouldReturnExpectedGenresList() {
+        // Config
+        val expectedGenre = new Genre();
+        expectedGenre.setId(EXISTING_GENRE_ID);
+        expectedGenre.setType(EXISTING_GENRE_TYPE);
+        val expectedGenre2 = new Genre();
+        expectedGenre2.setId(EXISTING_GENRE_ID_2);
+        expectedGenre2.setType(EXISTING_GENRE_TYPE_2);
+
+        val expectedGenreList = List.of(expectedGenre, expectedGenre2);
+
+        when(genreRepository.findAll()).thenReturn(expectedGenreList);
+
+        // Call
+        val actualGenreList = genreRepository.findAll();
+
+        // Verify
+        assertEquals(actualGenreList, expectedGenreList);
+    }
 
     @DisplayName("Return expected genre by type test")
     @Test

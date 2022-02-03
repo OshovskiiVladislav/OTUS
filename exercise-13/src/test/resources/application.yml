@@ -12,13 +12,13 @@ spring:
     mongodb:
       port: 0
       database: test
+      # alternative
       #uri: mongodb://localhost
       #port: 27017
       #database: library
 
-
 mongock:
-#  runner-type: "ApplicationRunner" #default (conflict with Spring Shell)
+# runner-type: "ApplicationRunner" #default (conflict with Spring Shell)
   runner-type: "InitializingBean"
   change-logs-scan-package:
     - com.oshovskii.mongock.changelogs

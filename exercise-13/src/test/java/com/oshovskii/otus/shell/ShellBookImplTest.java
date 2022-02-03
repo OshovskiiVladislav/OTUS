@@ -1,13 +1,6 @@
 package com.oshovskii.otus.shell;
 
-import com.oshovskii.otus.dto.AuthorDto;
 import com.oshovskii.otus.dto.BookDto;
-import com.oshovskii.otus.dto.CommentDto;
-import com.oshovskii.otus.dto.GenreDto;
-import com.oshovskii.otus.models.Author;
-import com.oshovskii.otus.models.Book;
-import com.oshovskii.otus.models.Comment;
-import com.oshovskii.otus.models.Genre;
 import com.oshovskii.otus.services.interfaces.BookService;
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
@@ -22,9 +15,10 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
 
+import static com.oshovskii.otus.factory.TestBookDtoFactory.createBookDtoWithAllInfoByTitle;
+import static com.oshovskii.otus.factory.TestBookFactory.createBookWithAllInfoByTitle;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 @DisplayName("Test ShellBookImpl command")
 @SpringBootTest
@@ -43,11 +37,8 @@ class ShellBookImplTest {
     private static final String COMMAND_PUBLISH_GET_BOOK_BY_ID = "getBookById 1";
     private static final String COMMAND_PUBLISH_GET_BOOK_BY_TITLE = "findBookByTitle Angels_and_Demons";
     private static final String COMMAND_PUBLISH_ALL_BOOKS = "allBooks";
-    private static final String COMMAND_PUBLISH_COUNT_BOOKS = "countBook";
     private static final String COMMAND_PUBLISH_INSERT_BOOK = "saveB DanBrown TestGenre Goodbook TestBookTitle";
 
-    private static final String COMMAND_PUBLISH_DELETE_BOOK_BY_ID = "deleteBook 1";
-    private static final String COMMAND_PUBLISH_DELETE_BOOK_BY_ID_EXPECTED_MESSAGE = "book with id 1 deleted";
     private static final String COMMAND_PUBLISH_INSERT_BOOK_EXPECTED_MESSAGE = "Save book <TestBookTitle> completed";
 
     private static final String NEW_BOOK_TITLE = "TestBookTitle";
@@ -84,8 +75,8 @@ class ShellBookImplTest {
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
 
-        val expectedBook = createBookWithTitle(EXISTING_BOOK_TITLE);
-        val expectedBook2 = createBookWithTitle(EXISTING_BOOK_TITLE_2);
+        val expectedBook = createBookWithAllInfoByTitle(EXISTING_BOOK_TITLE);
+        val expectedBook2 = createBookWithAllInfoByTitle(EXISTING_BOOK_TITLE_2);
 
         val expectedBookList = List.of(expectedBook, expectedBook2);
 
@@ -105,9 +96,8 @@ class ShellBookImplTest {
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
 
-        val expectedBook = createBookWithTitle(EXISTING_BOOK_TITLE);
-
-        val expectedBookDto = createBookDtoWithTitle(EXISTING_BOOK_TITLE);
+        val expectedBook = createBookWithAllInfoByTitle(EXISTING_BOOK_TITLE);
+        val expectedBookDto = createBookDtoWithAllInfoByTitle(EXISTING_BOOK_TITLE);
 
         when(bookService.findById(EXISTING_BOOK_ID)).thenReturn(expectedBook);
         when(modelMapper.map(expectedBook, BookDto.class)).thenReturn(expectedBookDto);
@@ -125,8 +115,8 @@ class ShellBookImplTest {
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
 
-        val expectedBook = createBookWithTitle(EXISTING_BOOK_TITLE);
-        val expectedBookDto = createBookDtoWithTitle(EXISTING_BOOK_TITLE);
+        val expectedBook = createBookWithAllInfoByTitle(EXISTING_BOOK_TITLE);
+        val expectedBookDto = createBookDtoWithAllInfoByTitle(EXISTING_BOOK_TITLE);
 
         when(bookService.findByTitle(EXISTING_BOOK_TITLE)).thenReturn(expectedBook);
         when(modelMapper.map(expectedBook, BookDto.class)).thenReturn(expectedBookDto);
@@ -144,27 +134,7 @@ class ShellBookImplTest {
     void saveBook_validCommandAndBook_shouldReturnExpectedMessage(){
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
-
-        val author = new Author(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_NAME, null);
-        val genre = new Genre(EXISTING_GENRE_ID, EXISTING_GENRE_TYPE, null);
-        val comment = new Comment(EXISTING_COMMENT_ID, EXISTING_COMMENT_TEXT);
-
-//        val authorDto = new AuthorDto(EXISTING_AUTHOR_NAME);
-//        val genreDto = new GenreDto(EXISTING_GENRE_TYPE);
-//        val commentDto = new CommentDto(EXISTING_COMMENT_TEXT);
-
-        val expectedBook = new Book();
-        expectedBook.setId(EXISTING_BOOK_ID);
-        expectedBook.setTitle(EXISTING_BOOK_TITLE);
-        expectedBook.setAuthors(List.of(author));
-        expectedBook.setGenres(List.of(genre));
-        expectedBook.setComments(List.of(comment));
-
-//        val expectedBookDto = new BookDto();
-//        expectedBookDto.setTitle(expectedBook.getTitle());
-//        expectedBookDto.setAuthorsList(List.of(authorDto));
-//        expectedBookDto.setGenresList(List.of(genreDto));
-//        expectedBookDto.setCommentsList(List.of(commentDto));
+        val expectedBook = createBookWithAllInfoByTitle(EXISTING_BOOK_TITLE);
 
         when(bookService.save(EXISTING_AUTHOR_NAME, EXISTING_GENRE_TYPE, EXISTING_COMMENT_TEXT, NEW_BOOK_TITLE))
                 .thenReturn(expectedBook);
@@ -177,32 +147,5 @@ class ShellBookImplTest {
 
         verify(bookService, times(1))
                 .save(EXISTING_AUTHOR_NAME, EXISTING_GENRE_TYPE, EXISTING_COMMENT_TEXT, NEW_BOOK_TITLE);
-    }
-
-//    @DisplayName("Delete book by id and call service method if the command is executed after logging in")
-//    @Test
-//    public void deleteByBookId_validCommandAndBookId_shouldReturnExpectedMessage() {
-//        // Config
-//        shell.evaluate(() -> COMMAND_LOGIN);
-//        doNothing().when(bookService).deleteBookById(EXISTING_BOOK_ID);
-//
-//        // Call
-//        final String actualMessage = (String) shell.evaluate(()-> COMMAND_PUBLISH_DELETE_BOOK_BY_ID);
-//
-//        // Verify
-//        assertThat(actualMessage).isEqualTo(COMMAND_PUBLISH_DELETE_BOOK_BY_ID_EXPECTED_MESSAGE);
-//        verify(bookService, times(1)).deleteBookById(EXISTING_BOOK_ID);
-//    }
-
-    private static Book createBookWithTitle(String title){
-        val book = new Book();
-        book.setTitle(title);
-        return book;
-    }
-
-    private static BookDto createBookDtoWithTitle(String title){
-        val book = new BookDto();
-        book.setTitle(title);
-        return book;
     }
 }

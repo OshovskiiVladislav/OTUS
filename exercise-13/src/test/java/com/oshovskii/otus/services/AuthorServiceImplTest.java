@@ -1,8 +1,6 @@
 package com.oshovskii.otus.services;
 
-import com.oshovskii.otus.dto.CommentDto;
 import com.oshovskii.otus.models.Author;
-import com.oshovskii.otus.models.Comment;
 import com.oshovskii.otus.repositories.interfaces.AuthorRepository;
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +28,31 @@ class AuthorServiceImplTest {
     private AuthorRepository authorRepository;
 
     private static final String EXISTING_AUTHOR_ID = "61e9c448ccf1a74f9c05b2f6";
+    private static final String EXISTING_AUTHOR_ID_2 = "61e9c448ccf1a74f9c05b2f7";
     private static final String EXISTING_AUTHOR_NAME = "Dan Brown";
+    private static final String EXISTING_AUTHOR_NAME_2 = "Dan BrownScott Fitzgerald";
+
+    @DisplayName("Return expected list authors test")
+    @Test
+    void findAllAuthors_voidInput_shouldReturnExpectedAuthorsList() {
+        // Config
+        val expectedAuthor = new Author();
+        expectedAuthor.setId(EXISTING_AUTHOR_ID);
+        expectedAuthor.setName(EXISTING_AUTHOR_NAME);
+        val expectedAuthor2 = new Author();
+        expectedAuthor2.setId(EXISTING_AUTHOR_ID_2);
+        expectedAuthor2.setName(EXISTING_AUTHOR_NAME_2);
+
+        val expectedAuthorList = List.of(expectedAuthor, expectedAuthor2);
+
+        when(authorRepository.findAll()).thenReturn(expectedAuthorList);
+
+        // Call
+        val actualAuthorList = authorRepository.findAll();
+
+        // Verify
+        assertEquals(actualAuthorList, expectedAuthorList);
+    }
 
     @DisplayName("Return expected author by name test")
     @Test

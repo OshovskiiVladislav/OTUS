@@ -12,6 +12,8 @@ import org.springframework.shell.CommandNotCurrentlyAvailable;
 import org.springframework.shell.Shell;
 import org.springframework.test.annotation.DirtiesContext;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -27,10 +29,44 @@ class ShellAuthorImplTest {
 
     private static final String COMMAND_LOGIN = "login";
 
+    private static final String EXISTING_AUTHOR_ID = "61e9c448ccf1a74f9c05b2f6";
+    private static final String EXISTING_AUTHOR_ID_2 = "61e9c448ccf1a74f9c05b2f7";
     private static final String EXISTING_AUTHOR_NAME = "Dan Brown";
+    private static final String EXISTING_AUTHOR_NAME_2 = "Dan BrownScott Fitzgerald";
     private static final String NEW_AUTHOR_NAME = "TestAuthor";
+
     private static final String COMMAND_PUBLISH_SAVE_AUTHOR = "saveAuthor TestAuthor";
     private static final String COMMAND_PUBLISH_SAVE_AUTHOR_EXPECTED_MESSAGE = "Save author <TestAuthor> completed";
+    private static final String COMMAND_PUBLISH_ALL_AUTHORS = "allAuthors";
+
+
+    @DisplayName("Should return all authors of the test command execution " +
+            "and call service method if the command is executed after logging in")
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
+    @Test
+    void publishAllAuthors_validCommand_shouldReturnExpectedAuthorList() {
+        // Config
+        shell.evaluate(() -> COMMAND_LOGIN);
+
+        val expectedAuthor = new Author();
+        expectedAuthor.setId(EXISTING_AUTHOR_ID);
+        expectedAuthor.setName(EXISTING_AUTHOR_NAME);
+
+        val expectedAuthor2 = new Author();
+        expectedAuthor2.setId(EXISTING_AUTHOR_ID_2);
+        expectedAuthor2.setName(EXISTING_AUTHOR_NAME_2);
+
+        val expectedAuthorList = List.of(expectedAuthor, expectedAuthor2);
+
+        when(authorService.findAllAuthors()).thenReturn(expectedAuthorList);
+
+        // Call
+        val res = (String) shell.evaluate(() -> COMMAND_PUBLISH_ALL_AUTHORS);
+
+        // Verify
+        assertThat(res).isEqualTo(expectedAuthorList.toString());
+        verify(authorService, times(1)).findAllAuthors();
+    }
 
     @DisplayName("Should return CommandNotCurrentlyAvailable if the user logged when trying to execute the test command")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
@@ -45,7 +81,7 @@ class ShellAuthorImplTest {
 
     @DisplayName("Save comment in db and call service method if the command is executed after logging in")
     @Test
-    void saveComment_validCommandAndComment_shouldReturnExpectedMessage(){
+    void saveComment_validCommandAndComment_shouldReturnExpectedMessage() {
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
 
