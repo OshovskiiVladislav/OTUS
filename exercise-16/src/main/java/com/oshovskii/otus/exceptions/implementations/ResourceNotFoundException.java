@@ -13,4 +13,3 @@ public class ResourceNotFoundException extends AbstractException {
         return HttpStatus.NOT_FOUND;
     }
 }
-

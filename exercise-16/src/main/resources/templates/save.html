@@ -45,51 +45,27 @@
 <body>
 
 <!-- Book edition -->
-<div class="container my-5">
-    <h2 class="mb-5" th:text="#{book-form-new}">New Book</h2>
-    <div class="row">
-        <div class="col-md-6">
-            <form action="#" th:action="@{/save}" th:object="${book}" method="post">
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label for="title" class="col-form-label">Title</label>
-                        <input type="text" th:field="*{title}" class="form-control" id="title" placeholder="Title">
-                        <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="text-danger"></span>
+    <div class="container my-5">
+        <h2 class="mb-5" th:text="#{book-form-new}">New Book</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <form action="#" th:action="@{/save}" th:object="${book}" method="post">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="title" class="col-form-label">Title</label>
+                            <input type="text" th:field="*{title}" class="form-control" id="title" placeholder="Title">
+                            <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="text-danger"></span>
+                        </div>
                     </div>
-
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label for="authors" class="col-form-label">Author</label>
-                        <input type="text" th:field="*{authorsList}"  class="form-control" id="authors" placeholder="Author">
-                        <span th:if="${#fields.hasErrors('authorsList')}" th:errors="*{authorsList}" class="text-danger"></span>
+                    <div class="row">
+                        <div class="col-md-6 mt-5" >
+                            <input type="submit" class="btn btn-primary" value="Add Book">
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label for="genres" class="col-form-label">Genre</label>
-                        <input type="text" th:field="*{genresList}" class="form-control" id="genres" placeholder="Genre">
-                        <span th:if="${#fields.hasErrors('genresList')}" th:errors="*{genresList}" class="text-danger"></span>
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label for="comments" class="col-form-label">Comments</label>
-                        <input type="text" th:field="*{commentsList}" class="form-control" id="comments" placeholder="Comment">
-                        <span th:if="${#fields.hasErrors('commentsList')}" th:errors="*{commentsList}" class="text-danger"></span>
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-md-6 mt-5" >
-                        <input type="submit" class="btn btn-primary" value="Add Book">
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
 </body>
 </html>

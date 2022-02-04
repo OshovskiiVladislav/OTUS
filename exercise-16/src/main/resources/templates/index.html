@@ -1,84 +1,89 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
-    <title>List of all books</title>
-    <style type="text/css">
-        body {
-            padding: 50px;
-        }
+    <head>
+        <meta charset="UTF-8"/>
+        <title>List of all books</title>
+        <style type="text/css">
+            body {
+                padding: 50px;
+            }
 
-        .books {
-            border: 1px solid steelblue;
-            width: 300px;
-            border-collapse: collapse;
-        }
+            .books {
+                border: 1px solid steelblue;
+                width: 300px;
+                border-collapse: collapse;
+            }
 
-        .persons tr td, th {
-            padding: 5px;
-            border: 1px solid steelblue;
-        }
+            .persons tr td, th {
+                padding: 5px;
+                border: 1px solid steelblue;
+            }
 
-        .persons td:last-child, td:first-child {
-            width: 50px;
-        }
+            .persons td:last-child, td:first-child {
+                width: 50px;
+            }
 
-        h3 {
-            background-image: url("../static/listmark.png");
-            background-repeat: no-repeat;
-            padding: 2px;
-            padding-left: 30px;
-        }
+            h3 {
+                background-image: url("../static/listmark.png");
+                background-repeat: no-repeat;
+                padding: 2px;
+                padding-left: 30px;
+            }
 
-    </style>
+        </style>
 
-    <style type="text/css" th:inline="text">
-        [[h3]] {
-            background-image: url([[@{/listmark.png}]]);
-            background-repeat: no-repeat;
-            padding: 2px;
-            padding-left: 30px;
-        }
+        <style type="text/css" th:inline="text">
+            [[h3]] {
+                background-image: url([[@{/listmark.png}]]);
+                background-repeat: no-repeat;
+                padding: 2px;
+                padding-left: 30px;
+            }
 
-    </style>
-</head>
-<body>
+        </style>
+    </head>
+    <body>
 
-<h3 th:text="#{lang-switcher-header}">Select language</h3>
-<div>
-    <div><a href="#" th:href="@{/(lang=en)}" th:text="#{en-lang-switch-button-caption}">Language - EN</a></div>
-    <div><a href="#" th:href="@{/(lang=ru)}" th:text="#{ru-lang-switch-button-caption}">Language - RU</a></div>
-</div>
+        <h3 th:text="#{lang-switcher-header}">Select language</h3>
 
-<h3 th:text="#{books-table-header}">Books:</h3>
+        <div>
+            <div><a href="#" th:href="@{/(lang=en)}" th:text="#{en-lang-switch-button-caption}">Language - EN</a></div>
+            <div><a href="#" th:href="@{/(lang=ru)}" th:text="#{ru-lang-switch-button-caption}">Language - RU</a></div>
+        </div>
 
-<table class="books">
-    <thead>
-    <tr>
-        <th th:text="#{book-table-id}">ID</th>
-        <th th:text="#{book-table-title}">Title</th>
-        <th th:text="#{book-table-authors}">Authors</th>
-        <th th:text="#{book-table-genres}">Genres</th>
-        <th th:text="#{book-table-comments}">Comments</th>
-        <th th:text="#{book-table-actions}">Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="book : ${books}">
-        <td th:text="${book.id}">1</td>
-        <td th:text="${book.title}">The Da Vinci Code</td>
-        <td th:text="${#strings.listJoin(book.getAuthorsList(), ', ')}">Dan Brown</td>
-        <td th:text="${#strings.listJoin(book.getGenresList(), ', ')}">Roman</td>
-        <td th:text="${#strings.listJoin(book.getCommentsList(), ', ')}">The good book</td>
-        <td>
-            <a th:href="@{/edit(id=${book.id})}" href="edit.html" th:text="#{edit-button-caption}">Edit</a>
-            <a th:href="@{/delete/{id}(id=${book.id})}" th:text="#{delete-button-caption}">Delete</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<div>
-    <a href="/save" th:text="#{book-form-save}">Add a new book</a>
-</div>
-</body>
+        <h3 th:text="#{books-table-header}">Books:</h3>
+
+        <table class="books">
+            <thead>
+            <tr>
+                <th th:text="#{book-table-id}">ID</th>
+                <th th:text="#{book-table-title}">Title</th>
+                <th th:text="#{book-table-authors}">Authors</th>
+                <th th:text="#{book-table-genres}">Genres</th>
+                <th th:text="#{book-table-comments}">Comments</th>
+                <th th:text="#{book-table-actions}">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="book : ${books}">
+                <th th:text="${book.id}">1</th>
+                <th th:text="${book.title}">The Da Vinci Code</th>
+                <th th:text="${#strings.listJoin(book.getAuthorsList(), ', ')}">Dan Brown</th>
+                <th th:text="${#strings.listJoin(book.getGenresList(), ', ')}">Roman</th>
+                <th th:text="${#strings.listJoin(book.getCommentsList(), ', ')}">The good book</th>
+                <th>
+                    <a target="_blank" th:href="@{/edit(id=${book.id})}" href="edit.html" th:text="#{edit-button-caption}">Edit</a>
+                    <a th:href="@{/delete/{id}(id=${book.id})}" th:text="#{delete-button-caption}">Delete</a>
+                </th>
+            </tr>
+            </tbody>
+        </table>
+
+        <table class="new-book">
+            <thead>
+            <tr>
+                <th > <a target="_blank" href="/save" th:text="#{book-form-save}">Add a new book</a> </th>
+            </tr>
+        </table>
+    </body>
 </html>

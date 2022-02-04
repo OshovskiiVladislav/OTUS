@@ -39,7 +39,6 @@ public class BookControllerImpl implements BookController {
         return "save";
     }
 
-    //@Validated // @Valid
     @Override
     @PostMapping("/edit")
     public String updateBook(@ModelAttribute("book") BookDto bookDto, BindingResult bindingResult, Model model) {
