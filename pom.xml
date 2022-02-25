@@ -10,7 +10,8 @@
         <module>exercise-5</module>
         <module>exercise-7</module>
 		<module>exercise-9</module>
-	</modules>
+        <module>exercise-11</module>
+    </modules>
     <parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -25,6 +26,4 @@
 	<properties>
 		<java.version>11</java.version>
 	</properties>
-
-
 </project>
