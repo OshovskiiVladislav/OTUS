@@ -14,6 +14,7 @@
         <module>exercise-13</module>
 		<module>exercise-16</module>
 		<module>exercise-17/backend</module>
+		<module>exercise-20</module>
 	</modules>
     <parent>
 		<groupId>org.springframework.boot</groupId>

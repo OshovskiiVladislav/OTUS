@@ -12,3 +12,5 @@
 13. [Использовать MongoDB и spring-data для хранения информации о книгах](exercise-13/README.md)  [![link](https://img.shields.io/badge/-Repository%20link-969c56?logo=github)](https://github.com/OshovskiiVladislav/OTUS/blob/master/exercise-13/src/main/java/com/oshovskii/otus/MainApplication.java)
 16. [CRUD приложение с Web UI и хранением данных в БД](exercise-16/README.md)  [![link](https://img.shields.io/badge/-Repository%20link-969c56?logo=github)](https://github.com/OshovskiiVladislav/OTUS/blob/master/exercise-16/src/main/java/com/oshovskii/otus/MainApplication.java)
 17. [Переписать приложение с использованием AJAX и REST-контроллеров](exercise-17/backend/README.md)  [![link](https://img.shields.io/badge/-Repository%20link-969c56?logo=github)](https://github.com/OshovskiiVladislav/OTUS/blob/master/exercise-17/src/main/java/com/oshovskii/otus/MainApplication.java)
+20. [Переписать приложение с использованием AJAX и REST-контроллеров](exercise-20/README.md)  [![link](https://img.shields.io/badge/-Repository%20link-969c56?logo=github)](https://github.com/OshovskiiVladislav/OTUS/blob/master/exercise-20/src/main/java/com/oshovskii/otus/MainApplication.java)
+ 
