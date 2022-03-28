@@ -9,7 +9,6 @@
         <module>exercise-3</module>
         <module>exercise-5</module>
         <module>exercise-7</module>
-		<module>exercise-9</module>
 	</modules>
     <parent>
 		<groupId>org.springframework.boot</groupId>
@@ -25,6 +24,4 @@
 	<properties>
 		<java.version>11</java.version>
 	</properties>
-
-
 </project>

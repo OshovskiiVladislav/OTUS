@@ -1,0 +1,15 @@
+#spring:
+#  datasources:
+#    ld:
+#      driverClassName: org.postgresql.Driver
+#      jdbc-url: jdbc:postgresql://localhost:5432/oplus
+#      username: postgres
+#      password: postgres
+#  sql:
+#    init:
+#      mode: always
+##      data-locations: data.sql
+#  jpa:
+#    generate-ddl: false
+#    hibernate:
+#      ddl-auto: none
