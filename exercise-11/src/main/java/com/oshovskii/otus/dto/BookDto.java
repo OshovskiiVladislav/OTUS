@@ -1,7 +1,6 @@
 package com.oshovskii.otus.dto;
 
 import com.oshovskii.otus.models.Author;
-import com.oshovskii.otus.models.Comment;
 import com.oshovskii.otus.models.Genre;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +20,4 @@ public class BookDto {
     private Set<Author> authorsList;
     @ToString.Include
     private Set<Genre> genresList;
-    @ToString.Include
-    private Set<Comment> commentsList;
 }

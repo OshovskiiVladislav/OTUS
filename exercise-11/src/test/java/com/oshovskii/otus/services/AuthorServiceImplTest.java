@@ -1,7 +1,6 @@
 package com.oshovskii.otus.services;
 
 import com.oshovskii.otus.models.Author;
-import com.oshovskii.otus.models.Genre;
 import com.oshovskii.otus.repositories.AuthorRepository;
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;

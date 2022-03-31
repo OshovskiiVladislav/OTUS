@@ -11,6 +11,9 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "books")
+@NamedEntityGraph(name = "book-author-genre",
+        attributeNodes = {@NamedAttributeNode("authorsList"),
+                          @NamedAttributeNode("genresList")})
 @Entity
 public class Book {
     @Id
@@ -33,11 +36,6 @@ public class Book {
     @JoinTable(name = "book_genres", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private Set<Genre> genresList;
-
-    @ToString.Include
-    @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "book_id")
-    private Set<Comment> commentsList;
 
     public Book(String title) {
         this.title = title;

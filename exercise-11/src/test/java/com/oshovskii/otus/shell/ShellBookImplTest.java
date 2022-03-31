@@ -1,10 +1,6 @@
 package com.oshovskii.otus.shell;
 
 import com.oshovskii.otus.dto.BookDto;
-import com.oshovskii.otus.models.Author;
-import com.oshovskii.otus.models.Book;
-import com.oshovskii.otus.models.Comment;
-import com.oshovskii.otus.models.Genre;
 import com.oshovskii.otus.services.interfaces.BookService;
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
@@ -17,11 +13,8 @@ import org.springframework.shell.Shell;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 import static com.oshovskii.otus.factory.TestBookDtoFactory.createBookDtoWithAllInfoById;
-import static com.oshovskii.otus.factory.TestBookFactory.createBookWithAllInfoById;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -41,22 +34,20 @@ class ShellBookImplTest {
     private static final String COMMAND_PUBLISH_GET_BOOK_BY_TITLE = "findBookByTitle Angels_and_Demons";
     private static final String COMMAND_PUBLISH_ALL_BOOKS = "allBooks";
     private static final String COMMAND_PUBLISH_COUNT_BOOKS = "countBook";
-    private static final String COMMAND_PUBLISH_INSERT_BOOK = "saveB 1 1 1 TestBookTitle";
+    private static final String COMMAND_PUBLISH_INSERT_BOOK = "saveB 1 1 TestBookTitle";
 
     private static final String COMMAND_PUBLISH_DELETE_BOOK_BY_ID = "deleteBook 1";
     private static final String COMMAND_PUBLISH_DELETE_BOOK_BY_ID_EXPECTED_MESSAGE = "book with id 1 deleted";
-    private static final String COMMAND_PUBLISH_INSERT_BOOK_EXPECTED_MESSAGE = "Save book <TestBookTitle> completed";
 
     private static final Long EXPECTED_BOOKS_COUNT = 2L;
     private static final String NEW_BOOK_TITLE = "TestBookTitle";
 
     private static final Long EXISTING_BOOK_ID = 1L;
     private static final String EXISTING_BOOK_TITLE = "The Da Vinci Code";
-    private static final String EXISTING_BOOK_TITLE_2 = "Angels and Demons";
+    private static final String EXISTING_BOOK_TITLE_2 = "Angels_and_Demons";
 
     private static final Long EXISTING_AUTHOR_ID = 1L;
     private static final Long EXISTING_GENRE_ID = 1L;
-    private static final Long EXISTING_COMMENT_ID = 1L;
 
     @DisplayName("Should return CommandNotCurrentlyAvailable if the user logged when trying to execute the test command")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
@@ -88,10 +79,10 @@ class ShellBookImplTest {
         when(bookService.findAllBooks()).thenReturn(expectedBookDtoList);
 
         // Call
-        val res = (String) shell.evaluate(() -> COMMAND_PUBLISH_ALL_BOOKS);
+        val res = (List<BookDto>) shell.evaluate(() -> COMMAND_PUBLISH_ALL_BOOKS);
 
         // Verify
-        assertThat(res).isEqualTo(expectedBookDtoList.toString());
+        assertThat(res).isEqualTo(expectedBookDtoList);
         verify(bookService, times(1)).findAllBooks();
     }
 
@@ -122,10 +113,10 @@ class ShellBookImplTest {
         when(bookService.findBookById(EXISTING_BOOK_ID)).thenReturn(expectedBookDto);
 
         // Call
-        val actualBook = (String) shell.evaluate(()-> COMMAND_PUBLISH_GET_BOOK_BY_ID);
+        val actualBook = (BookDto) shell.evaluate(()-> COMMAND_PUBLISH_GET_BOOK_BY_ID);
 
         // Verify
-        assertThat(actualBook).isEqualTo(expectedBookDto.toString());
+        assertThat(actualBook).isEqualTo(expectedBookDto);
         verify(bookService, times(1)).findBookById(EXISTING_BOOK_ID);
     }
 
@@ -136,16 +127,16 @@ class ShellBookImplTest {
         shell.evaluate(() -> COMMAND_LOGIN);
 
         val expectedBookDto = new BookDto();
-        expectedBookDto.setTitle(EXISTING_BOOK_TITLE);
+        expectedBookDto.setTitle(EXISTING_BOOK_TITLE_2);
 
-        when(bookService.findBookByTitle(EXISTING_BOOK_TITLE)).thenReturn(expectedBookDto);
+        when(bookService.findBookByTitle(EXISTING_BOOK_TITLE_2)).thenReturn(expectedBookDto);
 
         // Call
-        val actualBook = (String) shell.evaluate(()-> COMMAND_PUBLISH_GET_BOOK_BY_TITLE);
+        val actualBook = (BookDto) shell.evaluate(()-> COMMAND_PUBLISH_GET_BOOK_BY_TITLE);
 
         // Verify
-        assertThat(actualBook).isEqualTo(expectedBookDto.toString());
-        verify(bookService, times(1)).findBookByTitle(EXISTING_BOOK_TITLE);
+        assertThat(actualBook).isEqualTo(expectedBookDto);
+        verify(bookService, times(1)).findBookByTitle(EXISTING_BOOK_TITLE_2);
     }
 
     @DisplayName("Save book in db and call service method if the command is executed after logging in")
@@ -156,17 +147,17 @@ class ShellBookImplTest {
 
         val expectedBookDto = createBookDtoWithAllInfoById(EXISTING_BOOK_ID);;
 
-        when(bookService.saveBook(NEW_BOOK_TITLE, EXISTING_AUTHOR_ID, EXISTING_GENRE_ID, EXISTING_COMMENT_ID))
+        when(bookService.saveBook(NEW_BOOK_TITLE, EXISTING_AUTHOR_ID, EXISTING_GENRE_ID))
                 .thenReturn(expectedBookDto);
 
         // Call
-        val actualMessage = (String) shell.evaluate(()-> COMMAND_PUBLISH_INSERT_BOOK);
+        val actualMessage = (BookDto) shell.evaluate(()-> COMMAND_PUBLISH_INSERT_BOOK);
 
         // Verify
-        assertThat(actualMessage).isEqualTo(COMMAND_PUBLISH_INSERT_BOOK_EXPECTED_MESSAGE);
+        assertThat(actualMessage).isEqualTo(expectedBookDto);
 
         verify(bookService, times(1))
-                .saveBook(NEW_BOOK_TITLE, EXISTING_AUTHOR_ID, EXISTING_GENRE_ID,EXISTING_COMMENT_ID);
+                .saveBook(NEW_BOOK_TITLE, EXISTING_AUTHOR_ID, EXISTING_GENRE_ID);
     }
 
     @DisplayName("Delete book by id and call service method if the command is executed after logging in")

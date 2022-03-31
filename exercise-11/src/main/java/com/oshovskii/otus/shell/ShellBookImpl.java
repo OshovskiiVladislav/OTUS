@@ -1,5 +1,6 @@
 package com.oshovskii.otus.shell;
 
+import com.oshovskii.otus.dto.BookDto;
 import com.oshovskii.otus.services.interfaces.BookService;
 import com.oshovskii.otus.shell.interfaces.ShellBook;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,8 @@ import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellMethodAvailability;
+
+import java.util.List;
 
 @ShellComponent
 @RequiredArgsConstructor
@@ -24,38 +27,36 @@ public class ShellBookImpl implements ShellBook {
     @Override
     @ShellMethod(value = "Publish book by id", key = {"getBookById", "getB"})
     @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
-    public String publishBookByID(Long bookId) {
-        return bookService.findBookById(bookId).toString();
+    public BookDto publishBookByID(Long bookId) {
+        return bookService.findBookById(bookId);
     }
 
     @Override
     @ShellMethod(value = "Publish publish book by title ignore case", key = {"getByTitleIgnoreCase", "getBTI"})
     @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
-    public String publishBookByTitleIgnoreCase(String title) {
-        return bookService.findBookByTitleIgnoreCase(title).toString();
+    public BookDto publishBookByTitleIgnoreCase(String title) {
+        return bookService.findBookByTitleIgnoreCase(title);
     }
 
     @Override
     @ShellMethod(value = "Publish all books", key = {"allBooks", "allB"})
     @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
-    public String publishAllBook() {
-        return bookService.findAllBooks().toString();
+    public List<BookDto> publishAllBook() {
+        return bookService.findAllBooks();
     }
 
     @Override
     @ShellMethod(value = "Publish book by title", key = {"findBookByTitle", "fbt"})
     @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
-    public String publishBookByTitle(String title) {
-        return bookService.findBookByTitle(title).toString();
+    public BookDto publishBookByTitle(String title) {
+        return bookService.findBookByTitle(title);
     }
 
     @Override
     @ShellMethod(value = "Save book", key = {"saveBookB", "saveB", "sB"})
     @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
-    public String saveBook(Long authorId, Long genreId, Long commentId, String title) {
-        bookService.saveBook(title, authorId, genreId, commentId);
-        String completedCommandSaveBook = "Save book <"+ title + "> completed";
-        return completedCommandSaveBook;
+    public BookDto saveBook(Long authorId, Long genreId, String title) {
+        return bookService.saveBook(title, authorId, genreId);
     }
 
     @Override

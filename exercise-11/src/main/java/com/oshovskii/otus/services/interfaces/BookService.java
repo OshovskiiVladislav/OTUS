@@ -8,7 +8,7 @@ public interface BookService {
     BookDto findBookById(Long id);
     List<BookDto> findAllBooks();
     BookDto findBookByTitle(String title);
-    BookDto saveBook(String title, Long authorId, Long genreId, Long commentId);
+    BookDto saveBook(String title, Long authorId, Long genreId);
     BookDto findBookByTitleIgnoreCase(String example);
     long countBooks();
     void deleteBookById(Long id);

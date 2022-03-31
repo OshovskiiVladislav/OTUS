@@ -15,7 +15,7 @@ VALUES
 
 INSERT INTO comments (text, book_id)
 VALUES
-('Good book', 1),
+('Good_book', 1),
 ('The best book', 2);
 
 INSERT INTO book_authors (book_id, author_id)

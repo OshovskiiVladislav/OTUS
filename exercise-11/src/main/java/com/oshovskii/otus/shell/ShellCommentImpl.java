@@ -1,5 +1,6 @@
 package com.oshovskii.otus.shell;
 
+import com.oshovskii.otus.dto.CommentDto;
 import com.oshovskii.otus.services.interfaces.CommentService;
 import com.oshovskii.otus.shell.interfaces.ShellComment;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,8 @@ import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellMethodAvailability;
+
+import java.util.List;
 
 @ShellComponent
 @RequiredArgsConstructor
@@ -24,31 +27,29 @@ public class ShellCommentImpl implements ShellComment {
     @Override
     @ShellMethod(value = "Publish comment by id", key = {"getCommentById", "getC"})
     @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
-    public String publishCommentByID(Long commentId) {
-        return commentService.findCommentById(commentId).toString();
+    public CommentDto publishCommentByID(Long commentId) {
+        return commentService.findCommentById(commentId);
     }
 
     @Override
     @ShellMethod(value = "Publish all comments", key = {"allComments", "allC"})
     @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
-    public String publishAllComment() {
-        return commentService.findAllComments().toString();
+    public List<CommentDto> publishAllComment() {
+        return commentService.findAllComments();
     }
 
     @Override
     @ShellMethod(value = "Publish comment by title", key = {"findCommentByText", "fct"})
     @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
-    public String publishCommentByText(String text) {
-        return commentService.findCommentByText(text).toString();
+    public CommentDto publishCommentByText(String text) {
+        return commentService.findCommentByText(text);
     }
 
     @Override
     @ShellMethod(value = "Save comment", key = {"saveComment", "saveC", "sC"})
     @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
-    public String saveComment(String text) {
-        commentService.saveComment(text);
-        String completedCommandSaveComment = "Save comment <" + text + "> completed";
-        return completedCommandSaveComment;
+    public CommentDto saveComment(String text) {
+        return commentService.saveComment(text);
     }
 
     @Override

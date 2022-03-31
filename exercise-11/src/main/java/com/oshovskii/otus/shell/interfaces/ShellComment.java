@@ -1,12 +1,16 @@
 package com.oshovskii.otus.shell.interfaces;
 
+import com.oshovskii.otus.dto.CommentDto;
+
+import java.util.List;
+
 public interface ShellComment {
     long publishCountComments();
-    String publishCommentByID(Long commentId);
+    CommentDto publishCommentByID(Long commentId);
 
-    String publishAllComment();
-    String publishCommentByText(String text);
+    List<CommentDto> publishAllComment();
+    CommentDto publishCommentByText(String text);
 
-    String saveComment(String text);
+    CommentDto saveComment(String text);
     String deleteCommentByID(Long commentId);
 }

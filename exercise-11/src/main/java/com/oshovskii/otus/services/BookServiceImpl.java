@@ -4,7 +4,6 @@ import com.oshovskii.otus.dto.BookDto;
 import com.oshovskii.otus.exceptions.ResourceNotFoundException;
 import com.oshovskii.otus.models.Author;
 import com.oshovskii.otus.models.Book;
-import com.oshovskii.otus.models.Comment;
 import com.oshovskii.otus.models.Genre;
 import com.oshovskii.otus.repositories.BookRepository;
 import com.oshovskii.otus.services.interfaces.AuthorService;
@@ -58,9 +57,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public BookDto saveBook(String title, Long authorId, Long genreId, Long commentId) {
-        Comment comment = commentService.findById(commentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Comment with id: " + commentId + " not found"));
+    public BookDto saveBook(String title, Long authorId, Long genreId) {
         Author author = authorService.findAuthorById(authorId)
                 .orElseThrow(() -> new ResourceNotFoundException("Author with id: " + authorId + " not found"));
         Genre genre = genreService.findGenreById(genreId)
@@ -69,7 +66,6 @@ public class BookServiceImpl implements BookService {
         Book book = new Book(title);
         book.setAuthorsList(Set.of(author));
         book.setGenresList(Set.of(genre));
-        book.setCommentsList(Set.of(comment));
 
         return modelMapper.map(bookRepository.save(book), BookDto.class);
     }

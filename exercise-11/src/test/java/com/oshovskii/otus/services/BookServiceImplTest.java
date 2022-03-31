@@ -42,9 +42,6 @@ class BookServiceImplTest {
     private GenreServiceImpl genreService;
 
     @MockBean
-    private CommentServiceImpl commentService;
-
-    @MockBean
     private ModelMapper modelMapperMock;
 
     private static final String EXPECTED_BOOK_TITLE = "Test title";
@@ -143,27 +140,25 @@ class BookServiceImplTest {
 
     @DisplayName("Save book test")
     @Test
-    void save_validTitleAndAuthorIdAndGenreIdAndCommentId_shouldSaveBook(){
+    void save_validTitleAndAuthorIdAndGenreId_shouldSaveBook(){
         // Config
         val author = new Author(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_NAME);
         val genre = new Genre(EXISTING_GENRE_ID, EXISTING_GENRE_TYPE);
-        val comment = new Comment(EXISTING_COMMENT_ID, EXISTING_COMMENT_TEXT);
 
         val savedBook = createBookWithAllInfoById(EXISTING_BOOK_ID);
         val expectedBookDto = createBookDtoWithAllInfoById(EXISTING_BOOK_ID);
+        expectedBookDto.setTitle(EXPECTED_BOOK_TITLE);
 
         when(bookRepository.save(any(Book.class))).thenReturn(savedBook);
         when(authorService.findAuthorById(EXISTING_AUTHOR_ID)).thenReturn(Optional.of(author));
         when(genreService.findGenreById(EXISTING_GENRE_ID)).thenReturn(Optional.of(genre));
-        when(commentService.findById(EXISTING_COMMENT_ID)).thenReturn(Optional.of(comment));
         when(modelMapperMock.map(savedBook, BookDto.class)).thenReturn(expectedBookDto);
 
         // Call
         val actualBook = bookService.saveBook(
                 EXPECTED_BOOK_TITLE,
                 EXISTING_AUTHOR_ID,
-                EXISTING_GENRE_ID,
-                EXISTING_COMMENT_ID
+                EXISTING_GENRE_ID
         );
 
         // Verify

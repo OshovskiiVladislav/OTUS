@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Getter
 @Setter
 @ToString(onlyExplicitlyIncluded = true)
@@ -21,6 +23,11 @@ public class Comment {
     @ToString.Include
     @Lob
     private String text;
+
+    @ManyToOne(targetEntity = Book.class, fetch = LAZY)
+    @JoinColumn(name = "book_id")
+    @ToString.Exclude
+    private Book book;
 
     public Comment(String text) {
         this.text = text;

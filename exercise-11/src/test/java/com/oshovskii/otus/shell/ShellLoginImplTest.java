@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Test ShellLoginImpl command")
 @SpringBootTest
-public class ShellLoginImplTest {
+class ShellLoginImplTest {
     @Autowired
     private Shell shell;
 
@@ -23,7 +23,7 @@ public class ShellLoginImplTest {
 
     @DisplayName("Should return greeting pattern for all login")
     @Test
-    public void login_validLoginCommand_shouldReturnExpectedGreeting() {
+    void login_validLoginCommand_shouldReturnExpectedGreeting() {
         String res = (String) shell.evaluate(() -> COMMAND_LOGIN);
         assertThat(res).isEqualTo(String.format(GREETING_PATTERN, DEFAULT_LOGIN));
 

@@ -15,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.List;
 import java.util.Optional;
 
+import static com.oshovskii.otus.factory.TestBookFactory.createBookWithAllInfoById;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -32,7 +33,9 @@ class CommentServiceImplTest {
     private ModelMapper modelMapperMock;
 
     private static final Long EXISTING_COMMENT_ID = 1L;
+    private static final Long EXISTING_BOOK_ID = 1L;
     private static final Long EXISTING_COMMENT_ID_2 = 2L;
+    private static final Long EXISTING_BOOK_ID_2 = 2L;
 
     private static final String EXISTING_COMMENT_TEXT = "Good book";
     private static final String EXISTING_COMMENT_TEXT_2 = "The best book";
@@ -63,8 +66,16 @@ class CommentServiceImplTest {
     @Test
     void findAllComments_voidInput_shouldReturnExpectedCommentsList() {
         // Config
-        val expectedComment = new Comment(EXISTING_COMMENT_ID, EXISTING_COMMENT_TEXT);
-        val expectedComment2 = new Comment(EXISTING_COMMENT_ID_2, EXISTING_COMMENT_TEXT_2);
+        val expectedComment = new Comment(
+                EXISTING_COMMENT_ID,
+                EXISTING_COMMENT_TEXT,
+                createBookWithAllInfoById(EXISTING_BOOK_ID)
+        );
+        val expectedComment2 = new Comment(
+                EXISTING_COMMENT_ID_2,
+                EXISTING_COMMENT_TEXT_2,
+                createBookWithAllInfoById(EXISTING_BOOK_ID_2)
+        );
 
         val expectedCommentDto = new CommentDto();
         expectedCommentDto.setText(expectedComment.getText());
@@ -89,7 +100,11 @@ class CommentServiceImplTest {
     @Test
     void findCommentByText_validText_shouldReturnExpectedCommentByText() {
         // Config
-        val expectedComment = new Comment(EXISTING_COMMENT_ID, EXISTING_COMMENT_TEXT);
+        val expectedComment = new Comment(
+                EXISTING_COMMENT_ID,
+                EXISTING_COMMENT_TEXT,
+                createBookWithAllInfoById(EXISTING_BOOK_ID)
+        );
 
         val expectedCommentDto = new CommentDto();
         expectedCommentDto.setText(expectedComment.getText());
@@ -108,7 +123,11 @@ class CommentServiceImplTest {
     @Test
     void saveComment_validText_shouldSaveComment() {
         // Config
-        val savedComment = new Comment(EXISTING_COMMENT_ID, EXISTING_COMMENT_TEXT);
+        val savedComment = new Comment(
+                EXISTING_COMMENT_ID,
+                EXISTING_COMMENT_TEXT,
+                createBookWithAllInfoById(EXISTING_BOOK_ID)
+        );
 
         val expectedCommentDto = new CommentDto();
         expectedCommentDto.setText(savedComment.getText());
@@ -141,7 +160,11 @@ class CommentServiceImplTest {
     @Test
     void findById_validCommentId_shouldReturnExpectedCommentById(){
         // Config
-        val expectedComment = new Comment(EXISTING_COMMENT_ID, EXISTING_COMMENT_TEXT);
+        val expectedComment = new Comment(
+                EXISTING_COMMENT_ID,
+                EXISTING_COMMENT_TEXT,
+                createBookWithAllInfoById(EXISTING_BOOK_ID)
+        );
 
         when(commentRepository.findById(EXISTING_COMMENT_ID)).thenReturn(Optional.of(expectedComment));
 
