@@ -1,4 +1,3 @@
--- create table IF NOT EXISTS books (id integer not null, title varchar(255), primary key (id));
 DROP TABLE IF EXISTS authors CASCADE;
 CREATE TABLE authors
 (
