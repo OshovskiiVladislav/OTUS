@@ -20,14 +20,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @Import({BookServiceImpl.class})
 class BookServiceImplTest {
 
-    // TODO: add test controller
     private final static int EXPECTED_BOOKS_COUNT = 10;
     private final static Long LONG_ONE = 1L;
     private final static Author AUTHOR_ONE = new Author(LONG_ONE, "Михаил Булгаков-test");
     private final static Genre GENRE_ONE = new Genre(LONG_ONE, "Роман");
     private final static String BOOK_ONE_NAME = "Мастер и Маргарита";
     private final static Book BOOK_ONE = new Book(LONG_ONE, AUTHOR_ONE, GENRE_ONE, BOOK_ONE_NAME);
-
 
     @Autowired
     private BookServiceImpl bookService;
