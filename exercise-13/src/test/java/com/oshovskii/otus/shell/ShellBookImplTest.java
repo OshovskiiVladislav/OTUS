@@ -34,8 +34,8 @@ class ShellBookImplTest {
 
     private static final String COMMAND_LOGIN = "login";
 
-    private static final String COMMAND_PUBLISH_GET_BOOK_BY_ID = "getBookById 1";
-    private static final String COMMAND_PUBLISH_GET_BOOK_BY_TITLE = "findBookByTitle Angels_and_Demons";
+    private static final String COMMAND_PUBLISH_GET_BOOK_BY_ID = "getBookById 61e962590f8ce7592de50e9a";
+    private static final String COMMAND_PUBLISH_GET_BOOK_BY_TITLE = "findBookByTitle The_Da_Vinci_Code";
     private static final String COMMAND_PUBLISH_ALL_BOOKS = "allBooks";
     private static final String COMMAND_PUBLISH_INSERT_BOOK = "saveB DanBrown TestGenre Goodbook TestBookTitle";
 
@@ -45,15 +45,12 @@ class ShellBookImplTest {
 
     private static final String EXISTING_BOOK_ID = "61e962590f8ce7592de50e9a";
     private static final String EXISTING_BOOK_TITLE = "The Da Vinci Code";
-    private static final String EXISTING_BOOK_TITLE_2 = "Angels and Demons";
+    private static final String EXISTING_BOOK_TITLE_2 = "The Great Gatsby";
+    // TODO Как в тестах shell передать строку? (избегая костыль The_Da_Vinci_Code)
+    private static final String EXISTING_BOOK_TITLE_3 = "The_Da_Vinci_Code";
 
-    private static final String EXISTING_AUTHOR_ID = "61e9c448ccf1a74f9c05b2f6";
     private static final String EXISTING_AUTHOR_NAME = "DanBrown";
-
-    private static final String EXISTING_GENRE_ID = "61e9ce78140334468e63a020";
     private static final String EXISTING_GENRE_TYPE = "TestGenre";
-
-    private static final String EXISTING_COMMENT_ID = "61e9ce6c140334468e63a01f";
     private static final String EXISTING_COMMENT_TEXT = "Goodbook";
 
     @DisplayName("Should return CommandNotCurrentlyAvailable if the user logged when trying to execute the test command")
@@ -68,7 +65,7 @@ class ShellBookImplTest {
     }
 
     @DisplayName("Should return all books of the test command execution " +
-            "and call service method if the command is executed after logging in")
+            "and call service method if the command is executed after logging in test")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     @Test
     void publishAllBook_validCommand_shouldReturnExpectedBookList() {
@@ -78,34 +75,49 @@ class ShellBookImplTest {
         val expectedBook = createBookWithAllInfoByTitle(EXISTING_BOOK_TITLE);
         val expectedBook2 = createBookWithAllInfoByTitle(EXISTING_BOOK_TITLE_2);
 
-        val expectedBookList = List.of(expectedBook, expectedBook2);
+        val expectedBookDto1 = createBookDtoWithAllInfoByTitle(expectedBook.getTitle());
+        val expectedBookDto2 = createBookDtoWithAllInfoByTitle(expectedBook2.getTitle());
 
-        when(bookService.findAll()).thenReturn(expectedBookList);
+        val expectedBookList = List.of(expectedBook, expectedBook2);
+        val expectedBookDtoList = List.of(expectedBookDto1, expectedBookDto2);
+
+        when(bookService.findAll())
+                .thenReturn(expectedBookList);
+
+        when(modelMapper.map(expectedBook, BookDto.class))
+                .thenReturn(expectedBookDto1);
+
+        when(modelMapper.map(expectedBook2, BookDto.class))
+                .thenReturn(expectedBookDto2);
 
         // Call
-        val res = (String) shell.evaluate(() -> COMMAND_PUBLISH_ALL_BOOKS);
+        val res = (List<BookDto>) shell.evaluate(() -> COMMAND_PUBLISH_ALL_BOOKS);
 
         // Verify
-        assertThat(res).isEqualTo(expectedBookList.toString());
+        assertThat(res).isEqualTo(expectedBookDtoList);
         verify(bookService, times(1)).findAll();
     }
 
-    @DisplayName("Should return book by id and call service method if the command is executed after logging in")
+    @DisplayName("Should return book by id and call service method if the command is executed after logging in test")
     @Test
-    void publishBookByID_validCommandAndBookId_shouldReturnExpectedMessage(){
+    void publishBookByID_validCommandAndBookId_shouldReturnExpectedMessage() {
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
 
         val expectedBook = createBookWithAllInfoByTitle(EXISTING_BOOK_TITLE);
         val expectedBookDto = createBookDtoWithAllInfoByTitle(EXISTING_BOOK_TITLE);
 
-        when(bookService.findById(EXISTING_BOOK_ID)).thenReturn(expectedBook);
-        when(modelMapper.map(expectedBook, BookDto.class)).thenReturn(expectedBookDto);
+        when(bookService.findById(EXISTING_BOOK_ID))
+                .thenReturn(expectedBook);
+
+        when(modelMapper.map(expectedBook, BookDto.class))
+                .thenReturn(expectedBookDto);
+
         // Call
-        val actualBook = (String) shell.evaluate(()-> COMMAND_PUBLISH_GET_BOOK_BY_ID);
+        val actualBook = (BookDto) shell.evaluate(()-> COMMAND_PUBLISH_GET_BOOK_BY_ID);
 
         // Verify
-        assertThat(actualBook).isEqualTo(expectedBookDto.toString());
+        assertThat(actualBook).isEqualTo(expectedBookDto);
         verify(bookService, times(1)).findById(EXISTING_BOOK_ID);
     }
 
@@ -115,18 +127,21 @@ class ShellBookImplTest {
         // Config
         shell.evaluate(() -> COMMAND_LOGIN);
 
-        val expectedBook = createBookWithAllInfoByTitle(EXISTING_BOOK_TITLE);
-        val expectedBookDto = createBookDtoWithAllInfoByTitle(EXISTING_BOOK_TITLE);
+        val expectedBook = createBookWithAllInfoByTitle(EXISTING_BOOK_TITLE_3);
+        val expectedBookDto = createBookDtoWithAllInfoByTitle(EXISTING_BOOK_TITLE_3);
 
-        when(bookService.findByTitle(EXISTING_BOOK_TITLE)).thenReturn(expectedBook);
-        when(modelMapper.map(expectedBook, BookDto.class)).thenReturn(expectedBookDto);
+        when(bookService.findByTitle(EXISTING_BOOK_TITLE_3))
+                .thenReturn(expectedBook);
+
+        when(modelMapper.map(expectedBook, BookDto.class))
+                .thenReturn(expectedBookDto);
 
         // Call
-        val actualBook = (String) shell.evaluate(()-> COMMAND_PUBLISH_GET_BOOK_BY_TITLE);
+        val actualBook = (BookDto) shell.evaluate(()-> COMMAND_PUBLISH_GET_BOOK_BY_TITLE);
 
         // Verify
-        assertThat(actualBook).isEqualTo(expectedBookDto.toString());
-        verify(bookService, times(1)).findByTitle(EXISTING_BOOK_TITLE);
+        assertThat(actualBook).isEqualTo(expectedBookDto);
+        verify(bookService, times(1)).findByTitle(EXISTING_BOOK_TITLE_3);
     }
 
     @DisplayName("Save book in db and call service method if the command is executed after logging in")

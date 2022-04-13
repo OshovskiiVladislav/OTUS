@@ -107,8 +107,8 @@ class BookServiceImplTest {
     @Test
     void save_validTitleAndAuthorIdAndGenreIdAndCommentId_shouldSaveBook(){
         // Config
-        val author = new Author(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_NAME, List.of());
-        val genre = new Genre(EXISTING_GENRE_ID, EXISTING_GENRE_TYPE, List.of());
+        val author = new Author(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_NAME);
+        val genre = new Genre(EXISTING_GENRE_ID, EXISTING_GENRE_TYPE);
         val comment = new Comment(EXISTING_COMMENT_ID, EXISTING_COMMENT_TEXT);
 
         val savedBook = createBookWithAllInfoByTitle(EXISTING_BOOK_TITLE);

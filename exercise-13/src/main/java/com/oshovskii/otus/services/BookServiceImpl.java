@@ -51,18 +51,18 @@ public class BookServiceImpl implements BookService {
         return bookRepository.save(book);
     }
 
-    @Override
-    public List<Author> findBookAuthorsById(String bookId) {
-        return bookRepository.getBookAuthorsById(bookId);
-    }
-
-    @Override
-    public long findAuthorsArrayLengthByBookId(String bookId) {
-        return bookRepository.getAuthorsArrayLengthById(bookId);
-    }
-
-    @Override
-    public void deleteAuthorsArrayElementsById(String bookId) {
-        bookRepository.removeAuthorsArrayElementsById(bookId);
-    }
+//    @Override
+//    public List<Author> findBookAuthorsById(String bookId) {
+//        return bookRepository.getBookAuthorsById(bookId);
+//    }
+//
+//    @Override
+//    public long findAuthorsArrayLengthByBookId(String bookId) {
+//        return bookRepository.getAuthorsArrayLengthById(bookId);
+//    }
+//
+//    @Override
+//    public void deleteAuthorsArrayElementsById(String bookId) {
+//        bookRepository.removeAuthorsArrayElementsById(bookId);
+//    }
 }

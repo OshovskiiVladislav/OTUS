@@ -10,7 +10,7 @@ public interface BookService {
     List<Book> findAll();
     Book findByTitle(String title);
     Book save(String authorName, String genreType, String commentText, String title);
-    List<Author> findBookAuthorsById(String bookId);
-    long findAuthorsArrayLengthByBookId(String bookId);
-    void deleteAuthorsArrayElementsById(String bookId);
+//    List<Author> findBookAuthorsById(String bookId);
+//    long findAuthorsArrayLengthByBookId(String bookId);
+//    void deleteAuthorsArrayElementsById(String bookId);
 }

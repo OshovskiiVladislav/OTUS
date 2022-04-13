@@ -5,6 +5,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
 
-public interface BookRepository extends MongoRepository<Book, String>, BookRepositoryCustom {
+public interface BookRepository extends MongoRepository<Book, String> { // TODO, BookRepositoryCustom
     Optional<Book> findByTitle(String title);
 }

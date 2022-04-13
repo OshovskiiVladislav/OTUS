@@ -1,10 +1,12 @@
 package com.oshovskii.otus.shell;
 
+import com.oshovskii.otus.dto.AuthorDto;
 import com.oshovskii.otus.models.Author;
 import com.oshovskii.otus.services.interfaces.AuthorService;
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -23,6 +25,9 @@ class ShellAuthorImplTest {
 
     @MockBean
     private AuthorService authorService;
+
+    @MockBean
+    private ModelMapper modelMapper;
 
     @Autowired
     private Shell shell;
@@ -52,19 +57,34 @@ class ShellAuthorImplTest {
         expectedAuthor.setId(EXISTING_AUTHOR_ID);
         expectedAuthor.setName(EXISTING_AUTHOR_NAME);
 
+        val expectedAuthorDto1 = new AuthorDto();
+        expectedAuthorDto1.setName(expectedAuthor.getName());
+
         val expectedAuthor2 = new Author();
         expectedAuthor2.setId(EXISTING_AUTHOR_ID_2);
         expectedAuthor2.setName(EXISTING_AUTHOR_NAME_2);
 
+        val expectedAuthorDto2 = new AuthorDto();
+        expectedAuthorDto2.setName(expectedAuthor2.getName());
+
         val expectedAuthorList = List.of(expectedAuthor, expectedAuthor2);
 
-        when(authorService.findAllAuthors()).thenReturn(expectedAuthorList);
+        val expectedAuthorDtoList = List.of(expectedAuthorDto1, expectedAuthorDto2);
+
+        when(authorService.findAllAuthors())
+                .thenReturn(expectedAuthorList);
+
+        when(modelMapper.map(expectedAuthor, AuthorDto.class))
+                .thenReturn(expectedAuthorDto1);
+
+        when(modelMapper.map(expectedAuthor2, AuthorDto.class))
+                .thenReturn(expectedAuthorDto2);
 
         // Call
-        val res = (String) shell.evaluate(() -> COMMAND_PUBLISH_ALL_AUTHORS);
+        val res = (List<AuthorDto>) shell.evaluate(() -> COMMAND_PUBLISH_ALL_AUTHORS);
 
         // Verify
-        assertThat(res).isEqualTo(expectedAuthorList.toString());
+        assertThat(res).isEqualTo(expectedAuthorDtoList);
         verify(authorService, times(1)).findAllAuthors();
     }
 

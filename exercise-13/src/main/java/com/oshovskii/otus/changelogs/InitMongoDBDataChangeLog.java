@@ -33,14 +33,14 @@ public class InitMongoDBDataChangeLog {
 
     @ChangeSet(order = "002", id = "initAuthors", author = "oshovskii", runAlways = true)
     public void initAuthors(AuthorRepository authorRepository){
-        authorDanBrown = authorRepository.save(new Author("61e9c448ccf1a74f9c05b2f6" , "Dan Brown", List.of()));
-        authorScottFitzgerald = authorRepository.save(new Author("61e9c448ccf1a74f9c05b2f7", "Scott Fitzgerald", List.of()));
+        authorDanBrown = authorRepository.save(new Author("61e9c448ccf1a74f9c05b2f6" , "Dan Brown"));
+        authorScottFitzgerald = authorRepository.save(new Author("61e9c448ccf1a74f9c05b2f7", "Scott Fitzgerald"));
     }
 
     @ChangeSet(order = "003", id = "initGenres", author = "oshovskii", runAlways = true)
     public void initGenres(GenreRepository genreRepository){
-        genreRoman = genreRepository.save(new Genre("61e9c448ccf1a74f9c05b2f3" , "Roman", List.of()));
-        genreDetective = genreRepository.save(new Genre("61e9c448ccf1a74f9c05b2f8", "Detective", List.of()));
+        genreRoman = genreRepository.save(new Genre("61e9c448ccf1a74f9c05b2f3" , "Roman"));
+        genreDetective = genreRepository.save(new Genre("61e9c448ccf1a74f9c05b2f8", "Detective"));
     }
 
     @ChangeSet(order = "004", id = "initComments", author = "oshovskii", runAlways = true)
@@ -64,18 +64,4 @@ public class InitMongoDBDataChangeLog {
                 List.of(genreRoman),
                 List.of(commentGood)));
     }
-
-//    // TODO Правильный ли это способ вставки для связанных сущностей? Как мне организовать подобие ManyToMany (с этим подходом в подарок я получаю stackoverflow)
-//    @ChangeSet(order = "006", id = "updateAuthors", author = "oshovskii", runAlways = true)
-//    public void updateAuthors(AuthorRepository authorRepository){
-//        authorDanBrown = authorRepository.save(new Author("61e9c448ccf1a74f9c05b2f6" , "Dan Brown", List.of(bookAngelsAndDemons)));
-//        authorScottFitzgerald = authorRepository.save(new Author("61e9c448ccf1a74f9c05b2f7", "Scott Fitzgerald", List.of(bookTheGreatGatsby)));
-//    }
-//
-//    @ChangeSet(order = "007", id = "updateGenres", author = "oshovskii", runAlways = true)
-//    public void updateGenres(GenreRepository genreRepository){
-//        genreRoman = genreRepository.save(new Genre("61e9c448ccf1a74f9c05b2f8" , "Roman", List.of(bookAngelsAndDemons)));
-//        genreDetective = genreRepository.save(new Genre("61e9c448ccf1a74f9c05b2f8", "Detective", List.of(bookTheGreatGatsby)));
-//    }
-
 }

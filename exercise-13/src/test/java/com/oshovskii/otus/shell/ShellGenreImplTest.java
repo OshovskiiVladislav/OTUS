@@ -1,10 +1,12 @@
 package com.oshovskii.otus.shell;
 
+import com.oshovskii.otus.dto.GenreDto;
 import com.oshovskii.otus.models.Genre;
 import com.oshovskii.otus.services.interfaces.GenreService;
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -15,6 +17,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
 import static org.mockito.Mockito.*;
 
 @DisplayName("Test ShellGenreImpl command")
@@ -23,6 +26,9 @@ class ShellGenreImplTest {
 
     @MockBean
     private GenreService genreService;
+
+    @MockBean
+    private ModelMapper modelMapper;
 
     @Autowired
     private Shell shell;
@@ -54,15 +60,29 @@ class ShellGenreImplTest {
         expectedGenre2.setId(EXISTING_GENRE_ID_2);
         expectedGenre2.setType(EXISTING_GENRE_TYPE_2);
 
-        val expectedGenreList = List.of(expectedGenre, expectedGenre2);
+        val expectedGenreDto1 = new GenreDto();
+        expectedGenreDto1.setType(expectedGenre.getType());
 
-        when(genreService.findAllGenres()).thenReturn(expectedGenreList);
+        val expectedGenreDto2 = new GenreDto();
+        expectedGenreDto2.setType(expectedGenre2.getType());
+
+        val expectedGenreList = List.of(expectedGenre, expectedGenre2);
+        val expectedGenreDtoList = List.of(expectedGenreDto1, expectedGenreDto2);
+
+        when(genreService.findAllGenres())
+                .thenReturn(expectedGenreList);
+
+        when(modelMapper.map(expectedGenre, GenreDto.class))
+                .thenReturn(expectedGenreDto1);
+
+        when(modelMapper.map(expectedGenre2, GenreDto.class))
+                .thenReturn(expectedGenreDto2);
 
         // Call
-        val res = (String) shell.evaluate(() -> COMMAND_PUBLISH_ALL_GENERES);
+        val res = (List<GenreDto>) shell.evaluate(() -> COMMAND_PUBLISH_ALL_GENERES);
 
         // Verify
-        assertThat(res).isEqualTo(expectedGenreList.toString());
+        assertThat(res).isEqualTo(expectedGenreDtoList);
         verify(genreService, times(1)).findAllGenres();
     }
 

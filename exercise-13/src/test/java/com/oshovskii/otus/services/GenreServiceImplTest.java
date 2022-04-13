@@ -77,7 +77,7 @@ class GenreServiceImplTest {
     @Test
     void save_validGenre_shouldSaveGenre() {
         // Config
-        val savedGenre = new Genre(EXISTING_GENRE_ID, EXISTING_GENRE_TYPE, List.of());
+        val savedGenre = new Genre(EXISTING_GENRE_ID, EXISTING_GENRE_TYPE);
 
         when(genreRepository.save(any(Genre.class))).thenReturn(savedGenre);
 

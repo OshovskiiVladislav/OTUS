@@ -1,5 +1,6 @@
 package com.oshovskii.otus.repositories;
 
+import com.oshovskii.otus.models.Author;
 import com.oshovskii.otus.repositories.interfaces.AuthorRepository;
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
@@ -9,29 +10,27 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("AuthorRepository Test")
 @EnableConfigurationProperties
 @DataMongoTest
-class
-AuthorRepositoryTest {
+class AuthorRepositoryTest {
     @Autowired
     private AuthorRepository authorRepository;
 
-    private static final String EXISTING_AUTHOR_ID = "61e9c448ccf1a74f9c05b2f6";
-    private static final String EXISTING_AUTHOR_NAME = "Dan Brown";
+    private static final String SAVED_AUTHOR_NAME = "TestAuthor";
 
     @DisplayName("Should return correct author by name test")
     @Test
     void findByName_expectedValidAuthorName_shouldFindExpectedAuthorByName() {
         // Config
-        val expectedAuthor = authorRepository.findById(EXISTING_AUTHOR_ID);
-        System.out.println(authorRepository.findAll() + "==================================");
+        val savedAuthor = authorRepository.save(new Author(null, SAVED_AUTHOR_NAME));
+
         // Call
-        val actualAuthor = authorRepository.findByName(EXISTING_AUTHOR_NAME);
+        val actualAuthor = authorRepository.findByName(SAVED_AUTHOR_NAME);
 
         // Verify
-        assertThat(actualAuthor).isEqualTo(expectedAuthor);
+        assertThat(actualAuthor).isPresent().get()
+                .usingRecursiveComparison().isEqualTo(savedAuthor);
     }
 }
