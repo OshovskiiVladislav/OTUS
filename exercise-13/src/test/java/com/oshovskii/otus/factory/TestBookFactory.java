@@ -33,8 +33,8 @@ public class TestBookFactory {
 
     public static Book createBookWithAllInfoByTitle(String title) {
         if (title.equalsIgnoreCase(EXISTING_BOOK_TITLE)) {
-            val author = new Author(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_NAME, List.of());
-            val genre = new Genre(EXISTING_GENRE_ID, EXISTING_GENRE_TYPE, List.of());
+            val author = new Author(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_NAME);
+            val genre = new Genre(EXISTING_GENRE_ID, EXISTING_GENRE_TYPE);
             val comment = new Comment(EXISTING_COMMENT_ID, EXISTING_COMMENT_TEXT);
 
             val book = new Book();
@@ -45,8 +45,8 @@ public class TestBookFactory {
             book.setComments(List.of(comment));
             return book;
         } else if (title.equalsIgnoreCase(EXISTING_BOOK_TITLE_2)) {
-            val author2 = new Author(EXISTING_AUTHOR_ID_2, EXISTING_AUTHOR_NAME_2, List.of());
-            val genre2 = new Genre(EXISTING_GENRE_ID_2, EXISTING_GENRE_TYPE_2, List.of());
+            val author2 = new Author(EXISTING_AUTHOR_ID_2, EXISTING_AUTHOR_NAME_2);
+            val genre2 = new Genre(EXISTING_GENRE_ID_2, EXISTING_GENRE_TYPE_2);
             val comment2 = new Comment(EXISTING_COMMENT_ID_2, EXISTING_COMMENT_TEXT_2);
 
             val book2 = new Book();

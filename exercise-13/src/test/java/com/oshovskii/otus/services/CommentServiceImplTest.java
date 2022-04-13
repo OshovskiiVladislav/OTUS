@@ -42,7 +42,8 @@ class CommentServiceImplTest {
 
         val expectedCommentList = List.of(expectedComment, expectedComment2);
 
-        when(commentRepository.findAll()).thenReturn(expectedCommentList);
+        when(commentRepository.findAll())
+                .thenReturn(expectedCommentList);
 
         // Call
         val actualCommentList = commentRepository.findAll();
@@ -57,7 +58,8 @@ class CommentServiceImplTest {
         // Config
         val expectedComment = new Comment(EXISTING_COMMENT_ID, EXISTING_COMMENT_TEXT);
 
-        when(commentRepository.findByText(EXISTING_COMMENT_TEXT)).thenReturn(Optional.of(expectedComment));
+        when(commentRepository.findByText(EXISTING_COMMENT_TEXT))
+                .thenReturn(Optional.of(expectedComment));
 
         // Call
         val actualCommentDto = commentService.findCommentByText(expectedComment.getText());
@@ -72,7 +74,8 @@ class CommentServiceImplTest {
         // Config
         val savedComment = new Comment(EXISTING_COMMENT_ID, EXISTING_COMMENT_TEXT);
 
-        when(commentRepository.save(any(Comment.class))).thenReturn(savedComment);
+        when(commentRepository.save(any(Comment.class)))
+                .thenReturn(savedComment);
 
         // Call
         val actualCommentDto = commentService.save(savedComment.getText());

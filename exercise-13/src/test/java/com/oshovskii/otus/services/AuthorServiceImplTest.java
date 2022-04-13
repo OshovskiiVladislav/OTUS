@@ -75,7 +75,7 @@ class AuthorServiceImplTest {
     @Test
     void save_validName_shouldSaveAuthor() {
         // Config
-        val savedAuthor = new Author(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_NAME, List.of());
+        val savedAuthor = new Author(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_NAME);
 
         when(authorRepository.save(any(Author.class))).thenReturn(savedAuthor);
 

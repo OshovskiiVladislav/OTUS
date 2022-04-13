@@ -11,6 +11,9 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellMethodAvailability;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @ShellComponent
 @RequiredArgsConstructor
 public class ShellBookImpl implements ShellBook {
@@ -21,39 +24,42 @@ public class ShellBookImpl implements ShellBook {
     @Override
     @ShellMethod(value = "Publish book by id", key = {"getBookById", "getB"})
     @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
-    public String publishBookByID(String bookId) {
+    public BookDto publishBookByID(String bookId) {
         Book book = bookService.findById(bookId);
-        return modelMapper.map(book, BookDto.class).toString();
+        return modelMapper.map(book, BookDto.class);
     }
 
     @Override
     @ShellMethod(value = "Publish all books", key = {"allBooks", "allB"})
     @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
-    public String publishAllBook() {
-        return bookService.findAll().toString();
+    public List<BookDto> publishAllBook() {
+        return bookService.findAll()
+                .stream()
+                .map(book -> modelMapper.map(book, BookDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override
     @ShellMethod(value = "Publish book by title", key = {"findBookByTitle", "findByTitle", "fbt"})
     @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
-    public String publishBookByTitle(String title) {
+    public BookDto publishBookByTitle(String title) {
         Book book = bookService.findByTitle(title);
-        return modelMapper.map(book, BookDto.class).toString();
+        return modelMapper.map(book, BookDto.class);
     }
 
-    @Override
-    @ShellMethod(value = "Publish book authors by book id", key = {"findAuthorsByBookId", "findByBookId", "fabi"})
-    @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
-    public String publishBookAuthorsById(String bookId) {
-        return bookService.findBookAuthorsById(bookId).toString();
-    }
-
-    @Override
-    @ShellMethod(value = "Publish authors array length by book id", key = {"findAuthorsLengthByBookId", "findALById"})
-    @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
-    public long publishAuthorsArrayLengthByBookId(String bookId) {
-        return bookService.findAuthorsArrayLengthByBookId(bookId);
-    }
+//    @Override
+//    @ShellMethod(value = "Publish book authors by book id", key = {"findAuthorsByBookId", "findByBookId", "fabi"})
+//    @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
+//    public String publishBookAuthorsById(String bookId) {
+//        return bookService.findBookAuthorsById(bookId).toString();
+//    }
+//
+//    @Override
+//    @ShellMethod(value = "Publish authors array length by book id", key = {"findAuthorsLengthByBookId", "findALById"})
+//    @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
+//    public long publishAuthorsArrayLengthByBookId(String bookId) {
+//        return bookService.findAuthorsArrayLengthByBookId(bookId);
+//    }
 
     @Override
     @ShellMethod(value = "Save book", key = {"saveBook", "saveB", "sB"})
@@ -64,14 +70,14 @@ public class ShellBookImpl implements ShellBook {
         return completedCommandSaveBook;
     }
 
-    @Override
-    @ShellMethod(value = "Save book", key = {"deleteAuthorsArrayElementsByBookId", "deleteAuthors", "dAL"})
-    @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
-    public String deleteAuthorsArrayElementsByBookId(String authorId) {
-        bookService.deleteAuthorsArrayElementsById(authorId);
-        String completedCommandDeleteAuthorsListByBookId = "Delete authors list by author id: <"+ authorId + "> completed";
-        return completedCommandDeleteAuthorsListByBookId;
-    }
+//    @Override
+//    @ShellMethod(value = "Save book", key = {"deleteAuthorsArrayElementsByBookId", "deleteAuthors", "dAL"})
+//    @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
+//    public String deleteAuthorsArrayElementsByBookId(String authorId) {
+//        bookService.deleteAuthorsArrayElementsById(authorId);
+//        String completedCommandDeleteAuthorsListByBookId = "Delete authors list by author id: <"+ authorId + "> completed";
+//        return completedCommandDeleteAuthorsListByBookId;
+//    }
 
     private Availability isPublishEventCommandAvailable() {
         return shellLogin.getCurrentUserName() == null

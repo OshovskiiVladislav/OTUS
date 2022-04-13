@@ -1,6 +1,8 @@
 spring:
+
   main:
     allow-circular-references: true
+
   shell:
     interactive:
       enabled: false
@@ -8,6 +10,7 @@ spring:
   mongodb:
     embedded:
       version: 3.5.5
+
   data:
     mongodb:
       port: 0
@@ -21,7 +24,7 @@ mongock:
 # runner-type: "ApplicationRunner" #default (conflict with Spring Shell)
   runner-type: "InitializingBean"
   change-logs-scan-package:
-    - com.oshovskii.mongock.changelogs
+    - com.oshovskii.otus.changelogs
   mongo-db:
     write-concern:
       journal: false
@@ -29,4 +32,4 @@ mongock:
 
 logging:
   level:
-    root: ERROR
+    root: INFO

@@ -27,7 +27,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public Author save(String name) {
-        Author author = new Author(null, name, null);
+        Author author = new Author(null, name);
         return authorRepository.save(author);
     }
 }

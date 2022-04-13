@@ -1,6 +1,10 @@
 package com.oshovskii.otus.shell.interfaces;
 
+import com.oshovskii.otus.dto.GenreDto;
+
+import java.util.List;
+
 public interface ShellGenre {
-    String publishAllGenres();
+    List<GenreDto> publishAllGenres();
     String saveGenre(String type);
 }

@@ -1,10 +1,12 @@
 package com.oshovskii.otus.shell;
 
+import com.oshovskii.otus.dto.CommentDto;
 import com.oshovskii.otus.models.Comment;
 import com.oshovskii.otus.services.interfaces.CommentService;
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -15,13 +17,18 @@ import org.springframework.test.annotation.DirtiesContext;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.map;
 import static org.mockito.Mockito.*;
 
 @DisplayName("Test ShellCommentImpl command")
 @SpringBootTest
 class ShellCommentImplTest {
+
     @MockBean
     private CommentService commentService;
+
+    @MockBean
+    private ModelMapper modelMapper;
 
     @Autowired
     private Shell shell;
@@ -51,15 +58,26 @@ class ShellCommentImplTest {
         val expectedComment = new Comment(EXISTING_COMMENT_ID, EXISTING_COMMENT_TEXT);
         val expectedComment2 = new Comment(EXISTING_COMMENT_ID_2, EXISTING_COMMENT_TEXT_2);
 
-        val expectedCommentList = List.of(expectedComment, expectedComment2);
+        val expectedCommentDto1 = new CommentDto(expectedComment.getText());
+        val expectedCommentDto2 = new CommentDto(expectedComment2.getText());
 
-        when(commentService.findAllComments()).thenReturn(expectedCommentList);
+        val expectedCommentList = List.of(expectedComment, expectedComment2);
+        val expectedCommentDtoList = List.of(expectedCommentDto1, expectedCommentDto2);
+
+        when(commentService.findAllComments())
+                .thenReturn(expectedCommentList);
+
+        when(modelMapper.map(expectedComment, CommentDto.class))
+                .thenReturn(expectedCommentDto1);
+
+        when(modelMapper.map(expectedComment2, CommentDto.class))
+                .thenReturn(expectedCommentDto2);
 
         // Call
-        val res = (String) shell.evaluate(() -> COMMAND_PUBLISH_ALL_COMMENTS);
+        val res = (List<CommentDto>) shell.evaluate(() -> COMMAND_PUBLISH_ALL_COMMENTS);
 
         // Verify
-        assertThat(res).isEqualTo(expectedCommentList.toString());
+        assertThat(res).isEqualTo(expectedCommentDtoList);
         verify(commentService, times(1)).findAllComments();
     }
 
