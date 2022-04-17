@@ -7,10 +7,13 @@ import com.oshovskii.otus.services.interfaces.CommentService;
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @DisplayName("CommentServiceImpl Test")
-@SpringBootTest(classes = CommentServiceImpl.class)
+@ExtendWith(SpringExtension.class)
+@Import(CommentServiceImpl.class)
 class CommentServiceImplTest {
     @Autowired
     private CommentService commentService;

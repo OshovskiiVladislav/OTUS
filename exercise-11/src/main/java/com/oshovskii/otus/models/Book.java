@@ -1,6 +1,8 @@
 package com.oshovskii.otus.models;
 
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -26,12 +28,16 @@ public class Book {
     private String title;
 
     @ToString.Include
+    // Все данные талицы будут загружены в память отдельным запросом и соединены с родительской сущностью
+    @Fetch(FetchMode.SUBSELECT)
     @ManyToMany(targetEntity = Author.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "book_authors", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
     private Set<Author> authorsList;
 
     @ToString.Include
+    // Все данные талицы будут загружены в память отдельным запросом и соединены с родительской сущностью
+    @Fetch(FetchMode.SUBSELECT)
     @ManyToMany(targetEntity = Genre.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "book_genres", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))

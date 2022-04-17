@@ -8,7 +8,6 @@ import com.oshovskii.otus.models.Genre;
 import com.oshovskii.otus.repositories.BookRepository;
 import com.oshovskii.otus.services.interfaces.AuthorService;
 import com.oshovskii.otus.services.interfaces.BookService;
-import com.oshovskii.otus.services.interfaces.CommentService;
 import com.oshovskii.otus.services.interfaces.GenreService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -25,7 +24,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
-    private final CommentService commentService;
     private final GenreService genreService;
     private final AuthorService authorService;
     private final ModelMapper modelMapper;
