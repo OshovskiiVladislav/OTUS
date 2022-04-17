@@ -9,10 +9,13 @@ import com.oshovskii.otus.repositories.BookRepository;
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +29,8 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
 @DisplayName("BookServiceImpl Test")
-@SpringBootTest(classes = BookServiceImpl.class)
+@ExtendWith(SpringExtension.class)
+@Import(BookServiceImpl.class)
 class BookServiceImplTest {
 
     @Autowired
