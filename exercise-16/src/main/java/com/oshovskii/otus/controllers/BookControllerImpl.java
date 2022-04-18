@@ -1,8 +1,12 @@
 package com.oshovskii.otus.controllers;
 
 import com.oshovskii.otus.controllers.interfaces.BookController;
+import com.oshovskii.otus.dto.AuthorDto;
 import com.oshovskii.otus.dto.BookDto;
+import com.oshovskii.otus.dto.GenreDto;
+import com.oshovskii.otus.services.interfaces.AuthorService;
 import com.oshovskii.otus.services.interfaces.BookService;
+import com.oshovskii.otus.services.interfaces.GenreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +19,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookControllerImpl implements BookController {
     private final BookService bookService;
+    private final AuthorService authorService;
+    private final GenreService genreService;
 
     @Override
     @GetMapping("/")
@@ -34,14 +40,21 @@ public class BookControllerImpl implements BookController {
 
     @Override
     @GetMapping("/save")
-    public String savePage(BookDto bookDto, Model model) {
-        model.addAttribute("book", bookDto);
+    public String savePage(BookDto bookDto,  Model model) {
+        model.addAttribute("bookDto", bookDto);
+
+        List<AuthorDto> authorsList = authorService.findAll();
+        model.addAttribute("authorsList", authorsList);
+
+        List<GenreDto> genresList = genreService.findAll();
+        model.addAttribute("genresList", genresList);
+
         return "save";
     }
 
     @Override
     @PostMapping("/edit")
-    public String updateBook(@ModelAttribute("book") BookDto bookDto, BindingResult bindingResult, Model model) {
+    public String updateBook(@ModelAttribute("book") BookDto bookDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "edit";
         }
@@ -51,7 +64,7 @@ public class BookControllerImpl implements BookController {
 
     @Override
     @PostMapping("/save")
-    public String saveBook(@ModelAttribute("book") BookDto bookDto, BindingResult bindingResult, Model model) {
+    public String saveBook(@ModelAttribute("bookDto") BookDto bookDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "save";
         }
@@ -59,10 +72,9 @@ public class BookControllerImpl implements BookController {
         return "redirect:/";
     }
 
-    // TODO @GetMapping КАК сделать @DeleteMapping ?
     @Override
-    @GetMapping("/delete/{id}")
-    public String deleteBook(@PathVariable("id") Long id ,Model model) {
+    @PostMapping("/delete/{id}")
+    public String deleteBook(@PathVariable("id") Long id) {
         bookService.deleteBookById(id);
         return "redirect:/";
     }

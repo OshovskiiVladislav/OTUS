@@ -2,19 +2,21 @@ package com.oshovskii.otus.controllers;
 
 import com.oshovskii.otus.controllers.interfaces.BookController;
 import com.oshovskii.otus.dto.BookDto;
+import com.oshovskii.otus.services.interfaces.AuthorService;
 import com.oshovskii.otus.services.interfaces.BookService;
+import com.oshovskii.otus.services.interfaces.GenreService;
 import lombok.val;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.MockBeans;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
 import static com.oshovskii.otus.factory.TestBookDtoFactory.createBookDtoWithAllInfoById;
-import static com.oshovskii.otus.utils.Utils.EXISTING_BOOK_ID;
-import static com.oshovskii.otus.utils.Utils.EXISTING_BOOK_ID_2;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -22,15 +24,17 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(BookController.class)
+@MockBeans({@MockBean(AuthorService.class), @MockBean(GenreService.class)})
 class BookControllerImplTest {
+
+    public static final Long EXISTING_BOOK_ID = 1L;
+    public static final Long EXISTING_BOOK_ID_2 = 2L;
 
     @Autowired
     private MockMvc mvc;
 
     @MockBean
     private BookService bookService;
-
-    // TODO Какие ещё, более сложные тесты тут могут быть?
 
     @Test
     void listPage_expectedValidModel_shouldReturnPage() throws Exception {
@@ -64,9 +68,6 @@ class BookControllerImplTest {
 
     @Test
     void saveBook_expectedValidBookDtoAndModel_shouldReturnPage() throws Exception {
-        // Config
-        val expectedBookDto = new BookDto();
-
         // Call and Verify
         mvc.perform(get("/save"))
                 .andExpect(status().isOk())
@@ -105,7 +106,7 @@ class BookControllerImplTest {
         doNothing().when(bookService).deleteBookById(EXISTING_BOOK_ID);
 
         // Call and Verify
-        mvc.perform(get("/delete/" + EXISTING_BOOK_ID))
+        mvc.perform(post("/delete/" + EXISTING_BOOK_ID))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
     }

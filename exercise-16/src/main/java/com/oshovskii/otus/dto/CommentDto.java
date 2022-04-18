@@ -4,15 +4,14 @@ import lombok.*;
 
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthorDto {
+public class CommentDto {
     private long id;
-    private String name;
+    private String text;
 
     @Override
     public String toString() {
-        return name;
+        return text;
     }
 }
