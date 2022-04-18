@@ -55,35 +55,45 @@
 
         <table class="books">
             <thead>
-            <tr>
-                <th th:text="#{book-table-id}">ID</th>
-                <th th:text="#{book-table-title}">Title</th>
-                <th th:text="#{book-table-authors}">Authors</th>
-                <th th:text="#{book-table-genres}">Genres</th>
-                <th th:text="#{book-table-comments}">Comments</th>
-                <th th:text="#{book-table-actions}">Actions</th>
-            </tr>
+                <tr>
+                    <th th:text="#{book-table-id}">ID</th>
+                    <th th:text="#{book-table-title}">Title</th>
+                    <th th:text="#{book-table-authors}">Authors</th>
+                    <th th:text="#{book-table-genres}">Genres</th>
+                    <th th:text="#{book-table-actions}">Actions</th>
+                </tr>
             </thead>
             <tbody>
-            <tr th:each="book : ${books}">
-                <th th:text="${book.id}">1</th>
-                <th th:text="${book.title}">The Da Vinci Code</th>
-                <th th:text="${#strings.listJoin(book.getAuthorsList(), ', ')}">Dan Brown</th>
-                <th th:text="${#strings.listJoin(book.getGenresList(), ', ')}">Roman</th>
-                <th th:text="${#strings.listJoin(book.getCommentsList(), ', ')}">The good book</th>
-                <th>
-                    <a target="_blank" th:href="@{/edit(id=${book.id})}" href="edit.html" th:text="#{edit-button-caption}">Edit</a>
-                    <a th:href="@{/delete/{id}(id=${book.id})}" th:text="#{delete-button-caption}">Delete</a>
-                </th>
-            </tr>
+                <tr th:each="book : ${books}">
+                    <th th:text="${book.id}">1</th>
+                    <th th:text="${book.title}">The Da Vinci Code</th>
+                    <th th:text="${#strings.listJoin(book.getAuthorsList(), ', ')}">Dan Brown</th>
+                    <th th:text="${#strings.listJoin(book.getGenresList(), ', ')}">Roman</th>
+                    <th>
+                        <a target="_blank" th:href="@{/edit(id=${book.id})}" href="edit.html" th:text="#{edit-button-caption}">Edit</a>
+
+                        <form action="#" th:action="@{'/delete/{id}'(id=${book.id})}" th:method="delete" >
+                            <input type="hidden" name="_method" value="post" />
+                            <button type="submit" class="btn btn-primary btn-block" th:text="#{delete-button-caption}" id="submitButton" ></button>
+                        </form>
+
+                    </th>
+                </tr>
             </tbody>
         </table>
 
-        <table class="new-book">
+        <table class="ui-button">
             <thead>
             <tr>
                 <th > <a target="_blank" href="/save" th:text="#{book-form-save}">Add a new book</a> </th>
             </tr>
+            <tr>
+                <th > <a target="_blank" href="/authors" th:text="#{book-table-authors}">All authors</a> </th>
+            </tr>
+            <tr>
+                <th > <a target="_blank" href="/comments" th:text="#{book-table-comments}">All comments</a> </th>
+            </tr>
         </table>
+
     </body>
 </html>

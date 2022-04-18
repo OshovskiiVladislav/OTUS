@@ -9,7 +9,7 @@ public interface BookController {
     String editPage(Long id, Model model);
     String savePage(BookDto bookDto, Model model);
 
-    String deleteBook(Long id, Model model);
-    String updateBook(BookDto bookDto, BindingResult bindingResult, Model model);
-    String saveBook(BookDto bookDt, BindingResult bindingResult, Model model);
+    String deleteBook(Long id);
+    String updateBook(BookDto bookDto, BindingResult bindingResult);
+    String saveBook(BookDto bookDt, BindingResult bindingResult);
 }

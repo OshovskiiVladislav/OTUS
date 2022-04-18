@@ -20,6 +20,6 @@ public class AuthorControllerImpl implements AuthorController {
     public String listPageAuthors(Model model) {
         List<AuthorDto> authorDtoList = authorService.findAll();
         model.addAttribute("authors", authorDtoList);
-        return "save";
+        return "authors";
     }
 }

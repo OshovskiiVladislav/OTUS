@@ -42,30 +42,53 @@
         }
     </style>
 </head>
-<body>
+    <body>
 
-<!-- Book edition -->
-    <div class="container my-5">
-        <h2 class="mb-5" th:text="#{book-form-new}">New Book</h2>
-        <div class="row">
-            <div class="col-md-6">
-                <form action="#" th:action="@{/save}" th:object="${book}" method="post">
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label for="title" class="col-form-label">Title</label>
-                            <input type="text" th:field="*{title}" class="form-control" id="title" placeholder="Title">
-                            <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="text-danger"></span>
+    <!-- Book edition -->
+        <div class="container my-5">
+            <h2 class="mb-5" th:text="#{book-form-new}">New Book</h2>
+            <div class="row">
+                <div class="col-md-6">
+
+                    <form id="edit-form2" action="save.html" th:action="@{/save}" th:method="post" th:object="${bookDto}">
+
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="title" class="col-form-label">Title</label>
+                                <input type="text" th:field="*{title}" class="form-control" id="title" placeholder="Title">
+                                <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="text-danger"></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mt-5" >
-                            <input type="submit" class="btn btn-primary" value="Add Book">
+
+                        <div class="row">
+                            <label for="author-select" th:text="#{author-table-header}">Author_</label>
+                            <select id="author-select" th:field="*{authorsList}" name="authorsList">
+                                <option th:each="eAuthor : ${authorsList}"
+                                        th:value="${eAuthor.id}"
+                                        th:text="${eAuthor.name}">Author name
+                                </option>
+                            </select>
                         </div>
-                    </div>
-                </form>
+
+                        <div class="row">
+                            <label for="genre-select2" th:text="#{book-table-genres}">Genre_</label>
+                            <select id="genre-select2" th:field="*{genresList}" name="genresList">
+                                <option th:each="eGenre : ${genresList}"
+                                        th:value="${eGenre.id}"
+                                        th:text="${eGenre.type}"> Genre name
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="row">
+                            <button type="submit" th:text="#{save-button-caption}">Save</button>
+                            <a href="list.html" th:href="@{/}"><button type="button" th:text="#{cancel-button-caption}">Cancel</button></a>
+                        </div>
+
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
 
-</body>
+    </body>
 </html>
