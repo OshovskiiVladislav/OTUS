@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,4 +24,8 @@ public class Comment {
     @Column(name = "text")
     @Lob
     private String text;
+
+    @ManyToOne(targetEntity = Book.class, fetch = LAZY)
+    @JoinColumn(name = "book_id")
+    private Book book;
 }

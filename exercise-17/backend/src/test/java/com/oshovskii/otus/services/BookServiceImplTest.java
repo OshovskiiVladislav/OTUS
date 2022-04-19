@@ -17,8 +17,6 @@ import java.util.Optional;
 
 import static com.oshovskii.otus.factory.TestBookDtoFactory.createBookDtoWithAllInfoById;
 import static com.oshovskii.otus.factory.TestBookFactory.createBookWithAllInfoById;
-import static com.oshovskii.otus.utils.Utils.EXISTING_BOOK_ID;
-import static com.oshovskii.otus.utils.Utils.EXISTING_BOOK_ID_2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -26,7 +24,6 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
 @DisplayName("BookServiceImpl Test")
-@ActiveProfiles("unit")
 @SpringBootTest(classes = BookServiceImpl.class)
 class BookServiceImplTest {
 
@@ -38,6 +35,9 @@ class BookServiceImplTest {
 
     @MockBean
     private ModelMapper modelMapperMock;
+
+    public static final Long EXISTING_BOOK_ID = 1L;
+    public static final Long EXISTING_BOOK_ID_2 = 2L;
 
     @DisplayName("Return expected list books test")
     @Test

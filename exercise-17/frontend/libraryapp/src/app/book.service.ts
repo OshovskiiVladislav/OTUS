@@ -20,7 +20,7 @@ export class BookService {
   }
 
   public updateBook(book: Book): Observable<Book> {
-    return this.http.put<Book>(`${this.apiServerUrl}/api/v1/books`, book);
+    return this.http.put<Book>(`${this.apiServerUrl}/api/v1/books/book`, book);
   }
 
   public deleteBook(bookId: number): Observable<void> {
