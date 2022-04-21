@@ -1,0 +1,11 @@
+### "Index page"
+GET http://localhost:8080/actuator
+
+### Собственный healthcheck
+GET http://localhost:8080/actuator/health/bookCnt
+
+### Список метрик
+GET http://localhost:8080/actuator/metrics
+
+### Состояние подключений к БД
+GET http://localhost:8080/actuator/metrics/hikaricp.connections.usage

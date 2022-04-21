@@ -1,0 +1,4 @@
+sql:
+  init:
+    mode: always
+    data-locations: test-data.sql
