@@ -8,3 +8,4 @@
 5. Перевести приложение для проведения опросов на Spring Shell
 7. Создать приложение хранящее информацию о книгах в библиотеке
 9. Переписать приложение для хранения книг на ORM
+29.[Реализовать обработку доменной сущности через каналы Spring Integration](exercise-29-spring-integration/README.md)  [![link](https://img.shields.io/badge/-Repository%20link-969c56?logo=github)](https://github.com/OshovskiiVladislav/OTUS/blob/master/exercise-29-spring-integration/src/main/java/com/oshovskii/otus/MainApplication.java)
