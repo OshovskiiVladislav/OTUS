@@ -1,7 +1,7 @@
 package com.oshovskii.otus.config;
 
 
-import com.oshovskii.otus.service.WorkService;
+import com.oshovskii.otus.services.WorkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
