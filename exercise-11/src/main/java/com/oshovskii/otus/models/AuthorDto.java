@@ -9,19 +9,20 @@ import javax.persistence.*;
 @ToString(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "genres")
+@Table(name = "authors")
 @Entity
-public class Genre {
+@EqualsAndHashCode(of = {"id"})
+public class AuthorDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
 
-    @Column(name = "type", nullable = false, unique = true)
+    @Column(name = "name", nullable = false, unique = true)
     @ToString.Include
-    private String type;
+    private String name;
 
-    public Genre(String type) {
-        this.type = type;
+    public AuthorDto(String name) {
+        this.name = name;
     }
 }

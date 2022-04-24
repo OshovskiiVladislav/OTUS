@@ -1,6 +1,6 @@
 package com.oshovskii.otus.services;
 
-import com.oshovskii.otus.models.Author;
+import com.oshovskii.otus.models.AuthorDto;
 import com.oshovskii.otus.repositories.AuthorRepository;
 import com.oshovskii.otus.services.interfaces.AuthorService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Author> findAuthorById(Long id) {
+    public Optional<AuthorDto> findAuthorById(Long id) {
         return authorRepository.findById(id);
     }
 }

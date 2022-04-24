@@ -1,8 +1,8 @@
 package com.oshovskii.otus.factory;
 
-import com.oshovskii.otus.models.Author;
+import com.oshovskii.otus.models.AuthorDto;
 import com.oshovskii.otus.models.Book;
-import com.oshovskii.otus.models.Genre;
+import com.oshovskii.otus.models.GenreDto;
 import lombok.val;
 
 import java.util.Set;
@@ -27,8 +27,8 @@ public class TestBookFactory {
 
     public static Book createBookWithAllInfoById(Long id) {
         if (id == 1L) {
-            val author = new Author(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_NAME);
-            val genre = new Genre(EXISTING_GENRE_ID, EXISTING_GENRE_TYPE);
+            val author = new AuthorDto(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_NAME);
+            val genre = new GenreDto(EXISTING_GENRE_ID, EXISTING_GENRE_TYPE);
 
             val book = new Book(EXISTING_BOOK_TITLE);
             book.setId(EXISTING_BOOK_ID);
@@ -36,8 +36,8 @@ public class TestBookFactory {
             book.setGenresList(Set.of(genre));
             return book;
         } else if (id == 2L) {
-            val author2 = new Author(EXISTING_AUTHOR_ID_2, EXISTING_AUTHOR_NAME_2);
-            val genre2 = new Genre(EXISTING_GENRE_ID_2, EXISTING_GENRE_TYPE_2);
+            val author2 = new AuthorDto(EXISTING_AUTHOR_ID_2, EXISTING_AUTHOR_NAME_2);
+            val genre2 = new GenreDto(EXISTING_GENRE_ID_2, EXISTING_GENRE_TYPE_2);
 
             val book2 = new Book(EXISTING_BOOK_TITLE_2);
             book2.setId(EXISTING_BOOK_ID_2);

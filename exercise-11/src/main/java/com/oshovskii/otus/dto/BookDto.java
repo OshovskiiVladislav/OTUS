@@ -1,7 +1,7 @@
 package com.oshovskii.otus.dto;
 
-import com.oshovskii.otus.models.Author;
-import com.oshovskii.otus.models.Genre;
+import com.oshovskii.otus.models.AuthorDto;
+import com.oshovskii.otus.models.GenreDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,13 +11,10 @@ import java.util.Set;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @NoArgsConstructor
 public class BookDto {
-    @ToString.Include
     private String title;
-    @ToString.Include
-    private Set<Author> authorsList;
-    @ToString.Include
-    private Set<Genre> genresList;
+    private Set<AuthorDto> authorsList;
+    private Set<GenreDto> genresList;
 }

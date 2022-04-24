@@ -1,9 +1,9 @@
 package com.oshovskii.otus.services.interfaces;
 
-import com.oshovskii.otus.models.Author;
+import com.oshovskii.otus.models.AuthorDto;
 
 import java.util.Optional;
 
 public interface AuthorService {
-    Optional<Author> findAuthorById(Long id);
+    Optional<AuthorDto> findAuthorById(Long id);
 }

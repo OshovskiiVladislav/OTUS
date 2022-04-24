@@ -2,9 +2,9 @@ package com.oshovskii.otus.services;
 
 import com.oshovskii.otus.dto.BookDto;
 import com.oshovskii.otus.exceptions.ResourceNotFoundException;
-import com.oshovskii.otus.models.Author;
+import com.oshovskii.otus.models.AuthorDto;
 import com.oshovskii.otus.models.Book;
-import com.oshovskii.otus.models.Genre;
+import com.oshovskii.otus.models.GenreDto;
 import com.oshovskii.otus.repositories.BookRepository;
 import com.oshovskii.otus.services.interfaces.AuthorService;
 import com.oshovskii.otus.services.interfaces.BookService;
@@ -56,14 +56,15 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public BookDto saveBook(String title, Long authorId, Long genreId) {
-        Author author = authorService.findAuthorById(authorId)
+        AuthorDto authorDto = authorService.findAuthorById(authorId)
                 .orElseThrow(() -> new ResourceNotFoundException("Author with id: " + authorId + " not found"));
-        Genre genre = genreService.findGenreById(genreId)
+
+        GenreDto genreDto = genreService.findGenreById(genreId)
                 .orElseThrow(() -> new ResourceNotFoundException("Genre with id: " + genreId + " not found"));
 
         Book book = new Book(title);
-        book.setAuthorsList(Set.of(author));
-        book.setGenresList(Set.of(genre));
+        book.setAuthorsList(Set.of(authorDto));
+        book.setGenresList(Set.of(genreDto));
 
         return modelMapper.map(bookRepository.save(book), BookDto.class);
     }
@@ -72,8 +73,7 @@ public class BookServiceImpl implements BookService {
     @Transactional(readOnly = true)
     public BookDto findBookByTitleIgnoreCase(String title) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
-        Example<Book> example = Example.of(new Book(title),
-                caseInsensitiveExampleMatcher);
+        Example<Book> example = Example.of(new Book(title), caseInsensitiveExampleMatcher);
 
         Book actual = bookRepository.findOne(example)
                 .orElseThrow(() -> new ResourceNotFoundException("Book with title: "+ title + " not found"));

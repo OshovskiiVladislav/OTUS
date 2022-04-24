@@ -6,28 +6,28 @@ import javax.persistence.*;
 
 import static javax.persistence.FetchType.LAZY;
 
-// TODO вопрос, в каких случаях нам нужно прописать и тут EntityGraph?Или может что-то другое?
-//@NamedEntityGraph(
-//        name = "Comment.Book.Author.Genre",
-//        attributeNodes = {
-//                @NamedAttributeNode(value = "book", subgraph = "book-subgraph"),
-//        },
-//        subgraphs = {
-//                @NamedSubgraph(
-//                        name = "book-subgraph",
-//                        attributeNodes = {
-//                                @NamedAttributeNode("authorsList"),
-//                                @NamedAttributeNode("genresList")
-//                        }
-//                )
-//        }
-//)
+@NamedEntityGraph(
+        name = "Comment.Book.Author.Genre",
+        attributeNodes = {
+                @NamedAttributeNode(value = "book", subgraph = "book-subgraph"),
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "book-subgraph",
+                        attributeNodes = {
+                                @NamedAttributeNode("authorsList"),
+                                @NamedAttributeNode("genresList")
+                        }
+                )
+        }
+)
 @Getter
 @Setter
 @ToString(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "comments")
+@EqualsAndHashCode(exclude = "book")
 @Entity
 public class Comment {
     @Id
