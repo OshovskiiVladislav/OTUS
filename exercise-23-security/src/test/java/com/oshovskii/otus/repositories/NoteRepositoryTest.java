@@ -1,0 +1,31 @@
+package com.oshovskii.otus.repositories;
+
+import com.oshovskii.otus.models.Note;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@DisplayName("NoteRepository test")
+@DataJpaTest
+class NoteRepositoryTest {
+
+    private final static int EXPECTED_NOTES_COUNT = 21;
+
+    @Autowired
+    private NoteRepository noteRepository;
+
+
+    @DisplayName("Should find all Notes")
+    @Test
+    void ShouldGetAllNotes() {
+        List<Note> notes = noteRepository.findAll();
+        assertThat(notes).isNotNull().hasSize(EXPECTED_NOTES_COUNT)
+                .allMatch(s -> s.getId() > 0)
+                .allMatch(s -> !s.getNote().equals(""));
+    }
+}
