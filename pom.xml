@@ -11,7 +11,8 @@
         <module>exercise-5</module>
         <module>exercise-7</module>
 		<module>exercise-30-spring-boot-actuator</module>
-	</modules>
+        <module>exercise-23-security</module>
+    </modules>
 
     <parent>
 		<groupId>org.springframework.boot</groupId>
