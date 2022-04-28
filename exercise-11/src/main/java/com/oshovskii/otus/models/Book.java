@@ -1,6 +1,9 @@
 package com.oshovskii.otus.models;
 
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -10,9 +13,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "books")
-@NamedEntityGraph(name = "book.author.genre",
-        attributeNodes = {@NamedAttributeNode("authorsList"),
-                          @NamedAttributeNode("genresList")})
 @EqualsAndHashCode(of = {"id"})
 @Entity
 public class Book {
@@ -26,12 +26,14 @@ public class Book {
     private String title;
 
     @ToString.Exclude
+    @Fetch(FetchMode.SUBSELECT)
     @ManyToMany(targetEntity = AuthorDto.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "book_authors", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
     private Set<AuthorDto> authorsList;
 
     @ToString.Exclude
+    @Fetch(FetchMode.SUBSELECT)
     @ManyToMany(targetEntity = GenreDto.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "book_genres", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))

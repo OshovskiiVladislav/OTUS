@@ -1,26 +1,13 @@
 package com.oshovskii.otus.models;
 
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 
 import static javax.persistence.FetchType.LAZY;
 
-@NamedEntityGraph(
-        name = "Comment.Book.Author.Genre",
-        attributeNodes = {
-                @NamedAttributeNode(value = "book", subgraph = "book-subgraph"),
-        },
-        subgraphs = {
-                @NamedSubgraph(
-                        name = "book-subgraph",
-                        attributeNodes = {
-                                @NamedAttributeNode("authorsList"),
-                                @NamedAttributeNode("genresList")
-                        }
-                )
-        }
-)
 @Getter
 @Setter
 @ToString(onlyExplicitlyIncluded = true)
@@ -41,6 +28,7 @@ public class Comment {
     private String text;
 
     @ManyToOne(targetEntity = Book.class, fetch = LAZY)
+    @Fetch(FetchMode.SUBSELECT)
     @JoinColumn(name = "book_id")
     @ToString.Exclude
     private Book book;
