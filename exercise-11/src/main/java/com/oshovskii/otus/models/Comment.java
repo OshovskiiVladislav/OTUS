@@ -28,7 +28,6 @@ public class Comment {
     private String text;
 
     @ManyToOne(targetEntity = Book.class, fetch = LAZY)
-    @Fetch(FetchMode.SUBSELECT)
     @JoinColumn(name = "book_id")
     @ToString.Exclude
     private Book book;
