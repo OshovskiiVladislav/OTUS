@@ -9,4 +9,5 @@ public interface BookService {
     Book save(BookToSaveDto bookToSaveDto);
     List<Book> findAll();
     Book findById(Long bookId);
+    void deleteById(Long bookId);
 }

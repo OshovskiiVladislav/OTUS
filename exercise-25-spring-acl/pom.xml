@@ -10,7 +10,6 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.oshovskii</groupId>
     <artifactId>exercise-25-spring-acl</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -67,6 +66,7 @@
             <artifactId>springfox-swagger2</artifactId>
             <version>${swagger.version}</version>
         </dependency>
+
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
@@ -92,6 +92,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
+
         <!-- For Spring Security testing -->
         <dependency>
             <groupId>org.springframework.security</groupId>

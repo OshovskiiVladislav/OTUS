@@ -19,9 +19,9 @@ VALUES (1, 'The best'),
        (3, 'Cool');
 
 INSERT INTO acl_sid (id, principal, sid)
-VALUES (1, 1, 'admin'),
-       (2, 1, 'user'),
-       (3, 0, 'ROLE_EDITOR');
+VALUES (1, 1, 'admin'),         -- principal = 1 => user
+       (2, 1, 'user'),          -- principal = 1 => user
+       (3, 0, 'ROLE_EDITOR');   -- principal = 0 => role
 
 INSERT INTO acl_class (id, class)
 VALUES (1, 'com.oshovskii.otus.models.Book');
@@ -31,12 +31,18 @@ VALUES (1, 1, 1, NULL, 3, 0),
        (2, 1, 2, NULL, 3, 0),
        (3, 1, 3, NULL, 3, 0);
 
+
+-- acl_sid — кому дается разрешение;
+-- acl_object_identity — на какой объект оно дается;
+-- mask — какое именно разрешение. 1 —это READ, 2 — WRITE, 4 — CREATE… (см. класс BasePermission)
 INSERT INTO acl_entry (id, acl_object_identity, ace_order, sid, mask, granting, audit_success, audit_failure)
 VALUES (1, 1, 1, 1, 1, 1, 1, 1),
        (2, 1, 2, 1, 2, 1, 1, 1),
        (3, 1, 3, 3, 1, 1, 1, 1),
+
        (4, 2, 1, 2, 1, 1, 1, 1),
        (5, 2, 2, 3, 1, 1, 1, 1),
+
        (6, 3, 1, 3, 1, 1, 1, 1),
        (7, 3, 2, 3, 2, 1, 1, 1);
 
@@ -46,5 +52,4 @@ VALUES (1, 'admin', '$2a$10$YJM9Yq0rYD2kHPzr9.6e9OzbOScIIQIDzBrAAgmWVEk5tfvLOlSi
 
 INSERT INTO authority (id, user_id, authority)
 VALUES (1, 2, 'ROLE_USER'),
-       (2, 1, 'ROLE_ADMIN'),
-       (3, 1, 'ROLE_EDITOR');
+       (2, 1, 'ROLE_EDITOR');

@@ -37,7 +37,6 @@ public class AclConfig {
 
     /**
      * Для упрощения используем локальный кеш
-     * @return
      */
     @Bean
     public EhCacheFactoryBean aclEhCacheFactoryBean() {
@@ -52,15 +51,24 @@ public class AclConfig {
         return new EhCacheManagerFactoryBean();
     }
 
+
+    /**
+     * Здесь AclAuthorizationStrategy отвечает за вывод о том,
+     * обладает ли текущий пользователь всеми необходимыми разрешениями на определенные объекты или нет.
+     *
+     * Ему требуется поддержка PermissionGrantingStrategy, которая определяет логику определения того,
+     * предоставлено ли разрешение конкретному SID.
+     */
+    @Bean
+    public AclAuthorizationStrategy aclAuthorizationStrategy() {
+        return new AclAuthorizationStrategyImpl(new SimpleGrantedAuthority("ROLE_EDITOR"));
+    }
+
     @Bean
     public PermissionGrantingStrategy permissionGrantingStrategy() {
         return new DefaultPermissionGrantingStrategy(new ConsoleAuditLogger());
     }
 
-    @Bean
-    public AclAuthorizationStrategy aclAuthorizationStrategy() {
-        return new AclAuthorizationStrategyImpl(new SimpleGrantedAuthority("ROLE_EDITOR"));
-    }
 
     @Bean
     public MethodSecurityExpressionHandler defaultMethodSecurityExpressionHandler() {
@@ -71,11 +79,14 @@ public class AclConfig {
         return expressionHandler;
     }
 
-    /** Выдает Object Identity
+    /**
+     *   Выдает Object Identity
      *
      * • определяет стратегию загрузки ACL из БД
      * • используется в AclService и MutableAclService
      * • реализация по умолчанию BasicLookupStrategy
+     *
+     *   Обеспечивает оптимизированный поиск при запросе к базе данных
      */
     @Bean
     public LookupStrategy lookupStrategy() {
@@ -84,7 +95,6 @@ public class AclConfig {
 
     /**
      * JdbcMutableAclService extends JdbcAclService implements MutableAclService
-     *
      */
     @Bean
     public JdbcMutableAclService aclService() {
