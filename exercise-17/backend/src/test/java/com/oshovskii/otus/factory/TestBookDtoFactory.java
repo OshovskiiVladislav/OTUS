@@ -3,14 +3,11 @@ package com.oshovskii.otus.factory;
 import com.oshovskii.otus.dto.AuthorDto;
 import com.oshovskii.otus.dto.BookDto;
 import com.oshovskii.otus.dto.GenreDto;
-import com.oshovskii.otus.models.Author;
-import com.oshovskii.otus.models.Genre;
-import com.oshovskii.otus.utils.Utils;
 import lombok.val;
 
 import java.util.Set;
 
-public class TestBookDtoFactory extends Utils {
+public class TestBookDtoFactory {
 
     public static final Long EXISTING_BOOK_ID = 1L;
     public static final Long EXISTING_BOOK_ID_2 = 2L;
