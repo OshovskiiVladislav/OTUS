@@ -21,7 +21,10 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     Book getById(Long id);
 
     @SuppressWarnings("unchecked")
-    @PreAuthorize("hasPermission(#noticeMessage, 'WRITE')")
-    Book save(@Param("noticeMessage") Book noticeMessage);
+    @PreAuthorize("hasPermission(#book, 'WRITE')")
+    Book save(@Param("noticeMessage") Book book);
 
+    @Override
+    @PreAuthorize("hasPermission(#book, 'WRITE')")
+    void deleteById(Long aLong);
 }

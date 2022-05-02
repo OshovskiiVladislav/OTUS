@@ -6,6 +6,7 @@ import com.oshovskii.otus.repositories.AuthorRepository;
 import com.oshovskii.otus.services.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static java.lang.String.format;
 
@@ -14,6 +15,7 @@ import static java.lang.String.format;
 public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository authorRepository;
 
+    @Transactional(readOnly = true)
     @Override
     public Author findByName(String authorName) {
         return authorRepository.findByName(authorName)

@@ -9,7 +9,6 @@ import com.oshovskii.otus.services.AuthorService;
 import com.oshovskii.otus.services.BookService;
 import com.oshovskii.otus.services.GenreService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
@@ -21,6 +20,7 @@ import org.springframework.security.acls.model.Sid;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -47,19 +47,45 @@ public class BookServiceImpl implements BookService {
      * • расширяет интерфейс AclService предоставляя возможно по сохранению изменений в хранилище
      * • реализация JdbcMutableAclService сохраняющая ACL в БД через JDBC
      */
+    @Transactional
     @Override
     public Book save(BookToSaveDto bookToSaveDto) {
         Author author = authorService.findByName(bookToSaveDto.getAuthor());
         Genre genre = genreService.findByName(bookToSaveDto.getGenre());
 
         Book toSaveBook = new Book(
-                4L,
+                null,
                 author,
                 genre,
                 bookToSaveDto.getTitle()
         );
 
         Book savedBook = bookRepository.save(toSaveBook);
+
+        setAclSecurity(savedBook);
+
+        return savedBook;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Book> findAll() {
+        return bookRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Book findById(Long bookId) {
+        return bookRepository.getById(bookId);
+    }
+
+    @Transactional
+    @Override
+    public void deleteById(Long bookId) {
+        bookRepository.deleteById(bookId);
+    }
+
+    private void setAclSecurity(final Book savedBook){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         final Sid owner = new PrincipalSid( authentication );
         ObjectIdentity oid = new ObjectIdentityImpl(savedBook.getClass(), savedBook.getId());
@@ -71,16 +97,5 @@ public class BookServiceImpl implements BookService {
         acl.insertAce( acl.getEntries().size(), BasePermission.ADMINISTRATION, admin, true );
 
         mutableAclService.updateAcl( acl );
-        return savedBook;
-    }
-
-    @Override
-    public List<Book> findAll() {
-        return bookRepository.findAll();
-    }
-
-    @Override
-    public Book findById(Long bookId) {
-        return bookRepository.getById(bookId);
     }
 }

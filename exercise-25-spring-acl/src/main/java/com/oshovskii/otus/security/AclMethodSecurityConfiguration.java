@@ -10,6 +10,10 @@ import org.springframework.security.config.annotation.method.configuration.Globa
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class AclMethodSecurityConfiguration extends GlobalMethodSecurityConfiguration {
 
+    /**
+     * Нам нужно защитить все методы, которые возвращают защищенные объекты домена или вносят изменения в объект,
+     * включив глобальную безопасность методов:
+     */
     @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
     @Autowired
     MethodSecurityExpressionHandler defaultMethodSecurityExpressionHandler;

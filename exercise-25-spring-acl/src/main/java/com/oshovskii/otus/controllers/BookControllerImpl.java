@@ -31,9 +31,15 @@ public class BookControllerImpl implements BookController {
         return bookServiceImpl.findById(id);
     }
 
-    @PutMapping
+    @PostMapping
     public BookDto save(BookToSaveDto bookToSaveDto) {
         Book book = bookServiceImpl.save(bookToSaveDto);
         return modelMapper.map(book, BookDto.class);
+    }
+
+    @Override
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable("id") Long id) {
+         bookServiceImpl.deleteById(id);
     }
 }

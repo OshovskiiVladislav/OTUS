@@ -10,4 +10,5 @@ public interface BookController {
     List<BookDto> findAll();
     Book findById(Long id);
     BookDto save(BookToSaveDto bookToSaveDto);
+    void deleteById(Long id);
 }
