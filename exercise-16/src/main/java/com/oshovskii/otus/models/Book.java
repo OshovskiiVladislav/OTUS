@@ -7,9 +7,6 @@ import org.hibernate.annotations.FetchMode;
 import javax.persistence.*;
 import java.util.Set;
 
-@NamedEntityGraph(name = "book-author-genre",
-        attributeNodes = {@NamedAttributeNode("authorsList"),
-                          @NamedAttributeNode("genresList")})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,7 +22,6 @@ public class Book {
     @Column(name = "title", nullable = false, unique = true)
     private String title;
 
-    // Все данные талицы будут загружены в память отдельным запросом и соединены с родительской сущностью
     @Fetch(FetchMode.SUBSELECT)
     @ManyToMany(targetEntity = Author.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "book_authors", joinColumns = @JoinColumn(name = "book_id"),
