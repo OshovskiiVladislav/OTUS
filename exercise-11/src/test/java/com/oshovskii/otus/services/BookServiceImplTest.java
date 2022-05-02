@@ -1,9 +1,9 @@
 package com.oshovskii.otus.services;
 
 import com.oshovskii.otus.dto.BookDto;
-import com.oshovskii.otus.models.AuthorDto;
+import com.oshovskii.otus.models.Author;
 import com.oshovskii.otus.models.Book;
-import com.oshovskii.otus.models.GenreDto;
+import com.oshovskii.otus.models.Genre;
 import com.oshovskii.otus.repositories.BookRepository;
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
@@ -143,8 +143,8 @@ class BookServiceImplTest {
     @Test
     void save_validTitleAndAuthorIdAndGenreId_shouldSaveBook(){
         // Config
-        val author = new AuthorDto(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_NAME);
-        val genre = new GenreDto(EXISTING_GENRE_ID, EXISTING_GENRE_TYPE);
+        val author = new Author(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_NAME);
+        val genre = new Genre(EXISTING_GENRE_ID, EXISTING_GENRE_TYPE);
 
         val savedBook = createBookWithAllInfoById(EXISTING_BOOK_ID);
         val expectedBookDto = createBookDtoWithAllInfoById(EXISTING_BOOK_ID);

@@ -27,17 +27,17 @@ public class Book {
 
     @ToString.Exclude
     @Fetch(FetchMode.SUBSELECT)
-    @ManyToMany(targetEntity = AuthorDto.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = Author.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "book_authors", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
-    private Set<AuthorDto> authorsList;
+    private Set<Author> authorsList;
 
     @ToString.Exclude
     @Fetch(FetchMode.SUBSELECT)
-    @ManyToMany(targetEntity = GenreDto.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = Genre.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "book_genres", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
-    private Set<GenreDto> genresList;
+    private Set<Genre> genresList;
 
     public Book(String title) {
         this.title = title;

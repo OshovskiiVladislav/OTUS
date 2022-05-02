@@ -1,9 +1,9 @@
 package com.oshovskii.otus.services.interfaces;
 
-import com.oshovskii.otus.models.GenreDto;
+import com.oshovskii.otus.models.Genre;
 
 import java.util.Optional;
 
 public interface GenreService {
-    Optional<GenreDto> findGenreById(Long id);
+    Optional<Genre> findGenreById(Long id);
 }

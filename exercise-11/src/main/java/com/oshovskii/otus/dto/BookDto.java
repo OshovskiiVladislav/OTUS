@@ -1,7 +1,7 @@
 package com.oshovskii.otus.dto;
 
-import com.oshovskii.otus.models.AuthorDto;
-import com.oshovskii.otus.models.GenreDto;
+import com.oshovskii.otus.models.Author;
+import com.oshovskii.otus.models.Genre;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +15,6 @@ import java.util.Set;
 @NoArgsConstructor
 public class BookDto {
     private String title;
-    private Set<AuthorDto> authorsList;
-    private Set<GenreDto> genresList;
+    private Set<Author> authorsList;
+    private Set<Genre> genresList;
 }

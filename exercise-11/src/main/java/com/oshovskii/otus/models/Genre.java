@@ -6,23 +6,22 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "authors")
-@Entity
+@Table(name = "genres")
 @EqualsAndHashCode(of = {"id"})
-public class AuthorDto {
+@Entity
+public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
 
-    @Column(name = "name", nullable = false, unique = true)
-    @ToString.Include
-    private String name;
+    @Column(name = "type", nullable = false, unique = true)
+    private String type;
 
-    public AuthorDto(String name) {
-        this.name = name;
+    public Genre(String type) {
+        this.type = type;
     }
 }

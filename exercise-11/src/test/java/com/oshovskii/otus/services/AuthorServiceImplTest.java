@@ -1,6 +1,6 @@
 package com.oshovskii.otus.services;
 
-import com.oshovskii.otus.models.AuthorDto;
+import com.oshovskii.otus.models.Author;
 import com.oshovskii.otus.repositories.AuthorRepository;
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 @DisplayName("AuthorServiceImpl Test")
 @ExtendWith(SpringExtension.class)
 @Import(AuthorServiceImpl.class)
-class AuthorDtoServiceImplTest {
+class AuthorServiceImplTest {
 
     @Autowired
     private AuthorServiceImpl authorService;
@@ -34,7 +34,7 @@ class AuthorDtoServiceImplTest {
     @Test
     void findAuthorById_validAuthorId_shouldReturnExpectedAuthorById() {
         // Config
-        val expectedAuthor = new AuthorDto(EXISTING_AUTHOR_NAME);
+        val expectedAuthor = new Author(EXISTING_AUTHOR_NAME);
         expectedAuthor.setId(EXISTING_AUTHOR_ID);
 
         when(authorRepository.findById(EXISTING_AUTHOR_ID)).thenReturn(Optional.of(expectedAuthor));

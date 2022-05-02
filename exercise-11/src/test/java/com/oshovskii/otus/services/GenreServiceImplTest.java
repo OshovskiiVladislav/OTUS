@@ -1,6 +1,6 @@
 package com.oshovskii.otus.services;
 
-import com.oshovskii.otus.models.GenreDto;
+import com.oshovskii.otus.models.Genre;
 import com.oshovskii.otus.repositories.GenreRepository;
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 @DisplayName("GenreServiceImpl Test")
 @ExtendWith(SpringExtension.class)
 @Import(GenreServiceImpl.class)
-class GenreDtoServiceImplTest {
+class GenreServiceImplTest {
 
     @Autowired
     private GenreServiceImpl genreService;
@@ -34,7 +34,7 @@ class GenreDtoServiceImplTest {
     @Test
     void findGenreById_validGenreId_shouldReturnExpectedGenreById() {
         // Config
-        val expectedGenre = new GenreDto(EXISTING_GENRE_TYPE);
+        val expectedGenre = new Genre(EXISTING_GENRE_TYPE);
         expectedGenre.setId(EXISTING_GENRE_ID);
 
         when(genreRepository.findById(EXISTING_GENRE_ID)).thenReturn(Optional.of(expectedGenre));
