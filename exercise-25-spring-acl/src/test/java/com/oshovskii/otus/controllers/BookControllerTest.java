@@ -3,9 +3,7 @@ package com.oshovskii.otus.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oshovskii.otus.dto.BookDto;
 import com.oshovskii.otus.dto.BookToSaveDto;
-import com.oshovskii.otus.models.Author;
-import com.oshovskii.otus.models.Genre;
-import com.oshovskii.otus.services.BookService;
+import com.oshovskii.otus.services.implementations.BookServiceImpl;
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,19 +23,12 @@ import static com.oshovskii.otus.factory.dto.TestDtoFactory.createBookDto;
 import static com.oshovskii.otus.factory.entity.TestEntityFactory.createBook;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-//@WebMvcTest(excludeAutoConfiguration = SecurityAutoConfiguration.class, useDefaultFilters = false)
-@WebMvcTest
-@SpringJUnitWebConfig(classes = BookController.class)
+@WebMvcTest(value = BookControllerImpl.class,  excludeAutoConfiguration = {SecurityAutoConfiguration.class})
+@SpringJUnitWebConfig(classes = BookControllerImpl.class)
 @DisplayName("BookController test")
 class BookControllerTest {
 
@@ -48,7 +39,7 @@ class BookControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private BookService bookServiceMock;
+    private BookServiceImpl bookServiceMock;
 
     @MockBean
     private ModelMapper modelMapperMock;
@@ -57,7 +48,7 @@ class BookControllerTest {
     @DisplayName("findAll() " +
             "with void input " +
             "should return all books test")
-    @WithMockUser(username="admin",roles={"EDITOR"})
+//    @WithMockUser(username="admin",roles={"EDITOR"})
     void findAll_voidInput_shouldReturnAllBooks() throws Exception {
         // Config
         val sourceBook1 = createBook(1);
@@ -139,6 +130,6 @@ class BookControllerTest {
         mvc.perform(post("/api/v1/books")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(sourceJson))
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
     }
 }

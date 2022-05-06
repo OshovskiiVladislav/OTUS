@@ -21,11 +21,11 @@ public class Book {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(optional = false, targetEntity = Author.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, targetEntity = Author.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false, referencedColumnName = "id")
     private Author author;
 
-    @ManyToOne(optional = false, targetEntity = Genre.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, targetEntity = Genre.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "genre_id", nullable = false, referencedColumnName = "id")
     private Genre genre;
 

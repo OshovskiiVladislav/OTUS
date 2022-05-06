@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/books")
 @RequiredArgsConstructor
-public class BookControllerImpl implements BookController {
+public class BookControllerImpl {
     private final BookServiceImpl bookServiceImpl;
     private final ModelMapper modelMapper;
 
@@ -27,8 +27,9 @@ public class BookControllerImpl implements BookController {
     }
 
     @GetMapping("/{id}")
-    public Book findById(@PathVariable("id") Long id) {
-        return bookServiceImpl.findById(id);
+    public BookDto findById(@PathVariable("id") Long id) {
+        Book book = bookServiceImpl.findById(id);
+        return modelMapper.map(book, BookDto.class);
     }
 
     @PostMapping
@@ -37,7 +38,6 @@ public class BookControllerImpl implements BookController {
         return modelMapper.map(book, BookDto.class);
     }
 
-    @Override
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable("id") Long id) {
          bookServiceImpl.deleteById(id);

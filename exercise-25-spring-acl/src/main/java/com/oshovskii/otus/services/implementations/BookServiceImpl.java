@@ -9,6 +9,9 @@ import com.oshovskii.otus.services.AuthorService;
 import com.oshovskii.otus.services.BookService;
 import com.oshovskii.otus.services.GenreService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
@@ -47,6 +50,8 @@ public class BookServiceImpl implements BookService {
      * • расширяет интерфейс AclService предоставляя возможно по сохранению изменений в хранилище
      * • реализация JdbcMutableAclService сохраняющая ACL в БД через JDBC
      */
+
+    @PreAuthorize("hasRole('ROLE_EDITOR')")
     @Transactional
     @Override
     public Book save(BookToSaveDto bookToSaveDto) {
@@ -67,18 +72,21 @@ public class BookServiceImpl implements BookService {
         return savedBook;
     }
 
+    @PostFilter("hasPermission(filterObject, 'READ')")
     @Transactional(readOnly = true)
     @Override
     public List<Book> findAll() {
         return bookRepository.findAll();
     }
 
+    @PostAuthorize("hasPermission(returnObject, 'READ')")
     @Transactional(readOnly = true)
     @Override
     public Book findById(Long bookId) {
         return bookRepository.getById(bookId);
     }
 
+    @PreAuthorize("hasRole('ROLE_EDITOR')")
     @Transactional
     @Override
     public void deleteById(Long bookId) {
