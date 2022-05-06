@@ -20,11 +20,9 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @EntityGraph(value = "book-author-genre")
     Book getById(Long id);
 
-    @SuppressWarnings("unchecked")
-    @PreAuthorize("hasPermission(#book, 'WRITE')")
-    Book save(@Param("noticeMessage") Book book);
+    @PreAuthorize("hasRole('ROLE_EDITOR')")
+    Book save(@Param("book") Book book);
 
-    @Override
-    @PreAuthorize("hasPermission(#book, 'WRITE')")
-    void deleteById(Long aLong);
+    @PreAuthorize("hasRole('ROLE_EDITOR')")
+    void deleteBookById(Long bookId);
 }

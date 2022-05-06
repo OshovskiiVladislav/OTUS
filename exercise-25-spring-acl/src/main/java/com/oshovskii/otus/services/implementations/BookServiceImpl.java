@@ -54,7 +54,7 @@ public class BookServiceImpl implements BookService {
         Genre genre = genreService.findByName(bookToSaveDto.getGenre());
 
         Book toSaveBook = new Book(
-                null,
+                4L,
                 author,
                 genre,
                 bookToSaveDto.getTitle()
@@ -82,7 +82,7 @@ public class BookServiceImpl implements BookService {
     @Transactional
     @Override
     public void deleteById(Long bookId) {
-        bookRepository.deleteById(bookId);
+        bookRepository.deleteBookById(bookId);
     }
 
     private void setAclSecurity(final Book savedBook){

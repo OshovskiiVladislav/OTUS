@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @NamedEntityGraph(name = "book-author-genre",
         attributeNodes = {@NamedAttributeNode("author"),
-                @NamedAttributeNode("genre")})
+                          @NamedAttributeNode("genre")})
 @Table(name = "books")
 public class Book {
 

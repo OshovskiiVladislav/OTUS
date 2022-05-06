@@ -18,10 +18,19 @@ VALUES (1, 'The best'),
        (2, 'Amazing'),
        (3, 'Cool');
 
+INSERT INTO users (id, username, password, full_name, age, email)
+VALUES (1, 'admin', '$2a$10$YJM9Yq0rYD2kHPzr9.6e9OzbOScIIQIDzBrAAgmWVEk5tfvLOlSiS', 'Admin Admin', 17,
+        'admin@mail.com'),
+       (2, 'user', '$2a$10$YJM9Yq0rYD2kHPzr9.6e9OzbOScIIQIDzBrAAgmWVEk5tfvLOlSiS', 'User User', 25, 'user@mail.com');
+
+INSERT INTO authority (id, user_id, authority)
+VALUES (1, 2, 'ROLE_USER'),
+       (2, 1, 'ROLE_EDITOR');
+
 INSERT INTO acl_sid (id, principal, sid)
-VALUES (1, 1, 'admin'),         -- principal = 1 => user
-       (2, 1, 'user'),          -- principal = 1 => user
-       (3, 0, 'ROLE_EDITOR');   -- principal = 0 => role
+VALUES (1, 1, 'admin'), -- principal = 1 => user
+       (2, 1, 'user'),  -- principal = 1 => user
+       (3, 0, 'ROLE_EDITOR'); -- principal = 0 => role
 
 INSERT INTO acl_class (id, class)
 VALUES (1, 'com.oshovskii.otus.models.Book');
@@ -39,17 +48,8 @@ INSERT INTO acl_entry (id, acl_object_identity, ace_order, sid, mask, granting, 
 VALUES (1, 1, 1, 1, 1, 1, 1, 1),
        (2, 1, 2, 1, 2, 1, 1, 1),
        (3, 1, 3, 3, 1, 1, 1, 1),
-
        (4, 2, 1, 2, 1, 1, 1, 1),
        (5, 2, 2, 3, 1, 1, 1, 1),
-
        (6, 3, 1, 3, 1, 1, 1, 1),
        (7, 3, 2, 3, 2, 1, 1, 1);
 
-INSERT INTO users (id, username, password, full_name, age, email)
-VALUES (1, 'admin', '$2a$10$YJM9Yq0rYD2kHPzr9.6e9OzbOScIIQIDzBrAAgmWVEk5tfvLOlSiS', 'Admin Admin', 17,'admin@mail.com'),
-       (2, 'user', '$2a$10$YJM9Yq0rYD2kHPzr9.6e9OzbOScIIQIDzBrAAgmWVEk5tfvLOlSiS', 'User User', 25, 'user@mail.com');
-
-INSERT INTO authority (id, user_id, authority)
-VALUES (1, 2, 'ROLE_USER'),
-       (2, 1, 'ROLE_EDITOR');
