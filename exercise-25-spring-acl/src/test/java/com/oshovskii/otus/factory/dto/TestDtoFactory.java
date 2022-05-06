@@ -2,7 +2,6 @@ package com.oshovskii.otus.factory.dto;
 
 import com.oshovskii.otus.dto.BookDto;
 import com.oshovskii.otus.models.Author;
-import com.oshovskii.otus.models.Book;
 import com.oshovskii.otus.models.Genre;
 
 public class TestDtoFactory {

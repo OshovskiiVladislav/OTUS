@@ -13,10 +13,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.acls.model.MutableAclService;
+import org.springframework.security.acls.domain.ObjectIdentityImpl;
+import org.springframework.security.acls.model.*;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.oshovskii.otus.factory.entity.TestEntityFactory.createBook;
@@ -47,7 +50,7 @@ class BookServiceTest {
     @DisplayName("save() " +
             "with valid BookToSaveDto " +
             "should return saved book test")
-    @WithMockUser(username="admin",roles={"EDITOR"})
+    @WithMockUser(username="admin", roles={"EDITOR"})
     void save_withValidBookToSaveDto_shouldReturnSavedBook() {
         // Config
         val  genreId = 1L;
@@ -73,11 +76,14 @@ class BookServiceTest {
         when(bookRepositoryMock.save(any(Book.class)))
                 .thenReturn(expectedBook);
 
+        when(mutableAclServiceMock.createAcl(any()))
+                .thenReturn(new MutableAclTestImpl());
 
         // Call
         val actualBook = bookService.save(bookToSaveDto);
 
         // Verify
+        assertEquals(expectedBook, actualBook);
         verify(bookRepositoryMock).save(any(Book.class));
     }
 
@@ -85,6 +91,7 @@ class BookServiceTest {
     @DisplayName("findAll() " +
             "with void input " +
             "should return all books test")
+    @WithMockUser(username="admin", roles={"EDITOR"})
     void findAll_voidInput_shouldReturnAllBooks() {
         // Config
         val targetBook1 = createBook(1);
@@ -106,6 +113,7 @@ class BookServiceTest {
     @DisplayName("findById() " +
             "with valid book id " +
             "should return expected book test")
+    @WithMockUser(username="admin", roles={"EDITOR"})
     void findById_validBookId_shouldReturnBook() {
         //Config
         val bookId = 1L;
@@ -125,16 +133,92 @@ class BookServiceTest {
     @DisplayName("deleteById() " +
             "with valid book id " +
             "should delete book test")
+    @WithMockUser(username="admin", roles={"EDITOR"})
     void deleteById_validBookId_shouldDeleteBook() {
         //Config
         val bookId = 1L;
 
-        doNothing().when(bookRepositoryMock).deleteById(bookId);
+        doNothing().when(bookRepositoryMock).deleteBookById(bookId);
 
         // Call
         bookService.deleteById(bookId);
 
         // Verify
-        verify(bookRepositoryMock).deleteById(bookId);
+        verify(bookRepositoryMock).deleteBookById(bookId);
+    }
+
+    private class MutableAclTestImpl implements MutableAcl {
+
+        private Book expectedBook = createBook(1);
+
+        @Override
+        public void deleteAce(int i) throws NotFoundException {
+
+        }
+
+        @Override
+        public Serializable getId() {
+            return null;
+        }
+
+        @Override
+        public void insertAce(int i, Permission permission, Sid sid, boolean b) throws NotFoundException {
+
+        }
+
+        @Override
+        public void setOwner(Sid sid) {
+
+        }
+
+        @Override
+        public void setEntriesInheriting(boolean b) {
+
+        }
+
+        @Override
+        public void setParent(Acl acl) {
+
+        }
+
+        @Override
+        public void updateAce(int i, Permission permission) throws NotFoundException {
+
+        }
+
+        @Override
+        public List<AccessControlEntry> getEntries() {
+            return new ArrayList<>();
+        }
+
+        @Override
+        public ObjectIdentity getObjectIdentity() {
+            return new ObjectIdentityImpl(expectedBook.getClass(), expectedBook.getId());
+        }
+
+        @Override
+        public Sid getOwner() {
+            return null;
+        }
+
+        @Override
+        public Acl getParentAcl() {
+            return null;
+        }
+
+        @Override
+        public boolean isEntriesInheriting() {
+            return false;
+        }
+
+        @Override
+        public boolean isGranted(List<Permission> list, List<Sid> list1, boolean b) throws NotFoundException, UnloadedSidException {
+            return false;
+        }
+
+        @Override
+        public boolean isSidLoaded(List<Sid> list) {
+            return false;
+        }
     }
 }
