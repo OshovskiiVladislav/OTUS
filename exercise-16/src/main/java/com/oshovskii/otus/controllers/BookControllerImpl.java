@@ -1,28 +1,30 @@
 package com.oshovskii.otus.controllers;
 
-import com.oshovskii.otus.controllers.interfaces.BookController;
 import com.oshovskii.otus.dto.AuthorDto;
 import com.oshovskii.otus.dto.BookDto;
+import com.oshovskii.otus.dto.BookToSaveDto;
 import com.oshovskii.otus.dto.GenreDto;
 import com.oshovskii.otus.services.interfaces.AuthorService;
 import com.oshovskii.otus.services.interfaces.BookService;
 import com.oshovskii.otus.services.interfaces.GenreService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
-public class BookControllerImpl implements BookController {
+public class BookControllerImpl {
     private final BookService bookService;
     private final AuthorService authorService;
     private final GenreService genreService;
+    private final ModelMapper modelMapper;
 
-    @Override
     @GetMapping("/")
     public String listPage(Model model) {
         List<BookDto> bookDtoList = bookService.findAllBooks();
@@ -30,7 +32,6 @@ public class BookControllerImpl implements BookController {
         return "index";
     }
 
-    @Override
     @GetMapping("/edit")
     public String editPage(@RequestParam("id") Long id, Model model) {
         BookDto bookDto = bookService.findBookById(id);
@@ -38,10 +39,11 @@ public class BookControllerImpl implements BookController {
         return "edit";
     }
 
-    @Override
     @GetMapping("/save")
-    public String savePage(BookDto bookDto,  Model model) {
-        model.addAttribute("bookDto", bookDto);
+    public String savePage(Model model) {
+        BookToSaveDto bookToSaveDto = new BookToSaveDto();
+
+        model.addAttribute("bookDto", bookToSaveDto);
 
         List<AuthorDto> authorsList = authorService.findAll();
         model.addAttribute("authorsList", authorsList);
@@ -52,7 +54,6 @@ public class BookControllerImpl implements BookController {
         return "save";
     }
 
-    @Override
     @PostMapping("/edit")
     public String updateBook(@ModelAttribute("book") BookDto bookDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -62,17 +63,23 @@ public class BookControllerImpl implements BookController {
         return "redirect:/";
     }
 
-    @Override
     @PostMapping("/save")
-    public String saveBook(@ModelAttribute("bookDto") BookDto bookDto, BindingResult bindingResult) {
+    public String saveBook(@ModelAttribute("bookDto") BookToSaveDto bookToSaveDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "save";
         }
+
+        BookDto bookDto = new BookDto(
+                bookToSaveDto.getId(),
+                bookToSaveDto.getTitle(),
+                Set.of(modelMapper.map(bookToSaveDto.getAuthor(), AuthorDto.class)),
+                Set.of(modelMapper.map(bookToSaveDto.getGenre(), GenreDto.class))
+        );
+
         bookService.saveBook(bookDto);
         return "redirect:/";
     }
 
-    @Override
     @PostMapping("/delete/{id}")
     public String deleteBook(@PathVariable("id") Long id) {
         bookService.deleteBookById(id);

@@ -1,6 +1,5 @@
 package com.oshovskii.otus.controllers;
 
-import com.oshovskii.otus.controllers.interfaces.CommentController;
 import com.oshovskii.otus.dto.CommentDto;
 import com.oshovskii.otus.services.interfaces.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +11,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class CommentControllerImpl implements CommentController {
+public class CommentControllerImpl {
     private final CommentService commentService;
 
     @GetMapping("/comments")

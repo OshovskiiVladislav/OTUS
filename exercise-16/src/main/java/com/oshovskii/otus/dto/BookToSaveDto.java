@@ -1,17 +1,17 @@
 package com.oshovskii.otus.dto;
 
+import com.oshovskii.otus.models.Author;
+import com.oshovskii.otus.models.Genre;
 import lombok.*;
-
-import java.util.Set;
 
 @Getter
 @Setter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookDto {
+public class BookToSaveDto {
     private Long id;
     private String title;
-    private Set<AuthorDto> authorsList;
-    private Set<GenreDto> genresList;
+    private Author author;
+    private Genre genre;
 }
