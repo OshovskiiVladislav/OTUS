@@ -1,8 +1,12 @@
 package com.oshovskii.otus.services;
 
 import com.oshovskii.otus.dto.BookDto;
+import com.oshovskii.otus.models.Author;
 import com.oshovskii.otus.models.Book;
+import com.oshovskii.otus.models.Genre;
 import com.oshovskii.otus.repositories.BookRepository;
+import com.oshovskii.otus.services.interfaces.AuthorService;
+import com.oshovskii.otus.services.interfaces.GenreService;
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,6 +43,12 @@ class BookServiceImplTest {
 
     @MockBean
     private ModelMapper modelMapperMock;
+
+    @MockBean
+    private AuthorService authorService;
+
+    @MockBean
+    private GenreService genreService;
 
     @DisplayName("Return expected list books test")
     @Test
@@ -93,6 +103,8 @@ class BookServiceImplTest {
         when(bookRepository.save(any(Book.class))).thenReturn(savedBook);
         when(modelMapperMock.map(expectedBookDto, Book.class)).thenReturn(savedBook);
         when(modelMapperMock.map(savedBook, BookDto.class)).thenReturn(expectedBookDto);
+        when(authorService.findById(any())).thenReturn(new Author());
+        when(genreService.findById(any())).thenReturn(new Genre());
 
         // Call
         val actualBookDto = bookService.saveBook(expectedBookDto);

@@ -1,6 +1,5 @@
 package com.oshovskii.otus.controllers;
 
-import com.oshovskii.otus.controllers.interfaces.AuthorController;
 import com.oshovskii.otus.dto.AuthorDto;
 import com.oshovskii.otus.services.interfaces.AuthorService;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +11,9 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class AuthorControllerImpl implements AuthorController {
+public class AuthorControllerImpl {
     private final AuthorService authorService;
 
-    @Override
     @GetMapping("/authors")
     public String listPageAuthors(Model model) {
         List<AuthorDto> authorDtoList = authorService.findAll();

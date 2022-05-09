@@ -1,6 +1,7 @@
 package com.oshovskii.otus.services;
 
 import com.oshovskii.otus.dto.AuthorDto;
+import com.oshovskii.otus.exceptions.implementations.ResourceNotFoundException;
 import com.oshovskii.otus.models.Author;
 import com.oshovskii.otus.repositories.AuthorRepository;
 import com.oshovskii.otus.services.interfaces.AuthorService;
@@ -26,5 +27,10 @@ public class AuthorServiceImpl implements AuthorService {
                 .stream()
                 .map(author -> modelMapper.map(author, AuthorDto.class))
                 .collect(Collectors.toList());
+    }
+
+    public Author findById(Long authorId) {
+        return authorRepository.findById(authorId).orElseThrow(
+                () -> new ResourceNotFoundException("Author by id: " + authorId + " not found" ));
     }
 }
