@@ -61,6 +61,12 @@ public class BookServiceImpl implements BookService {
         return modelMapper.map(bookRepository.save(book), BookDto.class);
     }
 
+    @Override
+    public BookDto updateBook(BookDto bookDto) {
+        Book book = modelMapper.map(bookDto, Book.class);
+        return modelMapper.map(bookRepository.save(book), BookDto.class);
+    }
+
     @Transactional
     public void deleteBookById(Long id) {
         bookRepository.deleteById(id);
