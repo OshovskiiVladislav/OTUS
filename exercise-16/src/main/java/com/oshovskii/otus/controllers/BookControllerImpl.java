@@ -59,7 +59,7 @@ public class BookControllerImpl {
         if (bindingResult.hasErrors()) {
             return "edit";
         }
-        bookService.saveBook(bookDto);
+        bookService.updateBook(bookDto);
         return "redirect:/";
     }
 
