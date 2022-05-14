@@ -62,8 +62,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public BookDto updateBook(BookDto bookDto) {
-        Book book = modelMapper.map(bookDto, Book.class);
+        Book book = bookRepository.findById(bookDto.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Book with id: " + bookDto.getId() + " not found"));
+        book.setTitle(bookDto.getTitle());
         return modelMapper.map(bookRepository.save(book), BookDto.class);
     }
 
