@@ -16,3 +16,65 @@
 - Не рекомендуется выделять пользователей с разными правами в разные классы - т.е. просто один класс пользователя. 
 - В случае авторизации на основе доменных сущностей и PostgreSQL не используйте GUID для сущностей.
 - Написать тесты контроллеров, которые проверяют, что все необходимые ресурсы действительно защищены Данное задание НЕ засчитывает предыдущие!
+
+### Базовые интерфейсы подсистемы ACL:
+
+• Acl</br>
+• MutableAcl</br>
+• AccessControlEntry</br>
+• Permission</br>
+• Sid</br>
+• ObjectIdentity</br>
+• AclService</br>
+• MutableAclService</br>
+
+### Domain Objects Security (ACL):
+
+• Интерфейс Acl:
+1. представляет Access Control List для бизнес сущности
+
+2. содержит список AccessControlEntry
+3. имеет реализацию по умолчанию AclImpl</br>
+
+• Интерфейс MutableAcl:
+1. расширяет интерфейс Acl предоставляя возможности модификации объекта ACL
+2. имеет реализацию по умолчанию AclImpl
+
+• Интерфейс AccessControlEntry:
+1. представляет единичное разрешение
+2. ссылается на Sid и Permission
+3. имеет реализацию по умолчанию AccessControlEntryImpl</br>
+
+• Интерфейс Sid:
+1. представляет security identity
+2. имеет реализации GrantedAuthoritySid и PrincipalSid
+
+• PrincipalSid – для формирования ACL для конкретного
+пользователя
+
+• GrantedAuthoritySid - для формирования ACL для роли
+
+• Интерфейс Permission:
+1. представляет конкретное разрешение
+2. содержит битовую маску
+3. имеет реализации BasePermission и CumulativePermission
+
+• Интерфейс ObjectIdentity:
+1. представляет уникально идентифицируемую бизнес сущность
+2. содержит идентификатор и тип сущности
+3. реализация по умолчанию ObjectIdentityImpl
+4. Интерфейс ObjectIdentityGenerator определяет сервис для генерации (create()) ObjectIdentity
+
+• Интерфейс ObjectIdentityRetrievalStrategy определяет сервис для получения (get()) ObjectIdentity для сущности
+
+• Интерфейс AclService:
+1. определяет сервис для загрузки ACL из хранилища
+2. имеет реализацию JdbcAclService загружающую ACL из БД через JDBC
+
+• Интерфейс MutableAclService:
+1. расширяет интерфейс AclService предоставляя возможно по сохранению изменений в хранилище
+2. реализация JdbcMutableAclService сохраняющая ACL в БД через JDBC
+
+• Интерфейс AclCache:
+1. определят кэш для ACL
+2. используется в MutableAclService
