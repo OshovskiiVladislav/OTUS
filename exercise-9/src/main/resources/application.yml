@@ -8,6 +8,7 @@ spring:
       mode: always
 
   main:
+    allow-bean-definition-overriding: true
     allow-circular-references: true
 
   jpa:
@@ -15,8 +16,6 @@ spring:
     hibernate:
       ddl-auto: none
     open-in-view: false
-    show-sql: true
-
 logging:
   level:
     ROOT: ERROR
