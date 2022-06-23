@@ -1,0 +1,12 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost
+      database: library
+      port: 27017
+  #      host: localhost
+#      embedded:
+#        version: 2.6.10
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true

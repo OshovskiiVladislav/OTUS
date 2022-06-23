@@ -1,17 +1,28 @@
 spring:
+
   datasource:
     url: jdbc:h2:mem:testdb
+
   sql:
     init:
       mode: always
-      data-locations: data.sql
+
   shell:
     interactive:
       enabled: false
+
   main:
     allow-circular-references: true
+
   jpa:
     generate-ddl: false
+    #generate-ddl: true
     hibernate:
       ddl-auto: none
-    show-sql: true
+      #ddl-auto: create-drop
+
+    #show-sql: true
+
+logging:
+  level:
+    ROOT: ERROR
