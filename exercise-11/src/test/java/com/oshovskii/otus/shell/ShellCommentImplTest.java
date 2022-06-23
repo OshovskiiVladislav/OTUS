@@ -20,6 +20,7 @@ import static org.mockito.Mockito.*;
 @DisplayName("Test ShellCommentImpl command")
 @SpringBootTest
 class ShellCommentImplTest {
+
     @MockBean
     private CommentService commentService;
 

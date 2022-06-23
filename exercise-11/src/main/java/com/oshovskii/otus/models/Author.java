@@ -11,6 +11,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Table(name = "authors")
 @Entity
+@EqualsAndHashCode(of = {"id"})
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

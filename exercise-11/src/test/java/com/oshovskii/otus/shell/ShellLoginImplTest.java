@@ -11,6 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Test ShellLoginImpl command")
 @SpringBootTest
 class ShellLoginImplTest {
+
     @Autowired
     private Shell shell;
 

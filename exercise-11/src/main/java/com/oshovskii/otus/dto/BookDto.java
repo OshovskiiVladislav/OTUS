@@ -11,13 +11,10 @@ import java.util.Set;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @NoArgsConstructor
 public class BookDto {
-    @ToString.Include
     private String title;
-    @ToString.Include
     private Set<Author> authorsList;
-    @ToString.Include
     private Set<Genre> genresList;
 }

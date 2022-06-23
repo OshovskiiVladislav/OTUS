@@ -13,9 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "books")
-@NamedEntityGraph(name = "book-author-genre",
-        attributeNodes = {@NamedAttributeNode("authorsList"),
-                          @NamedAttributeNode("genresList")})
+@EqualsAndHashCode(of = {"id"})
 @Entity
 public class Book {
     @Id
@@ -27,16 +25,14 @@ public class Book {
     @Column(name = "title", nullable = false, unique = true)
     private String title;
 
-    @ToString.Include
-    // Все данные талицы будут загружены в память отдельным запросом и соединены с родительской сущностью
+    @ToString.Exclude
     @Fetch(FetchMode.SUBSELECT)
     @ManyToMany(targetEntity = Author.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "book_authors", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
     private Set<Author> authorsList;
 
-    @ToString.Include
-    // Все данные талицы будут загружены в память отдельным запросом и соединены с родительской сущностью
+    @ToString.Exclude
     @Fetch(FetchMode.SUBSELECT)
     @ManyToMany(targetEntity = Genre.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "book_genres", joinColumns = @JoinColumn(name = "book_id"),

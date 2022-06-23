@@ -6,10 +6,11 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "genres")
+@EqualsAndHashCode(of = {"id"})
 @Entity
 public class Genre {
     @Id
@@ -18,7 +19,6 @@ public class Genre {
     private long id;
 
     @Column(name = "type", nullable = false, unique = true)
-    @ToString.Include
     private String type;
 
     public Genre(String type) {

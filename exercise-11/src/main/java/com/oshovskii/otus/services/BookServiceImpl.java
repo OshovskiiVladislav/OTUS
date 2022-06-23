@@ -58,6 +58,7 @@ public class BookServiceImpl implements BookService {
     public BookDto saveBook(String title, Long authorId, Long genreId) {
         Author author = authorService.findAuthorById(authorId)
                 .orElseThrow(() -> new ResourceNotFoundException("Author with id: " + authorId + " not found"));
+
         Genre genre = genreService.findGenreById(genreId)
                 .orElseThrow(() -> new ResourceNotFoundException("Genre with id: " + genreId + " not found"));
 
@@ -72,8 +73,7 @@ public class BookServiceImpl implements BookService {
     @Transactional(readOnly = true)
     public BookDto findBookByTitleIgnoreCase(String title) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
-        Example<Book> example = Example.of(new Book(title),
-                caseInsensitiveExampleMatcher);
+        Example<Book> example = Example.of(new Book(title), caseInsensitiveExampleMatcher);
 
         Book actual = bookRepository.findOne(example)
                 .orElseThrow(() -> new ResourceNotFoundException("Book with title: "+ title + " not found"));

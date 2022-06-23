@@ -3,7 +3,6 @@ package com.oshovskii.otus.services;
 import com.oshovskii.otus.dto.BookDto;
 import com.oshovskii.otus.models.Author;
 import com.oshovskii.otus.models.Book;
-import com.oshovskii.otus.models.Comment;
 import com.oshovskii.otus.models.Genre;
 import com.oshovskii.otus.repositories.BookRepository;
 import lombok.val;
@@ -12,14 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static com.oshovskii.otus.factory.TestBookDtoFactory.createBookDtoWithAllInfoById;
 import static com.oshovskii.otus.factory.TestBookFactory.createBookWithAllInfoById;
