@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/books")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class BookControllerImpl implements BookController {
     private final BookService bookService;
 
@@ -29,7 +30,7 @@ public class BookControllerImpl implements BookController {
         return bookService.saveBook(bookDto);
     }
 
-    @PutMapping
+    @PutMapping("/book")
     public BookDto updateBook(@RequestBody BookDto bookDto) {
         return bookService.saveBook(bookDto);
     }

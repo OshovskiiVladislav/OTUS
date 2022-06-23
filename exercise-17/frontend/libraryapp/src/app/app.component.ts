@@ -98,17 +98,21 @@ export class AppComponent implements OnInit {
     button.type = 'button';
     button.style.display = 'none';
     button.setAttribute('data-toggle', 'modal');
+
     if (mode === 'add') {
       button.setAttribute('data-target', '#addBookModal');
     }
+
     if (mode === 'edit') {
       this.editBook = book;
       button.setAttribute('data-target', '#updateBookModal');
     }
+
     if (mode === 'delete') {
       this.deleteBook = book;
       button.setAttribute('data-target', '#deleteBookModal');
     }
+
     // @ts-ignore
     container.appendChild(button);
     button.click();

@@ -10,17 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.oshovskii.otus.factory.TestBookDtoFactory.createBookDtoWithAllInfoById;
-import static com.oshovskii.otus.utils.Utils.EXISTING_BOOK_ID;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("integration")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class BookControllerIntegrationTest {
     @Autowired
@@ -29,13 +26,15 @@ class BookControllerIntegrationTest {
     @Autowired
     public ObjectMapper objectMapper;
 
+    public static final Long EXISTING_BOOK_ID = 1L;
+
     @DisplayName("Find all Book test")
     @Test
     void findAllBooks_expectedVoidInput_shouldReturnListBookDto() throws Exception {
         // Call and verify
         mockMvc.perform(get("/api/v1/books")
                         .contentType(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isOk());
+                .andExpect(status().isOk());
 
     }
 
@@ -59,7 +58,7 @@ class BookControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(targetJson)
                         .accept(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isOk());
+                .andExpect(status().isOk());
     }
 
     @DisplayName("Update valid Book test")
@@ -70,11 +69,11 @@ class BookControllerIntegrationTest {
         final String targetJson = objectMapper.writeValueAsString(expectedBookDto);
 
         // Call and verify
-        mockMvc.perform(put("/api/v1/books")
+        mockMvc.perform(put("/api/v1/books/book")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(targetJson)
                         .accept(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isOk());
+                .andExpect(status().isOk());
     }
 
     @DisplayName("Delete valid Book vy id test")
@@ -83,6 +82,6 @@ class BookControllerIntegrationTest {
         // Call and verify
         mockMvc.perform(delete("/api/v1/books/" + EXISTING_BOOK_ID)
                         .contentType(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isOk());
+                .andExpect(status().isOk());
     }
 }
