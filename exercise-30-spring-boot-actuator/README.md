@@ -1,8 +1,8 @@
-#Spring Boot Actuator. Домашнее задание
+# Spring Boot Actuator. Домашнее задание
 
 ---
 
-###Использовать метрики, healthchecks и logfile
+### Использовать метрики, healthchecks и logfile
 
 **Цель:**</br>
 Реализовать production-grade мониторинг и прозрачность в приложении
