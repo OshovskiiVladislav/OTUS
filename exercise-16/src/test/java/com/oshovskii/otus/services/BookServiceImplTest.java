@@ -1,31 +1,39 @@
 package com.oshovskii.otus.services;
 
 import com.oshovskii.otus.dto.BookDto;
+import com.oshovskii.otus.models.Author;
 import com.oshovskii.otus.models.Book;
+import com.oshovskii.otus.models.Genre;
 import com.oshovskii.otus.repositories.BookRepository;
+import com.oshovskii.otus.services.interfaces.AuthorService;
+import com.oshovskii.otus.services.interfaces.GenreService;
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 import java.util.Optional;
 
 import static com.oshovskii.otus.factory.TestBookDtoFactory.createBookDtoWithAllInfoById;
 import static com.oshovskii.otus.factory.TestBookFactory.createBookWithAllInfoById;
-import static com.oshovskii.otus.utils.Utils.EXISTING_BOOK_ID;
-import static com.oshovskii.otus.utils.Utils.EXISTING_BOOK_ID_2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @DisplayName("BookServiceImpl Test")
-@SpringBootTest(classes = BookServiceImpl.class)
+@ExtendWith(SpringExtension.class)
+@Import(BookServiceImpl.class)
 class BookServiceImplTest {
+
+    public static final Long EXISTING_BOOK_ID = 1L;
+    public static final Long EXISTING_BOOK_ID_2 = 2L;
 
     @Autowired
     private BookServiceImpl bookService;
@@ -35,6 +43,12 @@ class BookServiceImplTest {
 
     @MockBean
     private ModelMapper modelMapperMock;
+
+    @MockBean
+    private AuthorService authorService;
+
+    @MockBean
+    private GenreService genreService;
 
     @DisplayName("Return expected list books test")
     @Test
@@ -89,6 +103,8 @@ class BookServiceImplTest {
         when(bookRepository.save(any(Book.class))).thenReturn(savedBook);
         when(modelMapperMock.map(expectedBookDto, Book.class)).thenReturn(savedBook);
         when(modelMapperMock.map(savedBook, BookDto.class)).thenReturn(expectedBookDto);
+        when(authorService.findById(any())).thenReturn(new Author());
+        when(genreService.findById(any())).thenReturn(new Genre());
 
         // Call
         val actualBookDto = bookService.saveBook(expectedBookDto);
